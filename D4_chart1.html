@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Tableau + D3 (Localhost)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 16px; }
+    .wrap { max-width: 1200px; margin: 0 auto; }
+    h1 { font-size: 1.25rem; margin: 0 0 10px; }
+    .sub { color: #666; margin: 0 0 16px; }
+    .viz-box { border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden; }
+    .d3-box { border: 1px solid #e5e5e5; border-radius: 8px; margin-top: 16px; padding: 12px; }
+    .note { font-size: 0.9rem; color: #666; margin-top: 6px; }
+    /* Make the D3 svg shrink nicely on small screens */
+    #d3chart { width: 100%; height: auto; }
+  </style>
+  <link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Tableau + D3 Linked Demo</h1>
+    <p class="sub">Selections in Tableau drive the animated D3 bar chart below.</p>
+
+    <!-- ==== TABLEAU EMBED ==== -->
+    <div class="viz-box">
+      <div class="tableauPlaceholder" id="viz1762152321971" style="position: relative">
+        <noscript>
+          <a href="#">
+            <img
+              alt="Pathways to More Organs: Iran (Transitioning to Mixed) vs US (Deceased-Led)KPI shows rate (pmp) and scale (total)"
+              src="https://public.tableau.com/static/images/Ch/Chart123_17621523095430/Chart1/1_rss.png"
+              style="border: none"
+            />
+          </a>
+        </noscript>
+        <object class="tableauViz" style="display: none">
+          <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />
+          <param name="embed_code_version" value="3" />
+          <param name="site_root" value="" />
+          <param name="name" value="Chart123_17621523095430&#47;Chart1" />
+          <param name="tabs" value="no" />
+          <param name="toolbar" value="yes" />
+          <param
+            name="static_image"
+            value="https://public.tableau.com/static/images/Ch/Chart123_17621523095430/Chart1/1.png"
+          />
+          <param name="animate_transition" value="yes" />
+          <param name="display_static_image" value="yes" />
+          <param name="display_spinner" value="yes" />
+          <param name="display_overlay" value="yes" />
+          <param name="display_count" value="yes" />
+          <param name="language" value="en-GB" />
+          <param name="filter" value="publish=yes" />
+        </object>
+      </div>
+    </div>
+
+    <!-- ==== D3 CHART ==== -->
+    <!-- <div class="d3-box"> -->
+      <!-- Responsive SVG via viewBox; will scale to container -->
+      <!-- <svg id="d3chart" viewBox="0 0 960 360" preserveAspectRatio="xMinYMin meet"></svg> -->
+      <!-- <div class="note">Tip: Ctrl/Cmd+click multiple marks in Tableau to multi-select; chart will animate.</div> -->
+    <!-- </div> -->
+  <!-- </div> -->
+  <!-- Tableau v1 embed script (keeps your original approach) -->
+  <script src="https://public.tableau.com/javascripts/api/viz_v1.js"></script>
+  <!-- D3 -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <script>
+    // Ensure the Tableau viz sizes responsively (same behavior as your snippet)
+    (function setupVizSizing() {
+      var divElement = document.getElementById("viz1762152321971");
+      var vizElement = divElement.getElementsByTagName("object")[0];
+      function sizeIt() {
+        vizElement.style.width = "100%";
+        vizElement.style.height = Math.max(360, divElement.offsetWidth * 0.62) + "px"; // 16:10-ish
+      }
+      sizeIt();
+      // Insert the script tag (done by your original code)
+      // (Already loaded above via <script src=...> so this is optional)
+      // var scriptElement = document.createElement("script");
+      // scriptElement.src = "https://public.tableau.com/javascripts/api/viz_v1.js";
+      // vizElement.parentNode.insertBefore(scriptElement, vizElement);
+
+      // Debounced resize
+      let raf;
+      window.addEventListener("resize", () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(sizeIt);
+      });
+    })();
+
+    // ==== D3 + Tableau Bridging ====
+    (function main() {
+      // OPTIONAL: lock these to your exact sheet/fields if auto-pick isn't right
+      const WORKSHEET_NAME = null;   // e.g., "KPI Bars" (worksheet inside the dashboard)
+      const DIM_FIELD      = null;   // e.g., "Country"
+      const MEASURE_FIELD  = null;   // e.g., "Rate (pmp)"
+
+      // Wait for Tableau API to initialize and viz to register
+      function onTableauReady(cb) {
+        const check = () => {
+          if (window.tableau && tableau.VizManager && tableau.VizManager.getVizs().length) {
+            const viz = tableau.VizManager.getVizs()[0];
+            try {
+              viz.addEventListener(tableau.TableauEventName.FIRST_INTERACTIVE, () => cb(viz));
+            } catch (e) {
+              cb(viz); // some builds fire immediately
+            }
+          } else {
+            setTimeout(check, 100);
+          }
+        };
+        check();
+      }
+
+      // D3 scaffolding
+      const svg = d3.select("#d3chart");
+      const vb = svg.attr("viewBox").split(" ").map(Number); // [0,0,960,360]
+      const W = vb[2], H = vb[3];
+      const M = { top: 16, right: 24, bottom: 48, left: 64 };
+      const innerW = W - M.left - M.right;
+      const innerH = H - M.top - M.bottom;
+
+      const g = svg.append("g").attr("transform", `translate(${M.left},${M.top})`);
+      const x = d3.scaleBand().padding(0.2).range([0, innerW]);
+      const y = d3.scaleLinear().range([innerH, 0]);
+      const xAxisG = g.append("g").attr("transform", `translate(0,${innerH})`);
+      const yAxisG = g.append("g");
+
+      const tooltip = d3.select("body").append("div")
+        .style("position", "fixed")
+        .style("pointer-events", "none")
+        .style("background", "rgba(0,0,0,0.75)")
+        .style("color", "#fff")
+        .style("padding", "6px 8px")
+        .style("border-radius", "6px")
+        .style("font-size", "12px")
+        .style("opacity", 0);
+
+      function showTip(html, x, y) {
+        tooltip.html(html).style("left", (x + 12) + "px").style("top", (y + 12) + "px")
+          .transition().duration(150).style("opacity", 1);
+      }
+      function hideTip() { tooltip.transition().duration(150).style("opacity", 0); }
+
+      function render(data, dim, measure) {
+        const clean = data
+          .map(d => ({ label: String(d[dim]), value: +d[measure] }))
+          .filter(d => d.label && !isNaN(d.value));
+
+        x.domain(clean.map(d => d.label));
+        y.domain([0, d3.max(clean, d => d.value) || 0]).nice();
+
+        xAxisG.transition().duration(500).call(d3.axisBottom(x))
+          .selectAll("text").style("font-size", "11px").attr("dy", "0.75em");
+        yAxisG.transition().duration(500).call(d3.axisLeft(y).ticks(6))
+          .selectAll("text").style("font-size", "11px");
+
+        const bars = g.selectAll("rect").data(clean, d => d.label);
+
+        bars.exit()
+          .transition().duration(400)
+          .attr("y", y(0)).attr("height", 0)
+          .remove();
+
+        bars.transition().duration(600)
+          .attr("x", d => x(d.label))
+          .attr("y", d => y(d.value))
+          .attr("width", x.bandwidth())
+          .attr("height", d => y(0) - y(d.value));
+
+        bars.enter().append("rect")
+          .attr("x", d => x(d.label))
+          .attr("width", x.bandwidth())
+          .attr("y", y(0))
+          .attr("height", 0)
+          .on("mousemove", (ev,d) => showTip(`<strong>${d.label}</strong><br>${measure}: ${d.value}`, ev.clientX, ev.clientY))
+          .on("mouseleave", hideTip)
+          .transition().duration(600)
+          .attr("y", d => y(d.value))
+          .attr("height", d => y(0) - y(d.value));
+      }
+
+      function summaryTableToRows(table) {
+        const cols = table.getColumns().map(c => c.getFieldName());
+        return table.getData().map(row => {
+          const obj = {};
+          row.forEach((cell, i) => (obj[cols[i]] = cell.formattedValue ?? cell.value));
+          return obj;
+        });
+      }
+      function marksToRows(marks) {
+        return marks.map(m => {
+          const obj = {};
+          m.getPairs().forEach(p => (obj[p.fieldName] = p.value));
+          return obj;
+        });
+      }
+      function pickFields(rows) {
+        if (!rows.length) return { dim: null, measure: null };
+        if (DIM_FIELD && MEASURE_FIELD) return { dim: DIM_FIELD, measure: MEASURE_FIELD };
+        const sample = rows[0];
+        let dim = null, measure = null;
+        for (const k of Object.keys(sample)) {
+          const v = sample[k];
+          const isNum = (typeof v === "number") || (!isNaN(+v) && v !== "");
+          if (!isNum && !dim) dim = k;
+          if (isNum && !measure) measure = k;
+          if (dim && measure) break;
+        }
+        return { dim, measure };
+      }
+
+      async function fetchData(ws, preferSelection = true) {
+        try {
+          if (preferSelection) {
+            const sel = await ws.getSelectedMarksAsync();
+            const marks = sel.getMarks();
+            if (marks && marks.length) return marksToRows(marks);
+          }
+          const table = await ws.getSummaryDataAsync({ ignoreSelection: false });
+          return summaryTableToRows(table);
+        } catch (e) {
+          console.warn("Data fetch failed:", e);
+          return [];
+        }
+      }
+
+      onTableauReady(async (viz) => {
+        const wb = viz.getWorkbook();
+        let sheet = wb.getActiveSheet(); // could be Dashboard or Worksheet
+        let ws;
+
+        if (sheet.getSheetType && sheet.getSheetType() === "dashboard") {
+          const wss = sheet.getWorksheets();
+          ws = WORKSHEET_NAME
+            ? wss.find(w => w.getName() === WORKSHEET_NAME)
+            : wss[0];
+        } else {
+          ws = sheet;
+        }
+
+        async function refresh(preferSelection = true) {
+          const rows = await fetchData(ws, preferSelection);
+          const { dim, measure } = pickFields(rows);
+          if (!dim || !measure) {
+            console.warn("Could not infer fields. Set DIM_FIELD/MEASURE_FIELD.");
+            return;
+          }
+          render(rows, dim, measure);
+        }
+
+        await refresh(false); // initial render with full data
+
+        viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, async () => {
+          await refresh(true);
+        });
+        viz.addEventListener(tableau.TableauEventName.FILTER_CHANGE, async () => {
+          await refresh(false);
+        });
+      });
+    })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
