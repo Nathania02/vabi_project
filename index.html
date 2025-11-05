@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Data Visualization Dashboard - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body { 
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .navbar {
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    /* Multi-level dropdown styling */
+    .dropdown-submenu {
+      position: relative;
+    }
+    
+    .dropdown-submenu .dropdown-menu {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      margin-top: -1px;
+      margin-left: -1px;
+      max-height: 80vh;
+      overflow-y: auto;
+      min-width: 200px;
+      width: max-content;
+      max-width: 300px;
+    }
+    
+    /* Flip submenu to left if it would go off-screen */
+    .dropdown-submenu.dropstart .dropdown-menu {
+      left: auto;
+      right: 100%;
+      margin-left: 0;
+      margin-right: -1px;
+    }
+    
+    /* Show submenu on hover */
+    .dropdown-submenu:hover > .dropdown-menu {
+      display: block;
+    }
+    
+    .dropdown-item.has-submenu {
+      position: relative;
+      padding-right: 2rem;
+    }
+    
+    .dropdown-item.has-submenu::after {
+      content: "›";
+      position: absolute;
+      right: 1rem;
+      font-weight: bold;
+    }
+    
+    .dropdown-submenu.dropstart .dropdown-item.has-submenu::after {
+      content: "‹";
+    }
+    
+    /* Prevent horizontal scroll on body */
+    body {
+      overflow-x: hidden;
+    }
+    
+    .hero-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 80px 0;
+      text-align: center;
+    }
+    
+    .hero-section h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    .hero-section p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+    }
+    
+    .topics-section {
+      padding: 60px 0;
+      background-color: #f8f9fa;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .section-title h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+    
+    .section-title p {
+      font-size: 1.1rem;
+      color: #666;
+    }
+    
+    .topic-card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      background: white;
+    }
+    
+    .topic-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    }
+    
+    .topic-card .card-body {
+      padding: 2rem;
+    }
+    
+    .topic-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .topic-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.8rem;
+      margin-right: 1rem;
+      flex-shrink: 0;
+    }
+    
+    .topic-card .card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+    
+    .topic-card .card-text {
+      color: #666;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    
+    .dashboard-count {
+      font-size: 0.9rem;
+      color: #667eea;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .dashboard-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .dashboard-link-btn {
+      background: white;
+      border: 2px solid #e9ecef;
+      color: #495057;
+      padding: 10px 15px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .dashboard-link-btn:hover {
+      border-color: #667eea;
+      color: #667eea;
+      background: #f8f9ff;
+    }
+    
+    .dashboard-link-btn::after {
+      content: "→";
+      font-weight: bold;
+    }
+    
+    footer {
+      background-color: #f8f9fa;
+      padding: 20px 0;
+      margin-top: auto;
+      text-align: center;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">
+        <span style="color: #667eea;">VABI</span> Project
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="index.html">Home</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dashboardDropdown" role="button" data-bs-toggle="dropdown">
+              Dashboards
+            </a>
+            <ul class="dropdown-menu">
+              <!-- Human Trafficking Topic -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu" href="#">Human Trafficking</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="D1_chart1.html">Types of Trafficking</a></li>
+                  <li><a class="dropdown-item" href="D1_chart5.html">Flow of Trafficking</a></li>
+                  <li><a class="dropdown-item" href="D1_chart2.html">Victims trafficked to other countries</a></li>
+                  <li><a class="dropdown-item" href="D1_chart3.html">Organ Trafficking cases</a></li>
+                </ul>
+              </li>
+              
+              <!-- Global Economics Topic -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu" href="#">Global Economics</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="economics-gdp.html">GDP Analysis</a></li>
+                  <li><a class="dropdown-item" href="economics-trade.html">Trade Patterns</a></li>
+                  <li><a class="dropdown-item" href="economics-employment.html">Employment Rates</a></li>
+                  <li><a class="dropdown-item" href="economics-inflation.html">Inflation Metrics</a></li>
+                  <li><a class="dropdown-item" href="economics-investment.html">Investment Flows</a></li>
+                </ul>
+              </li>
+              
+              <!-- Climate Change Topic -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu" href="#">Climate Change</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="climate-temperature.html">Temperature Trends</a></li>
+                  <li><a class="dropdown-item" href="climate-emissions.html">Carbon Emissions</a></li>
+                  <li><a class="dropdown-item" href="climate-energy.html">Renewable Energy</a></li>
+                  <li><a class="dropdown-item" href="climate-disasters.html">Natural Disasters</a></li>
+                  <li><a class="dropdown-item" href="climate-impact.html">Regional Impact</a></li>
+                  <li><a class="dropdown-item" href="climate-policy.html">Policy Effectiveness</a></li>
+                </ul>
+              </li>
+
+              <!-- Climate Change Topic -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu" href="#">Climate Change</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="climate-temperature.html">Temperature Trends</a></li>
+                  <li><a class="dropdown-item" href="climate-emissions.html">Carbon Emissions</a></li>
+                  <li><a class="dropdown-item" href="climate-energy.html">Renewable Energy</a></li>
+                  <li><a class="dropdown-item" href="climate-disasters.html">Natural Disasters</a></li>
+                  <li><a class="dropdown-item" href="climate-impact.html">Regional Impact</a></li>
+                  <li><a class="dropdown-item" href="climate-policy.html">Policy Effectiveness</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contact">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <h1>Human and Organ Trafficking</h1>
+      <p>Explore data-driven insights into one of the world's most pressing humanitarian crises.</p>
+    </div>
+  </section>
+
+  <!-- Topics Section -->
+  <section class="topics-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Explore Our Topics</h2>
+        <p>Select a topic to view detailed dashboards and analytics</p>
+      </div>
+      
+      <div class="row g-4">
+        <!-- Human Trafficking Topic Card -->
+        <div class="col-lg-6 col-md-6">
+          <div class="card topic-card">
+            <div class="card-body">
+              <div class="topic-header">
+                <h5 class="card-title">Human Trafficking from a Worldwide Point of View</h5>
+              </div>
+              <p class="card-text">
+                Comprehensive analysis of global human trafficking patterns, types of trafficking and trafficking routes.
+              </p>
+              <div class="dashboard-count">5 Dashboards Available</div>
+              <div class="dashboard-links">
+                <a href="D1_chart1.html" class="btn dashboard-link-btn">Types of Trafficking</a>
+                <a href="D1_chart5.html" class="btn dashboard-link-btn">Flow of Trafficking</a>
+                <a href="D1_chart2.html" class="btn dashboard-link-btn">No. of victims who were trafficked to other countries</a>
+                <a href="D1_chart3.html" class="btn dashboard-link-btn">Organ Trafficking cases</a>
+                <a href="D1_chart4.html" class="btn dashboard-link-btn">GDP</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Supply and Demand Organ Topic Card -->
+        <div class="col-lg-6 col-md-6">
+          <div class="card topic-card">
+            <div class="card-body">
+              <div class="topic-header">
+                <h5 class="card-title">Supply and Demand of Organs</h5>
+              </div>
+              <p class="card-text">
+                Deep dive into worldwide economic indicators including GDP trends, international trade patterns, employment statistics, and investment flows across different regions and time periods.
+              </p>
+              <div class="dashboard-count">5 Dashboards Available</div>
+              <div class="dashboard-links">
+                <a href="economics-gdp.html" class="btn dashboard-link-btn">GDP Analysis</a>
+                <a href="economics-trade.html" class="btn dashboard-link-btn">Trade Patterns</a>
+                <a href="economics-employment.html" class="btn dashboard-link-btn">Employment Rates</a>
+                <a href="economics-inflation.html" class="btn dashboard-link-btn">Inflation Metrics</a>
+                <a href="economics-investment.html" class="btn dashboard-link-btn">Investment Flows</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Black Market Topic Card -->
+        <div class="col-lg-6 col-md-6">
+          <div class="card topic-card">
+            <div class="card-body">
+              <div class="topic-header">
+                <h5 class="card-title">Climate Change</h5>
+              </div>
+              <p class="card-text">
+                Track environmental changes through temperature trends, carbon emissions data, renewable energy adoption, natural disaster patterns, and the effectiveness of climate policies worldwide.
+              </p>
+              <div class="dashboard-count">6 Dashboards Available</div>
+              <div class="dashboard-links">
+                <a href="climate-temperature.html" class="btn dashboard-link-btn">Temperature Trends</a>
+                <a href="climate-emissions.html" class="btn dashboard-link-btn">Carbon Emissions</a>
+                <a href="climate-energy.html" class="btn dashboard-link-btn">Renewable Energy</a>
+                <a href="climate-disasters.html" class="btn dashboard-link-btn">Natural Disasters</a>
+                <a href="climate-impact.html" class="btn dashboard-link-btn">Regional Impact</a>
+                <a href="climate-policy.html" class="btn dashboard-link-btn">Policy Effectiveness</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- How to decrease organ trafficking cases Topic Card -->
+        <div class="col-lg-6 col-md-6">
+          <div class="card topic-card">
+            <div class="card-body">
+              <div class="topic-header">
+                <h5 class="card-title">Climate Change</h5>
+              </div>
+              <p class="card-text">
+                Track environmental changes through temperature trends, carbon emissions data, renewable energy adoption, natural disaster patterns, and the effectiveness of climate policies worldwide.
+              </p>
+              <div class="dashboard-count">6 Dashboards Available</div>
+              <div class="dashboard-links">
+                <a href="climate-temperature.html" class="btn dashboard-link-btn">Temperature Trends</a>
+                <a href="climate-emissions.html" class="btn dashboard-link-btn">Carbon Emissions</a>
+                <a href="climate-energy.html" class="btn dashboard-link-btn">Renewable Energy</a>
+                <a href="climate-disasters.html" class="btn dashboard-link-btn">Natural Disasters</a>
+                <a href="climate-impact.html" class="btn dashboard-link-btn">Regional Impact</a>
+                <a href="climate-policy.html" class="btn dashboard-link-btn">Policy Effectiveness</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p class="mb-0">&copy; 2024 Data Insights. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Enable multi-level dropdown on hover for desktop
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdownSubmenus = document.querySelectorAll('.dropdown-submenu');
+      
+      dropdownSubmenus.forEach(function(submenu) {
+        submenu.addEventListener('mouseenter', function() {
+          // Check if submenu would go off-screen
+          const dropdownMenu = this.querySelector('.dropdown-menu');
+          if (dropdownMenu) {
+            dropdownMenu.classList.add('show');
+            
+            // Check if it extends beyond viewport
+            const rect = dropdownMenu.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            
+            if (rect.right > viewportWidth) {
+              // Flip to left side
+              this.classList.add('dropstart');
+            } else {
+              this.classList.remove('dropstart');
+            }
+          }
+        });
+        
+        submenu.addEventListener('mouseleave', function() {
+          const dropdownMenu = this.querySelector('.dropdown-menu');
+          if (dropdownMenu) {
+            dropdownMenu.classList.remove('show');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
