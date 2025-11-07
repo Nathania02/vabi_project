@@ -1,0 +1,3530 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>GDP & GINI Comparison: Global vs Top 5 Economies | VABI Project</title>
+
+		<!-- Bootstrap 5.3.x -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
+
+		<!-- D3.js v7 -->
+		<script src="https://d3js.org/d3.v7.min.js"></script>
+
+		<!-- TopoJSON v3 -->
+		<script src="https://unpkg.com/topojson@3"></script>
+
+		<style>
+			body {
+				font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+				background-color: #f8f9fa;
+				color: #333;
+				min-height: 100vh;
+				display: flex;
+				flex-direction: column;
+			}
+
+			.navbar {
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				background-color: white !important;
+			}
+
+			/* Multi-level dropdown styling */
+			.dropdown-submenu {
+				position: relative;
+			}
+
+			.dropdown-submenu .dropdown-menu {
+				position: absolute;
+				top: 0;
+				left: 100%;
+				margin-top: -1px;
+				margin-left: -1px;
+				max-height: 80vh;
+				overflow-y: auto;
+				min-width: 200px;
+				width: max-content;
+				max-width: 300px;
+			}
+
+			.dropdown-submenu.dropstart .dropdown-menu {
+				left: auto;
+				right: 100%;
+				margin-left: 0;
+				margin-right: -1px;
+			}
+
+			.dropdown-submenu:hover > .dropdown-menu {
+				display: block;
+			}
+
+			.dropdown-item.has-submenu {
+				position: relative;
+				padding-right: 2rem;
+			}
+
+			.dropdown-item.has-submenu::after {
+				content: "›";
+				position: absolute;
+				right: 1rem;
+				font-weight: bold;
+			}
+
+			.dropdown-submenu.dropstart .dropdown-item.has-submenu::after {
+				content: "‹";
+			}
+
+			body {
+				overflow-x: hidden;
+			}
+
+			.content-wrapper {
+				max-width: 1400px;
+				margin: 0 auto;
+				padding: 20px;
+			}
+
+			.breadcrumb-nav {
+				background-color: #f8f9fa;
+				padding: 15px 0;
+				margin-bottom: 20px;
+			}
+
+			.hero-section {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				padding: 60px 20px;
+				text-align: center;
+				border-radius: 8px;
+				margin-bottom: 30px;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+				color: white;
+			}
+
+			.hero-section h1 {
+				font-size: 2.5rem;
+				font-weight: 700;
+				margin-bottom: 0.5rem;
+			}
+
+			.hero-section p {
+				font-size: 1.1rem;
+				opacity: 0.95;
+			}
+
+			.card {
+				background: white;
+				border: none;
+				border-radius: 8px;
+				margin-bottom: 30px;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+			}
+
+			.card-header {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				color: white;
+				border-bottom: none;
+				font-weight: 600;
+				font-size: 1.2rem;
+				padding: 20px;
+				border-radius: 8px 8px 0 0;
+			}
+
+			.card-body {
+				padding: 30px;
+			}
+
+			.controls {
+				display: flex;
+				align-items: center;
+				gap: 20px;
+				margin-bottom: 20px;
+				flex-wrap: wrap;
+			}
+
+			.year-control {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
+
+			.year-control label {
+				font-weight: 600;
+				color: #667eea;
+				font-size: 0.95rem;
+				white-space: nowrap;
+			}
+
+			.year-slider {
+				width: 300px;
+				height: 8px;
+				border-radius: 4px;
+				background: #e9ecef;
+				outline: none;
+				-webkit-appearance: none;
+				appearance: none;
+			}
+
+			.year-slider::-webkit-slider-thumb {
+				-webkit-appearance: none;
+				appearance: none;
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				background: #667eea;
+				cursor: pointer;
+				box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5);
+			}
+
+			.year-slider::-moz-range-thumb {
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				background: #667eea;
+				cursor: pointer;
+				border: none;
+				box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5);
+			}
+
+			.year-display {
+				font-size: 1.5rem;
+				font-weight: 700;
+				color: #667eea;
+				min-width: 60px;
+				text-align: center;
+			}
+
+			.play-btn {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				border: none;
+				color: #fff;
+				padding: 10px 20px;
+				border-radius: 8px;
+				font-weight: 600;
+				cursor: pointer;
+				transition: all 0.3s;
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			}
+
+			.play-btn:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+			}
+
+			.play-btn:active {
+				transform: translateY(0);
+			}
+
+			.play-btn.playing {
+				background: linear-gradient(135deg, #f06292 0%, #e91e63 100%);
+			}
+
+			.country {
+				stroke: #999;
+				stroke-width: 0.5px;
+				cursor: pointer;
+				transition: all 0.3s;
+			}
+
+			.country:hover {
+				stroke: #667eea;
+				stroke-width: 2px;
+				filter: brightness(1.1);
+			}
+
+			.country.highlighted {
+				stroke: #f59e0b;
+				stroke-width: 2px;
+			}
+
+			.tooltip {
+				position: absolute;
+				background: rgba(0, 0, 0, 0.95);
+				border: 2px solid #667eea;
+				border-radius: 8px;
+				padding: 12px;
+				font-size: 13px;
+				pointer-events: none;
+				opacity: 0;
+				transition: opacity 0.3s;
+				z-index: 1000;
+				max-width: 300px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+			}
+
+			.tooltip.show {
+				opacity: 1;
+			}
+
+			.tooltip-title {
+				font-weight: 700;
+				font-size: 15px;
+				margin-bottom: 6px;
+				color: #667eea;
+			}
+
+			.tooltip-row {
+				margin: 4px 0;
+				display: flex;
+				justify-content: space-between;
+				gap: 15px;
+			}
+
+			.tooltip-label {
+				color: #aaa;
+			}
+
+			.tooltip-value {
+				font-weight: 600;
+				color: #fff;
+			}
+
+			.legend {
+				display: flex;
+				align-items: center;
+				gap: 15px;
+				margin-top: 20px;
+				padding: 15px;
+				background: #f8f9fa;
+				border-radius: 8px;
+				flex-wrap: wrap;
+			}
+
+			.legend-title {
+				font-weight: 600;
+				color: #667eea;
+				margin-right: 10px;
+			}
+
+			.legend-gradient {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
+
+			.gradient-bar {
+				width: 200px;
+				height: 20px;
+				border-radius: 4px;
+				border: 1px solid #e9ecef;
+			}
+
+			.gradient-labels {
+				display: flex;
+				justify-content: space-between;
+				font-size: 11px;
+				color: #666;
+			}
+
+			.map-container {
+				position: relative;
+				width: 100%;
+			}
+
+			.loading {
+				text-align: center;
+				padding: 40px;
+				font-size: 1.1rem;
+				color: #667eea;
+			}
+
+			.stats-box {
+				background: #f8f9fa;
+				border-left: 4px solid #667eea;
+				border-radius: 8px;
+				padding: 15px;
+				margin-top: 20px;
+			}
+
+			.stats-row {
+				display: flex;
+				justify-content: space-between;
+				margin: 8px 0;
+				font-size: 0.95rem;
+			}
+
+			.stats-label {
+				color: #666;
+			}
+
+			.stats-value {
+				font-weight: 600;
+				color: #667eea;
+			}
+
+			.view-toggle-btn {
+				background: white;
+				border: 2px solid #e9ecef;
+				border: 2px solid rgba(102, 126, 234, 0.4);
+				color: #fff;
+				padding: 8px 20px;
+				border-radius: 8px;
+				font-weight: 600;
+				cursor: pointer;
+				transition: all 0.3s;
+				font-size: 0.9rem;
+			}
+
+			.view-toggle-btn:hover {
+				background: rgba(102, 126, 234, 0.3);
+				border-color: #667eea;
+			}
+
+			.view-toggle-btn.active {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				border-color: #667eea;
+				box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+			}
+
+			footer {
+				margin-top: 40px;
+				padding: 20px;
+				border-top: 1px solid rgba(255, 255, 255, 0.1);
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container-fluid px-4">
+			<!-- Hero Section -->
+			<div class="hero-section">
+				<h1>🌍 GDP & GINI Temporal Analysis</h1>
+				<p>
+					Interactive Comparison: GDP (1960-2024) & GINI Coefficient (1963-2024) |
+					Global vs Top 5 Economies
+				</p>
+			</div>
+
+			<!-- Map 1: Global GDP -->
+			<div class="card">
+				<div class="card-header">
+					🌐 Map 1: Global GDP per Capita (Diverging from Global Average)
+				</div>
+				<div class="card-body">
+					<div class="controls">
+						<div class="year-control">
+							<label>Year:</label>
+							<input
+								type="range"
+								id="globalYearSlider"
+								class="year-slider"
+								min="1960"
+								max="2024"
+								value="2024"
+								step="1"
+							/>
+							<span id="globalYearDisplay" class="year-display">2024</span>
+						</div>
+						<button id="globalPlayBtn" class="play-btn"><span>▶</span> Play</button>
+					</div>
+
+					<div id="globalMap" class="map-container loading">
+						Loading global map...
+					</div>
+
+					<div class="legend">
+						<span class="legend-title">GDP per Capita:</span>
+						<div class="legend-gradient">
+							<div
+								class="gradient-bar"
+								style="background: linear-gradient(to right, #dc3545, #ffc107, #28a745)"
+							></div>
+						</div>
+						<div style="width: 100%; margin-top: 5px">
+							<div class="gradient-labels" style="width: 200px">
+								<span>Below Average</span>
+								<span>Average</span>
+								<span>Above Average</span>
+							</div>
+						</div>
+					</div>
+
+					<div id="globalStats" class="stats-box">
+						<div class="stats-row">
+							<span class="stats-label">Global Average GDP:</span>
+							<span id="globalAvgValue" class="stats-value">$0</span>
+						</div>
+						<div class="stats-row">
+							<span class="stats-label">Countries with data:</span>
+							<span id="globalCountCount" class="stats-value">0</span>
+						</div>
+						<div class="stats-row">
+							<span class="stats-label">Highest GDP:</span>
+							<span id="globalMaxValue" class="stats-value">-</span>
+						</div>
+						<div class="stats-row">
+							<span class="stats-label">Lowest GDP:</span>
+							<span id="globalMinValue" class="stats-value">-</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Chart 2: Top 5 GDP Bar Chart -->
+			<div class="card">
+				<div class="card-header">
+					🏆 Chart 2: Top 5 Economies GDP Racing Bar Chart (1960-2024)
+				</div>
+				<div class="card-body">
+					<div class="controls">
+						<div class="year-control">
+							<label>Year:</label>
+							<input
+								type="range"
+								id="top5YearSlider"
+								class="year-slider"
+								min="1960"
+								max="2024"
+								value="2024"
+								step="1"
+							/>
+							<span id="top5YearDisplay" class="year-display">2024</span>
+						</div>
+						<button id="top5PlayBtn" class="play-btn"><span>▶</span> Play</button>
+					</div>
+
+					<div id="top5Chart" style="width: 100%; height: 500px"></div>
+				</div>
+			</div>
+
+			<!-- Map 3: Global GINI -->
+			<div class="card">
+				<div class="card-header">
+					📊 Map 3: Global GINI Coefficient (Diverging from Global Average)
+				</div>
+				<div class="card-body">
+					<div class="controls">
+						<div class="year-control">
+							<label>Year:</label>
+							<input
+								type="range"
+								id="giniGlobalYearSlider"
+								class="year-slider"
+								min="1963"
+								max="2024"
+								value="2018"
+								step="1"
+							/>
+							<span id="giniGlobalYearDisplay" class="year-display">2018</span>
+						</div>
+						<button id="giniGlobalPlayBtn" class="play-btn">
+							<span>▶</span> Play
+						</button>
+					</div>
+
+					<div id="giniGlobalMap" class="map-container loading">
+						Loading global GINI map...
+					</div>
+
+					<div class="legend">
+						<span class="legend-title">GINI Coefficient:</span>
+						<div class="legend-gradient">
+							<div
+								class="gradient-bar"
+								style="background: linear-gradient(to right, #28a745, #ffc107, #dc3545)"
+							></div>
+						</div>
+						<div style="width: 100%; margin-top: 5px">
+							<div class="gradient-labels" style="width: 200px">
+								<span>Low Inequality</span>
+								<span>Average</span>
+								<span>High Inequality</span>
+							</div>
+						</div>
+					</div>
+
+					<div id="giniGlobalStats" class="stats-box">
+						<div class="stats-row">
+							<span class="stats-label">Global Average GINI:</span>
+							<span id="giniGlobalAvgValue" class="stats-value">0</span>
+						</div>
+						<div class="stats-row">
+							<span class="stats-label">Countries with data:</span>
+							<span id="giniGlobalCountCount" class="stats-value">0</span>
+						</div>
+						<div class="stats-row">
+							<span class="stats-label">Most Equal:</span>
+							<span id="giniGlobalMinValue" class="stats-value">-</span>
+						</div>
+						<div class="stats-row">
+							<span class="stats-label">Least Equal:</span>
+							<span id="giniGlobalMaxValue" class="stats-value">-</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Chart 4: Top 5 GINI Bar Chart -->
+			<div class="card">
+				<div class="card-header">
+					🏆 Chart 4: Top 5 Economies GINI Racing Bar Chart (1963-2024)
+				</div>
+				<div class="card-body">
+					<div class="controls">
+						<div class="year-control">
+							<label>Year:</label>
+							<input
+								type="range"
+								id="giniTop5YearSlider"
+								class="year-slider"
+								min="1963"
+								max="2024"
+								value="2020"
+								step="1"
+							/>
+							<span id="giniTop5YearDisplay" class="year-display">2020</span>
+						</div>
+						<button id="giniTop5PlayBtn" class="play-btn"><span>▶</span> Play</button>
+					</div>
+
+					<div id="giniTop5Chart" style="width: 100%; height: 500px"></div>
+				</div>
+			</div>
+
+			<!-- Map 5: Global Headcount Poverty -->
+			<div class="card">
+				<div class="card-header">
+					💰 Map 5: Global Poverty Headcount Ratio at $3/day (Diverging from Global
+					Average)
+				</div>
+				<div class="card-body">
+					<div class="controls">
+						<div class="year-control">
+							<label>Year:</label>
+							<input
+								type="range"
+								id="headcountGlobalYearSlider"
+								class="year-slider"
+								min="1963"
+								max="2024"
+								value="2018"
+								step="1"
+							/>
+							<span id="headcountGlobalYearDisplay" class="year-display">2018</span>
+						</div>
+						<button id="headcountGlobalPlayBtn" class="play-btn">
+							<span>▶</span> Play
+						</button>
+					</div>
+					<div id="headcountGlobalMap" class="map-container loading">
+						Loading global poverty headcount map...
+					</div>
+					<div class="legend">
+						<span class="legend-title">Poverty Headcount (% at $3/day):</span>
+						<div class="legend-gradient">
+							<div
+								class="gradient-bar"
+								style="background: linear-gradient(to right, #28a745, #ffc107, #dc3545)"
+							></div>
+						</div>
+						<div style="width: 100%; margin-top: 5px">
+							<div class="gradient-labels" style="width: 200px">
+								<span>Below Average</span><span>Average</span><span>Above Average</span>
+							</div>
+						</div>
+					</div>
+					<div id="headcountGlobalStats" class="stats-box">
+						<div class="stats-row">
+							<span class="stats-label">Global Average Headcount:</span
+							><span id="headcountGlobalAvgValue" class="stats-value">0%</span>
+						</div>
+						<div class="stats-row">
+							<span class="stats-label">Countries with data:</span
+							><span id="headcountGlobalCountCount" class="stats-value">0</span>
+						</div>
+						<div class="stats-row">
+							<span class="stats-label">Highest Poverty:</span
+							><span id="headcountGlobalMaxValue" class="stats-value">-</span>
+						</div>
+						<div class="stats-row">
+							<span class="stats-label">Lowest Poverty:</span
+							><span id="headcountGlobalMinValue" class="stats-value">-</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Chart 6: Top 5 Headcount Racing Bar Chart -->
+			<div class="card">
+				<div class="card-header">
+					🏆 Chart 6: Top 5 Economies Poverty Headcount Racing Bar Chart (1963-2024)
+				</div>
+				<div class="card-body">
+					<div class="controls">
+						<div class="year-control">
+							<label>Year:</label>
+							<input
+								type="range"
+								id="headcountTop5YearSlider"
+								class="year-slider"
+								min="1963"
+								max="2024"
+								value="2011"
+								step="1"
+							/>
+							<span id="headcountTop5YearDisplay" class="year-display">2011</span>
+						</div>
+						<button id="headcountTop5PlayBtn" class="play-btn">
+							<span>▶</span> Play
+						</button>
+					</div>
+					<div id="headcountTop5Chart" style="width: 100%; height: 500px"></div>
+				</div>
+			</div>
+
+			<!-- Chart 7: Scatter Plot - Headcount vs Organ Trafficking -->
+			<div class="card">
+				<div class="card-header">
+					📊 Chart 7: USA - Poverty Headcount vs Organ Trafficking Time Series
+					(2003-2023)
+				</div>
+				<div class="card-body">
+					<div class="controls">
+						<div style="margin-left: 20px">
+							<label style="margin-right: 10px; font-weight: 600; color: #667eea"
+								>View:</label
+							>
+							<button id="barViewBtn" class="view-toggle-btn active">
+								Time Series Bars
+							</button>
+							<button id="scatterViewBtn" class="view-toggle-btn">Scatter Plot</button>
+							<button id="logViewBtn" class="view-toggle-btn">Log Transform</button>
+						</div>
+					</div>
+					<div
+						id="scatterChart"
+						style="width: 100%; height: 600px; position: relative"
+					>
+						<div
+							id="correlationInfo"
+							style="
+								position: absolute;
+								top: 10px;
+								right: 10px;
+								background: rgba(0, 0, 0, 0.9);
+								padding: 20px;
+								border-radius: 12px;
+								font-size: 14px;
+								color: #fff;
+								display: none;
+								border: 2px solid rgba(102, 126, 234, 0.5);
+								box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+							"
+						>
+							<div
+								style="
+									font-weight: 700;
+									margin-bottom: 10px;
+									color: #667eea;
+									font-size: 16px;
+								"
+							>
+								📈 Statistical Analysis
+							</div>
+							<div style="margin: 5px 0">
+								<strong>R²:</strong> <span id="rSquared">-</span>
+							</div>
+							<div style="margin: 5px 0">
+								<strong>Correlation:</strong> <span id="correlation">-</span>
+							</div>
+							<div
+								style="
+									margin-top: 10px;
+									font-size: 13px;
+									color: #f59e0b;
+									font-weight: 600;
+								"
+							>
+								<span id="correlationType">-</span>
+							</div>
+							<div
+								style="margin-top: 10px; font-size: 12px; color: #aaa; line-height: 1.5"
+							>
+								US data: <span id="dataPoints">-</span> years analyzed
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<footer class="text-muted small">
+				Data source: World Bank GDP, GINI Coefficient & Poverty Headcount Ratio |
+				Counter-Trafficking Data Collaborative (CTDC) | 217 countries | GDP:
+				1960-2024, GINI: 1963-2024, Headcount: 1963-2024 |
+				<strong>Chart 7 focuses on USA data: 2003-2023</strong>
+			</footer>
+
+			<!-- Chart 8: Pareto Chart - US Income Distribution by Decile -->
+			<div class="card mt-4">
+				<div class="card-header">
+					📊 Chart 8: USA Income Distribution by Decile (Pareto Chart)
+				</div>
+				<div class="card-body">
+					<div class="alert alert-info" role="alert">
+						<strong>💡 Understanding the Pareto Principle:</strong> This chart shows
+						how income is distributed across 10 equal population groups (deciles) in
+						the United States. The bars represent each decile's share of total income,
+						while the cumulative line shows the running total. The steeper the
+						cumulative curve, the more unequal the distribution.
+					</div>
+					<div
+						id="paretoChart"
+						style="width: 100%; height: 600px; position: relative"
+					>
+						<div
+							id="paretoInfo"
+							style="
+								position: absolute;
+								top: 10px;
+								right: 10px;
+								background: rgba(0, 0, 0, 0.9);
+								padding: 20px;
+								border-radius: 12px;
+								font-size: 14px;
+								color: #fff;
+								border: 2px solid rgba(102, 126, 234, 0.5);
+								box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+							"
+						>
+							<div
+								style="
+									font-weight: 700;
+									margin-bottom: 10px;
+									color: #667eea;
+									font-size: 16px;
+								"
+							>
+								📊 Income Inequality Metrics
+							</div>
+							<div style="margin: 5px 0">
+								<strong>Top 10%:</strong> <span id="top10Share">-</span>
+							</div>
+							<div style="margin: 5px 0">
+								<strong>Bottom 50%:</strong> <span id="bottom50Share">-</span>
+							</div>
+							<div
+								style="
+									margin-top: 10px;
+									font-size: 13px;
+									color: #f59e0b;
+									font-weight: 600;
+								"
+							>
+								<span id="inequalityLevel">-</span>
+							</div>
+							<div
+								style="margin-top: 10px; font-size: 12px; color: #aaa; line-height: 1.5"
+							>
+								Based on 2023 US Census data
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<footer class="text-muted small">
+				Data source: World Bank GDP, GINI Coefficient & Poverty Headcount Ratio |
+				Counter-Trafficking Data Collaborative (CTDC) | US Census Bureau Income
+				Distribution | 217 countries | GDP: 1960-2024, GINI: 1963-2024, Headcount:
+				1963-2024 |
+				<strong>Chart 8 shows US income distribution by decile for 2023</strong>
+			</footer>
+		</div>
+		<script>
+			// ============================================
+			// GLOBAL VARIABLES
+			// ============================================
+
+			let gdpData = [];
+			let giniData = [];
+			let headcountData = [];
+			let scatterData = [];
+			let worldGeoJSON = null;
+			let globalPlayInterval = null;
+			let top5PlayInterval = null;
+			let giniGlobalPlayInterval = null;
+			let giniTop5PlayInterval = null;
+			let headcountGlobalPlayInterval = null;
+			let headcountTop5PlayInterval = null;
+			let scatterPlayInterval = null;
+			let currentScatterView = "bar"; // 'bar', 'scatter', 'log'
+			const top5Countries = {
+				USA: "United States",
+				CHN: "China",
+				DEU: "Germany",
+				JPN: "Japan",
+				IND: "India",
+			}; // Custom formatter for GDP (use B for billions instead of G)
+			function formatGDP(value) {
+				if (value >= 1e12) {
+					return "$" + (value / 1e12).toFixed(2) + "T"; // Trillions
+				} else if (value >= 1e9) {
+					return "$" + (value / 1e9).toFixed(2) + "B"; // Billions
+				} else if (value >= 1e6) {
+					return "$" + (value / 1e6).toFixed(2) + "M"; // Millions
+				} else {
+					return "$" + d3.format(",.0f")(value);
+				}
+			}
+
+			// Create global tooltip
+			const tooltip = d3.select("body").append("div").attr("class", "tooltip");
+
+			// ============================================
+			// DATA LOADING
+			// ============================================
+
+			Promise.all([
+				d3.csv("gdp_cleaned.csv"),
+				d3.csv("gini_cleaned.csv"),
+				d3.csv("headcount_cleaned.csv"),
+				d3.csv("headcount_trafficking_combined.csv"),
+				d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"),
+			])
+				.then(([gdp, gini, headcount, scatter, world]) => {
+					// Process scatter data (headcount vs trafficking)
+					scatterData = scatter
+						.filter(
+							(d) =>
+								d["Country Name"] &&
+								d.Year &&
+								d.Headcount !== undefined &&
+								d.OrganCases &&
+								+d.OrganCases > 0
+						)
+						.map((d) => ({
+							country: d["Country Name"],
+							code: d["Country Code"],
+							year: +d.Year,
+							headcount: +d.Headcount,
+							organCases: +d.OrganCases,
+						}));
+
+					console.log("Scatter data loaded:", scatterData.length, "records");
+					console.log(
+						"Year range:",
+						d3.min(scatterData, (d) => d.year),
+						"-",
+						d3.max(scatterData, (d) => d.year)
+					);
+					// Process GDP data (already cleaned to 217 actual countries)
+					gdpData = gdp
+						.filter((d) => d["Country Code"] && d.Year && d.GDP && +d.GDP > 0)
+						.map((d) => ({
+							code: d["Country Code"],
+							country: d["Country Name"],
+							year: +d.Year,
+							gdp: +d.GDP,
+						}));
+
+					// Process GINI data
+					giniData = gini
+						.filter((d) => d["Country Code"] && d.Year && d.GINI && +d.GINI > 0)
+						.map((d) => ({
+							code: d["Country Code"],
+							country: d["Country Name"],
+							year: +d.Year,
+							gini: +d.GINI,
+						}));
+
+					// Process Headcount data
+					headcountData = headcount
+						.filter(
+							(d) => d["Country Code"] && d.Year && d.Headcount && +d.Headcount >= 0
+						)
+						.map((d) => ({
+							code: d["Country Code"],
+							country: d["Country Name"],
+							year: +d.Year,
+							headcount: +d.Headcount,
+						}));
+
+					// Process world GeoJSON
+					worldGeoJSON = topojson.feature(world, world.objects.countries);
+
+					// Initialize maps
+					initGlobalMap();
+					initTop5Map();
+					initGiniGlobalMap();
+					initGiniTop5Map();
+					initHeadcountGlobalMap();
+					initHeadcountTop5Map();
+
+					// Set up controls
+					setupGlobalControls();
+					setupTop5Controls();
+					setupGiniGlobalControls();
+					setupGiniTop5Controls();
+					setupHeadcountGlobalControls();
+					setupHeadcountTop5Controls();
+
+					// Initialize scatter chart
+					initScatterChart();
+					setupScatterControls();
+
+					// Initialize Pareto chart
+					initParetoChart();
+				})
+				.catch((error) => {
+					console.error("Error loading data:", error);
+					document.querySelectorAll(".loading").forEach((el) => {
+						el.textContent = "Error loading data. Please check console for details.";
+					});
+				});
+
+			// ============================================
+			// MAP 1: GLOBAL GDP
+			// ============================================
+
+			function initGlobalMap() {
+				const container = d3.select("#globalMap");
+				container.html("");
+
+				const containerWidth = container.node().getBoundingClientRect().width;
+				const width = containerWidth;
+				const height = 600;
+
+				const svg = container
+					.append("svg")
+					.attr("width", width)
+					.attr("height", height);
+
+				const projection = d3
+					.geoMercator()
+					.scale(width / 6.5)
+					.translate([width / 2, height / 1.5]);
+
+				const path = d3.geoPath().projection(projection);
+
+				const g = svg.append("g");
+
+				// Draw countries
+				g.selectAll("path")
+					.data(worldGeoJSON.features)
+					.enter()
+					.append("path")
+					.attr("class", "country")
+					.attr("d", path)
+					.attr("id", (d) => "global-" + d.id)
+					.on("mouseover", handleGlobalMouseover)
+					.on("mouseout", () => tooltip.classed("show", false));
+
+				// Initial render
+				updateGlobalMap(2024);
+			}
+
+			function updateGlobalMap(year) {
+				// Filter data for selected year
+				const yearData = gdpData.filter((d) => d.year === year);
+
+				if (yearData.length === 0) {
+					console.warn("No data for year:", year);
+					return;
+				}
+
+				// Calculate global average
+				const globalAverage = d3.mean(yearData, (d) => d.gdp);
+
+				// Create lookup map
+				const gdpMap = new Map(yearData.map((d) => [d.code, d.gdp]));
+
+				// Create diverging color scale
+				const maxGdp = d3.max(yearData, (d) => d.gdp);
+				const minGdp = d3.min(yearData, (d) => d.gdp);
+
+				const colorScale = d3
+					.scaleLinear()
+					.domain([minGdp, globalAverage, maxGdp])
+					.range(["#dc3545", "#ffc107", "#28a745"])
+					.interpolate(d3.interpolateRgb);
+
+				// Update country colors
+				worldGeoJSON.features.forEach((feature) => {
+					const code = getCountryCode(feature);
+					const gdp = gdpMap.get(code);
+					const color = gdp ? colorScale(gdp) : "#333";
+
+					d3
+						.select("#global-" + feature.id)
+						.transition()
+						.duration(500)
+						.attr("fill", color);
+				});
+
+				// Update stats
+				const maxCountry = yearData.reduce((max, d) => (d.gdp > max.gdp ? d : max));
+				const minCountry = yearData.reduce((min, d) => (d.gdp < min.gdp ? d : min));
+
+				d3.select("#globalAvgValue").text("$" + d3.format(",.0f")(globalAverage));
+				d3.select("#globalCountCount").text(yearData.length);
+				d3
+					.select("#globalMaxValue")
+					.text(`${maxCountry.country} ($${d3.format(",.0f")(maxCountry.gdp)})`);
+				d3
+					.select("#globalMinValue")
+					.text(`${minCountry.country} ($${d3.format(",.0f")(minCountry.gdp)})`);
+			}
+
+			function handleGlobalMouseover(event, d) {
+				const code = getCountryCode(d);
+				const year = +document.getElementById("globalYearSlider").value;
+				const yearData = gdpData.filter((data) => data.year === year);
+				const countryData = yearData.find((data) => data.code === code);
+				const globalAverage = d3.mean(yearData, (data) => data.gdp);
+
+				if (countryData) {
+					const diff = countryData.gdp - globalAverage;
+					const diffPercent = ((diff / globalAverage) * 100).toFixed(1);
+					const indicator = diff > 0 ? "▲" : "▼";
+					const color = diff > 0 ? "#28a745" : "#dc3545";
+
+					tooltip
+						.classed("show", true)
+						.html(
+							`
+					         <div class="tooltip-title">${countryData.country}</div>
+					         <div class="tooltip-row">
+					           <span class="tooltip-label">Year:</span>
+					           <span class="tooltip-value">${year}</span>
+					         </div>
+					         <div class="tooltip-row">
+					           <span class="tooltip-label">GDP per capita:</span>
+					           <span class="tooltip-value">$${d3.format(",.0f")(
+																	countryData.gdp
+																)}</span>
+					         </div>
+					         <div class="tooltip-row">
+					           <span class="tooltip-label">Global average:</span>
+					           <span class="tooltip-value">$${d3.format(",.0f")(
+																	globalAverage
+																)}</span>
+					         </div>
+					         <div class="tooltip-row">
+					           <span class="tooltip-label">Difference:</span>
+					           <span class="tooltip-value" style="color: ${color};">${indicator} ${Math.abs(
+								diffPercent
+							)}%</span>
+					         </div>
+					       `
+						)
+						.style("left", event.pageX + 15 + "px")
+						.style("top", event.pageY - 28 + "px");
+				}
+			}
+
+			// ============================================
+			// MAP 2: TOP 5 COUNTRIES
+			// ============================================
+
+			// ============================================
+			// CHART 2: TOP 5 GDP BAR CHART
+			// ============================================
+
+			function initTop5Map() {
+				const container = d3.select("#top5Chart");
+				container.html("");
+
+				const containerWidth = container.node().getBoundingClientRect().width;
+				const width = containerWidth;
+				const height = 500;
+				const margin = { top: 20, right: 150, bottom: 40, left: 200 };
+
+				const svg = container
+					.append("svg")
+					.attr("width", width)
+					.attr("height", height);
+
+				const g = svg
+					.append("g")
+					.attr("transform", `translate(${margin.left},${margin.top})`);
+
+				// Add axes groups
+				g.append("g").attr("class", "x-axis");
+				g.append("g").attr("class", "y-axis");
+
+				// Initial render
+				updateTop5Map(2024);
+			}
+
+			function updateTop5Map(year) {
+				const container = d3.select("#top5Chart");
+				const containerWidth = container.node().getBoundingClientRect().width;
+				const width = containerWidth;
+				const height = 500;
+				const margin = { top: 20, right: 150, bottom: 40, left: 200 };
+				const chartWidth = width - margin.left - margin.right;
+				const chartHeight = height - margin.top - margin.bottom;
+
+				// Filter data for selected year and top 5 countries
+				const top5Codes = Object.keys(top5Countries);
+				const yearData = gdpData.filter(
+					(d) => d.year === year && top5Codes.includes(d.code)
+				);
+
+				if (yearData.length === 0) {
+					console.warn("No GDP data for year:", year);
+					return;
+				}
+
+				// Sort by GDP descending
+				yearData.sort((a, b) => b.gdp - a.gdp);
+
+				const svg = container.select("svg");
+				const g = svg.select("g");
+
+				// Scales
+				const xScale = d3
+					.scaleLinear()
+					.domain([0, d3.max(yearData, (d) => d.gdp)])
+					.range([0, chartWidth]);
+
+				const yScale = d3
+					.scaleBand()
+					.domain(yearData.map((d) => d.country))
+					.range([0, chartHeight])
+					.padding(0.2);
+
+				// Color scale
+				const colorScale = d3
+					.scaleOrdinal()
+					.domain(top5Codes)
+					.range(["#3b82f6", "#ef4444", "#f59e0b", "#8b5cf6", "#10b981"]);
+
+				// Update bars
+				const bars = g.selectAll(".bar").data(yearData, (d) => d.code);
+
+				// Exit
+				bars.exit().transition().duration(400).attr("width", 0).remove();
+
+				// Enter + Update
+				bars
+					.enter()
+					.append("rect")
+					.attr("class", "bar")
+					.attr("x", 0)
+					.attr("y", (d) => yScale(d.country))
+					.attr("width", 0)
+					.attr("height", yScale.bandwidth())
+					.attr("fill", (d) => colorScale(d.code))
+					.attr("rx", 4)
+					.merge(bars)
+					.transition()
+					.duration(600)
+					.attr("y", (d) => yScale(d.country))
+					.attr("width", (d) => xScale(d.gdp))
+					.attr("height", yScale.bandwidth());
+
+				// Update labels
+				const labels = g.selectAll(".bar-label").data(yearData, (d) => d.code);
+
+				labels.exit().remove();
+
+				labels
+					.enter()
+					.append("text")
+					.attr("class", "bar-label")
+					.attr("x", (d) => {
+						const barEnd = xScale(d.gdp);
+						const labelWidth = 80; // Approximate width
+						// If label would overflow, place inside bar
+						return barEnd + labelWidth + 20 > chartWidth
+							? barEnd - 5 // Inside bar
+							: barEnd + 10; // Outside bar
+					})
+					.attr("y", (d) => yScale(d.country) + yScale.bandwidth() / 2)
+					.attr("dy", "0.35em")
+					.attr("text-anchor", (d) => {
+						const barEnd = xScale(d.gdp);
+						const labelWidth = 80;
+						return barEnd + labelWidth + 20 > chartWidth ? "end" : "start";
+					})
+					.style("font-size", "14px")
+					.style("font-weight", "600")
+					.style("fill", (d) => {
+						const barEnd = xScale(d.gdp);
+						const labelWidth = 80;
+						// White text inside bars, colored outside
+						return barEnd + labelWidth + 20 > chartWidth ? "#ffffff" : "#667eea";
+					})
+					.merge(labels)
+					.transition()
+					.duration(600)
+					.attr("x", (d) => {
+						const barEnd = xScale(d.gdp);
+						const labelWidth = 80;
+						return barEnd + labelWidth + 20 > chartWidth ? barEnd - 5 : barEnd + 10;
+					})
+					.attr("y", (d) => yScale(d.country) + yScale.bandwidth() / 2)
+					.attr("text-anchor", (d) => {
+						const barEnd = xScale(d.gdp);
+						const labelWidth = 80;
+						return barEnd + labelWidth + 20 > chartWidth ? "end" : "start";
+					})
+					.style("fill", (d) => {
+						const barEnd = xScale(d.gdp);
+						const labelWidth = 80;
+						return barEnd + labelWidth + 20 > chartWidth ? "#ffffff" : "#667eea";
+					})
+					.text((d) => formatGDP(d.gdp)); // Update axes
+				const xAxis = d3
+					.axisBottom(xScale)
+					.ticks(5)
+					.tickFormat((d) => formatGDP(d));
+
+				const yAxis = d3.axisLeft(yScale);
+
+				g.select(".x-axis")
+					.attr("transform", `translate(0,${chartHeight})`)
+					.transition()
+					.duration(600)
+					.call(xAxis)
+					.selectAll("text")
+					.style("fill", "#ccc");
+
+				g.select(".y-axis")
+					.transition()
+					.duration(600)
+					.call(yAxis)
+					.selectAll("text")
+					.style("font-size", "14px")
+					.style("font-weight", "600")
+					.style("fill", "#fff");
+
+				// Style axes
+				g.selectAll(".x-axis path, .x-axis line, .y-axis path, .y-axis line").style(
+					"stroke",
+					"#666"
+				);
+			}
+
+			// ============================================
+			// CONTROLS
+			// ============================================
+
+			function setupGlobalControls() {
+				const slider = document.getElementById("globalYearSlider");
+				const display = document.getElementById("globalYearDisplay");
+				const playBtn = document.getElementById("globalPlayBtn");
+
+				slider.addEventListener("input", (e) => {
+					const year = +e.target.value;
+					display.textContent = year;
+					updateGlobalMap(year);
+				});
+
+				playBtn.addEventListener("click", () => {
+					if (globalPlayInterval) {
+						// Stop playing
+						clearInterval(globalPlayInterval);
+						globalPlayInterval = null;
+						playBtn.innerHTML = "<span>▶</span> Play";
+						playBtn.classList.remove("playing");
+					} else {
+						// Start playing
+						playBtn.innerHTML = "<span>⏸</span> Pause";
+						playBtn.classList.add("playing");
+
+						globalPlayInterval = setInterval(() => {
+							let currentYear = +slider.value;
+							currentYear++;
+
+							if (currentYear > 2024) {
+								currentYear = 1960;
+							}
+
+							slider.value = currentYear;
+							display.textContent = currentYear;
+							updateGlobalMap(currentYear);
+						}, 800); // Change year every 800ms
+					}
+				});
+			}
+			function setupTop5Controls() {
+				const slider = document.getElementById("top5YearSlider");
+				const display = document.getElementById("top5YearDisplay");
+				const playBtn = document.getElementById("top5PlayBtn");
+
+				slider.addEventListener("input", (e) => {
+					const year = +e.target.value;
+					display.textContent = year;
+					updateTop5Map(year);
+				});
+
+				playBtn.addEventListener("click", () => {
+					if (top5PlayInterval) {
+						// Stop playing
+						clearInterval(top5PlayInterval);
+						top5PlayInterval = null;
+						playBtn.innerHTML = "<span>▶</span> Play";
+						playBtn.classList.remove("playing");
+					} else {
+						// Start playing
+						playBtn.innerHTML = "<span>⏸</span> Pause";
+						playBtn.classList.add("playing");
+
+						top5PlayInterval = setInterval(() => {
+							let currentYear = +slider.value;
+							currentYear++;
+
+							if (currentYear > 2024) {
+								currentYear = 1960;
+							}
+
+							slider.value = currentYear;
+							display.textContent = currentYear;
+							updateTop5Map(currentYear);
+						}, 800); // Change year every 800ms
+					}
+				});
+			}
+
+			// ============================================
+			// MAP 3: GLOBAL GINI
+			// ============================================
+
+			function initGiniGlobalMap() {
+				const container = d3.select("#giniGlobalMap");
+				container.html("");
+
+				const containerWidth = container.node().getBoundingClientRect().width;
+				const width = containerWidth;
+				const height = 600;
+
+				const svg = container
+					.append("svg")
+					.attr("width", width)
+					.attr("height", height);
+
+				const projection = d3
+					.geoMercator()
+					.scale(width / 6.5)
+					.translate([width / 2, height / 1.5]);
+
+				const path = d3.geoPath().projection(projection);
+
+				const g = svg.append("g");
+
+				// Draw countries
+				g.selectAll("path")
+					.data(worldGeoJSON.features)
+					.enter()
+					.append("path")
+					.attr("class", "country")
+					.attr("d", path)
+					.attr("id", (d) => "gini-global-" + d.id)
+					.on("mouseover", handleGiniGlobalMouseover)
+					.on("mouseout", () => tooltip.classed("show", false));
+
+				// Initial render with most recent year that has data
+				const latestYear = d3.max(giniData, (d) => d.year);
+				console.log("GINI data loaded:", giniData.length, "records");
+				console.log("Latest GINI year:", latestYear);
+
+				// Find a year with good data coverage (prefer recent years)
+				// Data shows 2018 had best coverage (93 countries)
+				let bestYear = 2018;
+				const dataCount = giniData.filter((d) => d.year === bestYear).length;
+				console.log(`Using year ${bestYear} with ${dataCount} countries`);
+
+				updateGiniGlobalMap(bestYear);
+				document.getElementById("giniGlobalYearSlider").value = bestYear;
+				document.getElementById("giniGlobalYearDisplay").textContent = bestYear;
+			}
+
+			function updateGiniGlobalMap(year) {
+				// Filter data for selected year
+				const yearData = giniData.filter((d) => d.year === year);
+
+				if (yearData.length === 0) {
+					console.warn("No GINI data for year:", year);
+					d3.select("#giniGlobalAvgValue").text("N/A");
+					d3.select("#giniGlobalCountCount").text("0");
+					d3.select("#giniGlobalMaxValue").text("-");
+					d3.select("#giniGlobalMinValue").text("-");
+					return;
+				}
+
+				// Calculate global average
+				const globalAverage = d3.mean(yearData, (d) => d.gini);
+
+				// Create lookup map
+				const giniMap = new Map(yearData.map((d) => [d.code, d.gini]));
+
+				// Create diverging color scale (reversed: low GINI = green/equal, high GINI = red/unequal)
+				const maxGini = d3.max(yearData, (d) => d.gini);
+				const minGini = d3.min(yearData, (d) => d.gini);
+
+				const colorScale = d3
+					.scaleLinear()
+					.domain([minGini, globalAverage, maxGini])
+					.range(["#28a745", "#ffc107", "#dc3545"])
+					.interpolate(d3.interpolateRgb);
+
+				// Update country colors
+				worldGeoJSON.features.forEach((feature) => {
+					const code = getCountryCode(feature);
+					const gini = giniMap.get(code);
+					const color = gini ? colorScale(gini) : "#333";
+
+					d3
+						.select("#gini-global-" + feature.id)
+						.transition()
+						.duration(500)
+						.attr("fill", color);
+				});
+
+				// Update stats
+				const maxCountry = yearData.reduce((max, d) =>
+					d.gini > max.gini ? d : max
+				);
+				const minCountry = yearData.reduce((min, d) =>
+					d.gini < min.gini ? d : min
+				);
+
+				d3.select("#giniGlobalAvgValue").text(globalAverage.toFixed(1));
+				d3.select("#giniGlobalCountCount").text(yearData.length);
+				d3
+					.select("#giniGlobalMaxValue")
+					.text(`${maxCountry.country} (${maxCountry.gini.toFixed(1)})`);
+				d3
+					.select("#giniGlobalMinValue")
+					.text(`${minCountry.country} (${minCountry.gini.toFixed(1)})`);
+			}
+
+			function handleGiniGlobalMouseover(event, d) {
+				const code = getCountryCode(d);
+				const year = +document.getElementById("giniGlobalYearSlider").value;
+				const yearData = giniData.filter((data) => data.year === year);
+				const countryData = yearData.find((data) => data.code === code);
+				const globalAverage = d3.mean(yearData, (data) => data.gini);
+
+				if (countryData) {
+					const diff = countryData.gini - globalAverage;
+					const diffPercent = ((diff / globalAverage) * 100).toFixed(1);
+					const indicator = diff > 0 ? "▲" : "▼";
+					const color = diff > 0 ? "#dc3545" : "#28a745"; // Higher GINI = more inequality = red
+
+					tooltip
+						.classed("show", true)
+						.html(
+							`
+					         <div class="tooltip-title">${countryData.country}</div>
+					         <div class="tooltip-row">
+					           <span class="tooltip-label">Year:</span>
+					           <span class="tooltip-value">${year}</span>
+					         </div>
+					         <div class="tooltip-row">
+					           <span class="tooltip-label">GINI Coefficient:</span>
+					           <span class="tooltip-value">${countryData.gini.toFixed(1)}</span>
+					         </div>
+					         <div class="tooltip-row">
+					           <span class="tooltip-label">Global average:</span>
+					           <span class="tooltip-value">${globalAverage.toFixed(1)}</span>
+					         </div>
+					         <div class="tooltip-row">
+					           <span class="tooltip-label">Difference:</span>
+					           <span class="tooltip-value" style="color: ${color};">${indicator} ${Math.abs(
+								diffPercent
+							)}% ${diff > 0 ? "more unequal" : "more equal"}</span>
+					         </div>
+					       `
+						)
+						.style("left", event.pageX + 15 + "px")
+						.style("top", event.pageY - 28 + "px");
+				}
+			}
+
+			// ============================================
+			// MAP 4: TOP 5 GINI
+			// ============================================
+
+			// ============================================
+			// CHART 4: TOP 5 GINI BAR CHART
+			// ============================================
+
+			// Helper function to check if year has at least 3 countries with data
+			function hasEnoughGiniData(year) {
+				const top5Codes = Object.keys(top5Countries);
+				const count = giniData.filter(
+					(d) => d.year === year && top5Codes.includes(d.code)
+				).length;
+				return count >= 3;
+			}
+
+			function initGiniTop5Map() {
+				const container = d3.select("#giniTop5Chart");
+				container.html("");
+
+				const containerWidth = container.node().getBoundingClientRect().width;
+				const width = containerWidth;
+				const height = 500;
+				const margin = { top: 20, right: 150, bottom: 40, left: 200 };
+
+				const svg = container
+					.append("svg")
+					.attr("width", width)
+					.attr("height", height);
+
+				const g = svg
+					.append("g")
+					.attr("transform", `translate(${margin.left},${margin.top})`);
+
+				// Add axes groups
+				g.append("g").attr("class", "x-axis");
+				g.append("g").attr("class", "y-axis");
+
+				// Initial render with most recent year that has data for top 5
+				const top5Codes = Object.keys(top5Countries);
+				const latestYear = d3.max(
+					giniData.filter((d) => top5Codes.includes(d.code)),
+					(d) => d.year
+				);
+				console.log("Latest GINI year for Top 5:", latestYear);
+
+				// Use 2020 - last year with 4/5 countries (CHN, DEU, JPN, USA)
+				let bestYear = 2020;
+				const dataCount = giniData.filter(
+					(d) => d.year === bestYear && top5Codes.includes(d.code)
+				).length;
+				console.log(`Using year ${bestYear} with ${dataCount}/5 top countries`);
+
+				updateGiniTop5Map(bestYear);
+				document.getElementById("giniTop5YearSlider").value = bestYear;
+				document.getElementById("giniTop5YearDisplay").textContent = bestYear;
+			}
+
+			function updateGiniTop5Map(year) {
+				const container = d3.select("#giniTop5Chart");
+				const containerWidth = container.node().getBoundingClientRect().width;
+				const width = containerWidth;
+				const height = 500;
+				const margin = { top: 20, right: 150, bottom: 40, left: 200 };
+				const chartWidth = width - margin.left - margin.right;
+				const chartHeight = height - margin.top - margin.bottom;
+
+				// Filter data for selected year and top 5 countries
+				const top5Codes = Object.keys(top5Countries);
+				let yearData = giniData.filter(
+					(d) => d.year === year && top5Codes.includes(d.code)
+				);
+
+				if (yearData.length === 0) {
+					console.warn("No GINI data for top 5 in year:", year);
+					return;
+				}
+
+				// Sort by GINI ascending (lower GINI = more equal = better rank)
+				yearData.sort((a, b) => a.gini - b.gini);
+
+				const svg = container.select("svg");
+				const g = svg.select("g");
+
+				// Scales
+				const xScale = d3
+					.scaleLinear()
+					.domain([0, d3.max(yearData, (d) => d.gini) * 1.1])
+					.range([0, chartWidth]);
+
+				const yScale = d3
+					.scaleBand()
+					.domain(yearData.map((d) => d.country))
+					.range([0, chartHeight])
+					.padding(0.2);
+
+				// Color scale (green = low GINI/equal, red = high GINI/unequal)
+				const colorScale = d3
+					.scaleOrdinal()
+					.domain(top5Codes)
+					.range(["#3b82f6", "#ef4444", "#f59e0b", "#8b5cf6", "#10b981"]);
+
+				// Update bars
+				const bars = g.selectAll(".bar").data(yearData, (d) => d.code);
+
+				// Exit
+				bars.exit().transition().duration(400).attr("width", 0).remove();
+
+				// Enter + Update
+				bars
+					.enter()
+					.append("rect")
+					.attr("class", "bar")
+					.attr("x", 0)
+					.attr("y", (d) => yScale(d.country))
+					.attr("width", 0)
+					.attr("height", yScale.bandwidth())
+					.attr("fill", (d) => colorScale(d.code))
+					.attr("rx", 4)
+					.merge(bars)
+					.transition()
+					.duration(600)
+					.attr("y", (d) => yScale(d.country))
+					.attr("width", (d) => xScale(d.gini))
+					.attr("height", yScale.bandwidth());
+
+				// Update labels
+				const labels = g.selectAll(".bar-label").data(yearData, (d) => d.code);
+
+				labels.exit().remove();
+
+				labels
+					.enter()
+					.append("text")
+					.attr("class", "bar-label")
+					.attr("x", (d) => {
+						const barEnd = xScale(d.gini);
+						const labelWidth = 60; // Smaller for GINI (e.g., "34.5")
+						// If label would overflow, place inside bar
+						return barEnd + labelWidth + 20 > chartWidth
+							? barEnd - 5 // Inside bar
+							: barEnd + 10; // Outside bar
+					})
+					.attr("y", (d) => yScale(d.country) + yScale.bandwidth() / 2)
+					.attr("dy", "0.35em")
+					.attr("text-anchor", (d) => {
+						const barEnd = xScale(d.gini);
+						const labelWidth = 60;
+						return barEnd + labelWidth + 20 > chartWidth ? "end" : "start";
+					})
+					.style("font-size", "14px")
+					.style("font-weight", "600")
+					.style("fill", (d) => {
+						const barEnd = xScale(d.gini);
+						const labelWidth = 60;
+						// White text inside bars, colored outside
+						return barEnd + labelWidth + 20 > chartWidth ? "#ffffff" : "#667eea";
+					})
+					.merge(labels)
+					.transition()
+					.duration(600)
+					.attr("x", (d) => {
+						const barEnd = xScale(d.gini);
+						const labelWidth = 60;
+						return barEnd + labelWidth + 20 > chartWidth ? barEnd - 5 : barEnd + 10;
+					})
+					.attr("y", (d) => yScale(d.country) + yScale.bandwidth() / 2)
+					.attr("text-anchor", (d) => {
+						const barEnd = xScale(d.gini);
+						const labelWidth = 60;
+						return barEnd + labelWidth + 20 > chartWidth ? "end" : "start";
+					})
+					.style("fill", (d) => {
+						const barEnd = xScale(d.gini);
+						const labelWidth = 60;
+						return barEnd + labelWidth + 20 > chartWidth ? "#ffffff" : "#667eea";
+					})
+					.text((d) => d.gini.toFixed(1)); // Update axes
+				const xAxis = d3.axisBottom(xScale).ticks(5);
+
+				const yAxis = d3.axisLeft(yScale);
+
+				g.select(".x-axis")
+					.attr("transform", `translate(0,${chartHeight})`)
+					.transition()
+					.duration(600)
+					.call(xAxis)
+					.selectAll("text")
+					.style("fill", "#ccc");
+
+				g.select(".y-axis")
+					.transition()
+					.duration(600)
+					.call(yAxis)
+					.selectAll("text")
+					.style("font-size", "14px")
+					.style("font-weight", "600")
+					.style("fill", "#fff");
+
+				// Style axes
+				g.selectAll(".x-axis path, .x-axis line, .y-axis path, .y-axis line").style(
+					"stroke",
+					"#666"
+				);
+			}
+
+			// ============================================
+			// GINI CONTROLS
+			// ============================================
+
+			function setupGiniGlobalControls() {
+				const slider = document.getElementById("giniGlobalYearSlider");
+				const display = document.getElementById("giniGlobalYearDisplay");
+				const playBtn = document.getElementById("giniGlobalPlayBtn");
+
+				slider.addEventListener("input", (e) => {
+					const year = +e.target.value;
+					display.textContent = year;
+					updateGiniGlobalMap(year);
+				});
+
+				playBtn.addEventListener("click", () => {
+					if (giniGlobalPlayInterval) {
+						// Stop playing
+						clearInterval(giniGlobalPlayInterval);
+						giniGlobalPlayInterval = null;
+						playBtn.innerHTML = "<span>▶</span> Play";
+						playBtn.classList.remove("playing");
+					} else {
+						// Start playing
+						playBtn.innerHTML = "<span>⏸</span> Pause";
+						playBtn.classList.add("playing");
+
+						giniGlobalPlayInterval = setInterval(() => {
+							let currentYear = +slider.value;
+							currentYear++;
+
+							if (currentYear > 2024) {
+								currentYear = 1963;
+							}
+
+							slider.value = currentYear;
+							display.textContent = currentYear;
+							updateGiniGlobalMap(currentYear);
+						}, 800);
+					}
+				});
+			}
+
+			function setupGiniTop5Controls() {
+				const slider = document.getElementById("giniTop5YearSlider");
+				const display = document.getElementById("giniTop5YearDisplay");
+				const playBtn = document.getElementById("giniTop5PlayBtn");
+
+				slider.addEventListener("input", (e) => {
+					const year = +e.target.value;
+					display.textContent = year;
+					updateGiniTop5Map(year);
+				});
+
+				playBtn.addEventListener("click", () => {
+					if (giniTop5PlayInterval) {
+						// Stop playing
+						clearInterval(giniTop5PlayInterval);
+						giniTop5PlayInterval = null;
+						playBtn.innerHTML = "<span>▶</span> Play";
+						playBtn.classList.remove("playing");
+					} else {
+						// Start playing
+						playBtn.innerHTML = "<span>⏸</span> Pause";
+						playBtn.classList.add("playing");
+
+						giniTop5PlayInterval = setInterval(() => {
+							let currentYear = +slider.value;
+
+							// Find next year with at least 3 countries
+							let attempts = 0;
+							do {
+								currentYear++;
+								if (currentYear > 2024) {
+									currentYear = 1963;
+								}
+								attempts++;
+								// Prevent infinite loop
+								if (attempts > 100) {
+									clearInterval(giniTop5PlayInterval);
+									giniTop5PlayInterval = null;
+									playBtn.innerHTML = "<span>▶</span> Play";
+									playBtn.classList.remove("playing");
+									console.error("No valid years found with 3+ countries");
+									return;
+								}
+							} while (!hasEnoughGiniData(currentYear));
+
+							slider.value = currentYear;
+							display.textContent = currentYear;
+							updateGiniTop5Map(currentYear);
+						}, 800);
+					}
+				});
+			}
+
+			// ============================================
+			// MAP 5: GLOBAL HEADCOUNT
+			// ============================================
+
+			function initHeadcountGlobalMap() {
+				const container = d3.select("#headcountGlobalMap");
+				container.html("");
+				const containerWidth = container.node().getBoundingClientRect().width;
+				const width = containerWidth;
+				const height = 600;
+				const svg = container
+					.append("svg")
+					.attr("width", width)
+					.attr("height", height);
+				const projection = d3
+					.geoMercator()
+					.scale(width / 6.5)
+					.translate([width / 2, height / 1.5]);
+				const path = d3.geoPath().projection(projection);
+				const g = svg.append("g");
+				g.selectAll("path")
+					.data(worldGeoJSON.features)
+					.enter()
+					.append("path")
+					.attr("class", "country")
+					.attr("d", path)
+					.attr("id", (d) => "headcount-global-" + d.id)
+					.on("mouseover", handleHeadcountGlobalMouseover)
+					.on("mouseout", () => tooltip.classed("show", false));
+				updateHeadcountGlobalMap(2018);
+			}
+
+			function updateHeadcountGlobalMap(year) {
+				const yearData = headcountData.filter((d) => d.year === year);
+				if (yearData.length === 0) {
+					console.warn("No headcount data for year:", year);
+					return;
+				}
+				const globalAverage = d3.mean(yearData, (d) => d.headcount);
+				const headcountMap = new Map(yearData.map((d) => [d.code, d.headcount]));
+				const maxHeadcount = d3.max(yearData, (d) => d.headcount);
+				const minHeadcount = d3.min(yearData, (d) => d.headcount);
+				const colorScale = d3
+					.scaleLinear()
+					.domain([minHeadcount, globalAverage, maxHeadcount])
+					.range(["#28a745", "#ffc107", "#dc3545"]);
+				worldGeoJSON.features.forEach((feature) => {
+					const code = getCountryCode(feature);
+					const headcount = headcountMap.get(code);
+					const color = headcount !== undefined ? colorScale(headcount) : "#333";
+					d3
+						.select("#headcount-global-" + feature.id)
+						.transition()
+						.duration(500)
+						.attr("fill", color);
+				});
+				const maxCountry = yearData.reduce((max, d) =>
+					d.headcount > max.headcount ? d : max
+				);
+				const minCountry = yearData.reduce((min, d) =>
+					d.headcount < min.headcount ? d : min
+				);
+				d3.select("#headcountGlobalAvgValue").text(globalAverage.toFixed(1) + "%");
+				d3.select("#headcountGlobalCountCount").text(yearData.length);
+				d3
+					.select("#headcountGlobalMaxValue")
+					.text(`${maxCountry.country} (${maxCountry.headcount.toFixed(1)}%)`);
+				d3
+					.select("#headcountGlobalMinValue")
+					.text(`${minCountry.country} (${minCountry.headcount.toFixed(1)}%)`);
+			}
+
+			function handleHeadcountGlobalMouseover(event, d) {
+				const code = getCountryCode(d);
+				const year = +document.getElementById("headcountGlobalYearSlider").value;
+				const yearData = headcountData.filter((data) => data.year === year);
+				const countryData = yearData.find((data) => data.code === code);
+				const globalAverage = d3.mean(yearData, (data) => data.headcount);
+				if (countryData) {
+					const diff = countryData.headcount - globalAverage;
+					const diffPercent = ((diff / globalAverage) * 100).toFixed(1);
+					const indicator = diff > 0 ? "▲" : "▼";
+					const color = diff > 0 ? "#dc3545" : "#28a745";
+					tooltip
+						.classed("show", true)
+						.html(
+							`<div class="tooltip-title">${
+								countryData.country
+							}</div><div class="tooltip-row"><span class="tooltip-label">Year:</span><span class="tooltip-value">${year}</span></div><div class="tooltip-row"><span class="tooltip-label">Poverty Headcount:</span><span class="tooltip-value">${countryData.headcount.toFixed(
+								1
+							)}%</span></div><div class="tooltip-row"><span class="tooltip-label">Global average:</span><span class="tooltip-value">${globalAverage.toFixed(
+								1
+							)}%</span></div><div class="tooltip-row"><span class="tooltip-label">Difference:</span><span class="tooltip-value" style="color: ${color};">${indicator} ${Math.abs(
+								diffPercent
+							)}%</span></div>`
+						)
+						.style("left", event.pageX + 15 + "px")
+						.style("top", event.pageY - 28 + "px");
+				}
+			}
+
+			// ============================================
+			// CHART 6: TOP 5 HEADCOUNT BAR CHART
+			// ============================================
+
+			function hasEnoughHeadcountData(year) {
+				const top5Codes = Object.keys(top5Countries);
+				return (
+					headcountData.filter((d) => d.year === year && top5Codes.includes(d.code))
+						.length >= 3
+				);
+			}
+
+			function initHeadcountTop5Map() {
+				const container = d3.select("#headcountTop5Chart");
+				container.html("");
+				const containerWidth = container.node().getBoundingClientRect().width;
+				const margin = { top: 20, right: 150, bottom: 40, left: 200 };
+				const svg = container
+					.append("svg")
+					.attr("width", containerWidth)
+					.attr("height", 500);
+				svg
+					.append("g")
+					.attr("transform", `translate(${margin.left},${margin.top})`)
+					.append("g")
+					.attr("class", "x-axis");
+				svg.select("g").append("g").attr("class", "y-axis");
+				updateHeadcountTop5Map(2011);
+			}
+
+			function updateHeadcountTop5Map(year) {
+				const container = d3.select("#headcountTop5Chart");
+				const containerWidth = container.node().getBoundingClientRect().width;
+				const margin = { top: 20, right: 150, bottom: 40, left: 200 };
+				const chartWidth = containerWidth - margin.left - margin.right;
+				const chartHeight = 500 - margin.top - margin.bottom;
+				const top5Codes = Object.keys(top5Countries);
+				let yearData = headcountData.filter(
+					(d) => d.year === year && top5Codes.includes(d.code)
+				);
+				if (yearData.length === 0) return;
+				yearData.sort((a, b) => b.headcount - a.headcount);
+				const svg = container.select("svg");
+				const g = svg.select("g");
+				const xScale = d3
+					.scaleLinear()
+					.domain([0, d3.max(yearData, (d) => d.headcount) * 1.1])
+					.range([0, chartWidth]);
+				const yScale = d3
+					.scaleBand()
+					.domain(yearData.map((d) => d.country))
+					.range([0, chartHeight])
+					.padding(0.2);
+				const colorScale = d3
+					.scaleOrdinal()
+					.domain(top5Codes)
+					.range(["#3b82f6", "#ef4444", "#f59e0b", "#8b5cf6", "#10b981"]);
+				const bars = g.selectAll(".bar").data(yearData, (d) => d.code);
+				bars.exit().transition().duration(400).attr("width", 0).remove();
+				bars
+					.enter()
+					.append("rect")
+					.attr("class", "bar")
+					.attr("x", 0)
+					.attr("y", (d) => yScale(d.country))
+					.attr("width", 0)
+					.attr("height", yScale.bandwidth())
+					.attr("fill", (d) => colorScale(d.code))
+					.attr("rx", 4)
+					.merge(bars)
+					.transition()
+					.duration(600)
+					.attr("y", (d) => yScale(d.country))
+					.attr("width", (d) => xScale(d.headcount))
+					.attr("height", yScale.bandwidth());
+				const labels = g.selectAll(".bar-label").data(yearData, (d) => d.code);
+				labels.exit().remove();
+				labels
+					.enter()
+					.append("text")
+					.attr("class", "bar-label")
+					.attr("dy", "0.35em")
+					.style("font-size", "14px")
+					.style("font-weight", "600")
+					.merge(labels)
+					.transition()
+					.duration(600)
+					.attr("x", (d) => {
+						const barEnd = xScale(d.headcount);
+						return barEnd + 80 > chartWidth ? barEnd - 5 : barEnd + 10;
+					})
+					.attr("y", (d) => yScale(d.country) + yScale.bandwidth() / 2)
+					.attr("text-anchor", (d) =>
+						xScale(d.headcount) + 80 > chartWidth ? "end" : "start"
+					)
+					.style("fill", (d) =>
+						xScale(d.headcount) + 80 > chartWidth ? "#ffffff" : "#667eea"
+					)
+					.text((d) => d.headcount.toFixed(1) + "%");
+				g.select(".x-axis")
+					.attr("transform", `translate(0,${chartHeight})`)
+					.transition()
+					.duration(600)
+					.call(
+						d3
+							.axisBottom(xScale)
+							.ticks(5)
+							.tickFormat((d) => d.toFixed(1) + "%")
+					)
+					.selectAll("text")
+					.style("fill", "#ccc");
+				g.select(".y-axis")
+					.transition()
+					.duration(600)
+					.call(d3.axisLeft(yScale))
+					.selectAll("text")
+					.style("font-size", "14px")
+					.style("font-weight", "600")
+					.style("fill", "#fff");
+				g.selectAll(".x-axis path, .x-axis line, .y-axis path, .y-axis line").style(
+					"stroke",
+					"#666"
+				);
+			}
+
+			function setupHeadcountGlobalControls() {
+				const slider = document.getElementById("headcountGlobalYearSlider");
+				const display = document.getElementById("headcountGlobalYearDisplay");
+				const playBtn = document.getElementById("headcountGlobalPlayBtn");
+				slider.addEventListener("input", (e) => {
+					const year = +e.target.value;
+					display.textContent = year;
+					updateHeadcountGlobalMap(year);
+				});
+				playBtn.addEventListener("click", () => {
+					if (headcountGlobalPlayInterval) {
+						clearInterval(headcountGlobalPlayInterval);
+						headcountGlobalPlayInterval = null;
+						playBtn.innerHTML = "<span>▶</span> Play";
+						playBtn.classList.remove("playing");
+					} else {
+						playBtn.innerHTML = "<span>⏸</span> Pause";
+						playBtn.classList.add("playing");
+						headcountGlobalPlayInterval = setInterval(() => {
+							let currentYear = +slider.value;
+							currentYear++;
+							if (currentYear > 2024) currentYear = 1963;
+							slider.value = currentYear;
+							display.textContent = currentYear;
+							updateHeadcountGlobalMap(currentYear);
+						}, 800);
+					}
+				});
+			}
+
+			function setupHeadcountTop5Controls() {
+				const slider = document.getElementById("headcountTop5YearSlider");
+				const display = document.getElementById("headcountTop5YearDisplay");
+				const playBtn = document.getElementById("headcountTop5PlayBtn");
+				slider.addEventListener("input", (e) => {
+					const year = +e.target.value;
+					display.textContent = year;
+					updateHeadcountTop5Map(year);
+				});
+				playBtn.addEventListener("click", () => {
+					if (headcountTop5PlayInterval) {
+						clearInterval(headcountTop5PlayInterval);
+						headcountTop5PlayInterval = null;
+						playBtn.innerHTML = "<span>▶</span> Play";
+						playBtn.classList.remove("playing");
+					} else {
+						playBtn.innerHTML = "<span>⏸</span> Pause";
+						playBtn.classList.add("playing");
+						headcountTop5PlayInterval = setInterval(() => {
+							let currentYear = +slider.value;
+							let attempts = 0;
+							do {
+								currentYear++;
+								if (currentYear > 2024) currentYear = 1963;
+								attempts++;
+								if (attempts > 100) {
+									clearInterval(headcountTop5PlayInterval);
+									headcountTop5PlayInterval = null;
+									playBtn.innerHTML = "<span>▶</span> Play";
+									playBtn.classList.remove("playing");
+									return;
+								}
+							} while (!hasEnoughHeadcountData(currentYear));
+							slider.value = currentYear;
+							display.textContent = currentYear;
+							updateHeadcountTop5Map(currentYear);
+						}, 800);
+					}
+				});
+			}
+
+			// ============================================
+			// CHART 7: SCATTER PLOT - HEADCOUNT VS TRAFFICKING (US ONLY)
+			// ============================================
+
+			function initScatterChart() {
+				updateScatterChart("bar");
+			}
+
+			function calculateCorrelation(data) {
+				const n = data.length;
+				if (n < 2) return { r: 0, rSquared: 0 };
+				const sumX = d3.sum(data, (d) => d.headcount);
+				const sumY = d3.sum(data, (d) => d.organCases);
+				const sumXY = d3.sum(data, (d) => d.headcount * d.organCases);
+				const sumX2 = d3.sum(data, (d) => d.headcount * d.headcount);
+				const sumY2 = d3.sum(data, (d) => d.organCases * d.organCases);
+				const r =
+					(n * sumXY - sumX * sumY) /
+					Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
+				return { r: r, rSquared: r * r };
+			}
+
+			function updateScatterChart(viewType) {
+				const container = d3.select("#scatterChart");
+				const containerWidth = container.node().getBoundingClientRect().width;
+				const width = containerWidth;
+				const height = 600;
+				const margin = { top: 60, right: 80, bottom: 80, left: 100 };
+				const chartWidth = width - margin.left - margin.right;
+				const chartHeight = height - margin.top - margin.bottom;
+
+				// Filter for US data only
+				const usData = scatterData
+					.filter((d) => d.code === "USA")
+					.sort((a, b) => a.year - b.year);
+				if (usData.length === 0) {
+					console.error("No US data found in scatter data");
+					return;
+				}
+
+				const stats = calculateCorrelation(usData);
+				d3.select("#rSquared").text(stats.rSquared.toFixed(3));
+				d3.select("#correlation").text(stats.r.toFixed(3));
+				d3.select("#dataPoints").text(usData.length);
+				const corrType =
+					Math.abs(stats.r) > 0.7
+						? "Strong"
+						: Math.abs(stats.r) > 0.4
+						? "Moderate"
+						: "Weak";
+				const corrDir = stats.r >= 0 ? "Positive" : "Negative";
+				d3.select("#correlationType").text(`${corrType} ${corrDir} Correlation`);
+
+				// Fade out existing content, then transition
+				const existingSvg = container.select("svg");
+				if (!existingSvg.empty()) {
+					existingSvg
+						.transition()
+						.duration(300)
+						.style("opacity", 0)
+						.on("end", function () {
+							d3.select(this).remove();
+							renderChart();
+						});
+				} else {
+					renderChart();
+				}
+
+				function renderChart() {
+					const svg = container
+						.append("svg")
+						.attr("width", width)
+						.attr("height", height)
+						.style("opacity", 0);
+
+					const g = svg
+						.append("g")
+						.attr("transform", `translate(${margin.left},${margin.top})`);
+
+					if (viewType === "bar") {
+						// Time series bar + line chart view
+						d3
+							.select("#correlationInfo")
+							.transition()
+							.duration(300)
+							.style("opacity", 0)
+							.on("end", function () {
+								d3.select(this).style("display", "none");
+							});
+
+						const xScale = d3
+							.scaleBand()
+							.domain(usData.map((d) => d.year))
+							.range([0, chartWidth])
+							.padding(0.2);
+
+						const yScaleLeft = d3
+							.scaleLinear()
+							.domain([0, d3.max(usData, (d) => d.organCases) * 1.1])
+							.range([chartHeight, 0]);
+
+						// Right Y-axis for poverty headcount percentage
+						const yScaleRight = d3
+							.scaleLinear()
+							.domain([0, d3.max(usData, (d) => d.headcount) * 1.2])
+							.range([chartHeight, 0]);
+
+						const colorScale = d3
+							.scaleLinear()
+							.domain([
+								d3.min(usData, (d) => d.headcount),
+								d3.max(usData, (d) => d.headcount),
+							])
+							.range(["#10b981", "#ef4444"]);
+
+						// Create bars (staged entrance)
+						const bars = g
+							.selectAll(".bar")
+							.data(usData)
+							.enter()
+							.append("rect")
+							.attr("class", "bar")
+							.attr("x", (d) => xScale(d.year))
+							.attr("y", chartHeight)
+							.attr("width", xScale.bandwidth())
+							.attr("height", 0)
+							.attr("fill", (d) => colorScale(d.headcount))
+							.attr("rx", 4)
+							.style("cursor", "pointer")
+							.style("opacity", 0);
+
+						// Staged entrance: bars appear one by one
+						bars
+							.transition()
+							.delay((d, i) => i * 50)
+							.duration(600)
+							.ease(d3.easeCubicOut)
+							.style("opacity", 0.7)
+							.attr("y", (d) => yScaleLeft(d.organCases))
+							.attr("height", (d) => chartHeight - yScaleLeft(d.organCases));
+
+						bars
+							.on("mouseover", function (event, d) {
+								d3.select(this).transition().duration(200).style("opacity", 1);
+								tooltip
+									.classed("show", true)
+									.html(
+										`<div class="tooltip-title">United States (${d.year})</div>
+								<div class="tooltip-row"><span class="tooltip-label">Poverty Headcount:</span><span class="tooltip-value">${d.headcount.toFixed(
+									2
+								)}%</span></div>
+								<div class="tooltip-row"><span class="tooltip-label">Organ Cases:</span><span class="tooltip-value">${
+									d.organCases
+								}</span></div>`
+									)
+									.style("left", event.pageX + 15 + "px")
+									.style("top", event.pageY - 28 + "px");
+							})
+							.on("mouseout", function () {
+								d3.select(this).transition().duration(200).style("opacity", 0.7);
+								tooltip.classed("show", false);
+							});
+
+						// Create line path for poverty headcount
+						const line = d3
+							.line()
+							.x((d) => xScale(d.year) + xScale.bandwidth() / 2)
+							.y((d) => yScaleRight(d.headcount))
+							.curve(d3.curveMonotoneX);
+
+						const linePath = g
+							.append("path")
+							.datum(usData)
+							.attr("class", "poverty-line")
+							.attr("fill", "none")
+							.attr("stroke", "#f59e0b")
+							.attr("stroke-width", 3)
+							.attr("d", line)
+							.style("opacity", 0);
+
+						// Animate line drawing
+						const totalLength = linePath.node().getTotalLength();
+						linePath
+							.attr("stroke-dasharray", totalLength + " " + totalLength)
+							.attr("stroke-dashoffset", totalLength)
+							.transition()
+							.delay(700)
+							.duration(1200)
+							.ease(d3.easeLinear)
+							.style("opacity", 1)
+							.attr("stroke-dashoffset", 0);
+
+						// Add dots on line
+						const lineDots = g
+							.selectAll(".line-dot")
+							.data(usData)
+							.enter()
+							.append("circle")
+							.attr("class", "line-dot")
+							.attr("cx", (d) => xScale(d.year) + xScale.bandwidth() / 2)
+							.attr("cy", (d) => yScaleRight(d.headcount))
+							.attr("r", 0)
+							.attr("fill", "#f59e0b")
+							.attr("stroke", "#fff")
+							.attr("stroke-width", 2)
+							.style("cursor", "pointer")
+							.style("opacity", 0);
+
+						lineDots
+							.transition()
+							.delay((d, i) => 1900 + i * 40)
+							.duration(300)
+							.ease(d3.easeBackOut)
+							.attr("r", 5)
+							.style("opacity", 1);
+
+						lineDots
+							.on("mouseover", function (event, d) {
+								d3.select(this).transition().duration(200).attr("r", 8);
+								tooltip
+									.classed("show", true)
+									.html(
+										`<div class="tooltip-title">United States (${d.year})</div>
+								<div class="tooltip-row"><span class="tooltip-label">Poverty Headcount:</span><span class="tooltip-value">${d.headcount.toFixed(
+									2
+								)}%</span></div>
+								<div class="tooltip-row"><span class="tooltip-label">Organ Cases:</span><span class="tooltip-value">${
+									d.organCases
+								}</span></div>`
+									)
+									.style("left", event.pageX + 15 + "px")
+									.style("top", event.pageY - 28 + "px");
+							})
+							.on("mouseout", function () {
+								d3.select(this).transition().duration(200).attr("r", 5);
+								tooltip.classed("show", false);
+							});
+
+						// Left Y-axis (Organ Cases)
+						g.append("g")
+							.attr("class", "y-axis-left")
+							.style("opacity", 0)
+							.call(d3.axisLeft(yScaleLeft).ticks(8))
+							.transition()
+							.delay(400)
+							.duration(600)
+							.style("opacity", 1);
+
+						g.selectAll(".y-axis-left text")
+							.style("font-size", "12px")
+							.style("fill", "#ccc");
+
+						// Right Y-axis (Poverty %)
+						g.append("g")
+							.attr("class", "y-axis-right")
+							.attr("transform", `translate(${chartWidth}, 0)`)
+							.style("opacity", 0)
+							.call(
+								d3
+									.axisRight(yScaleRight)
+									.ticks(8)
+									.tickFormat((d) => d.toFixed(1) + "%")
+							)
+							.transition()
+							.delay(400)
+							.duration(600)
+							.style("opacity", 1);
+
+						g.selectAll(".y-axis-right text")
+							.style("font-size", "12px")
+							.style("fill", "#f59e0b");
+
+						// X-axis
+						g.append("g")
+							.attr("class", "x-axis")
+							.attr("transform", `translate(0,${chartHeight})`)
+							.style("opacity", 0)
+							.call(d3.axisBottom(xScale).tickFormat(d3.format("d")))
+							.transition()
+							.delay(400)
+							.duration(600)
+							.style("opacity", 1);
+
+						g.selectAll(".x-axis text")
+							.style("fill", "#ccc")
+							.style("font-size", "11px")
+							.attr("transform", "rotate(-45)")
+							.style("text-anchor", "end");
+
+						g.selectAll(
+							".x-axis path, .x-axis line, .y-axis-left path, .y-axis-left line, .y-axis-right path, .y-axis-right line"
+						).style("stroke", "#666");
+
+						// Axis labels
+						svg
+							.append("text")
+							.attr("x", width / 2)
+							.attr("y", height - 20)
+							.attr("text-anchor", "middle")
+							.style("font-size", "14px")
+							.style("font-weight", "600")
+							.style("fill", "#fff")
+							.style("opacity", 0)
+							.text("Year")
+							.transition()
+							.delay(800)
+							.duration(400)
+							.style("opacity", 1);
+
+						svg
+							.append("text")
+							.attr("transform", "rotate(-90)")
+							.attr("x", -height / 2)
+							.attr("y", 20)
+							.attr("text-anchor", "middle")
+							.style("font-size", "14px")
+							.style("font-weight", "600")
+							.style("fill", "#ccc")
+							.style("opacity", 0)
+							.text("Organ Trafficking Cases")
+							.transition()
+							.delay(800)
+							.duration(400)
+							.style("opacity", 1);
+
+						svg
+							.append("text")
+							.attr("transform", "rotate(90)")
+							.attr("x", height / 2)
+							.attr("y", -width + 60)
+							.attr("text-anchor", "middle")
+							.style("font-size", "14px")
+							.style("font-weight", "600")
+							.style("fill", "#f59e0b")
+							.style("opacity", 0)
+							.text("Poverty Headcount (%)")
+							.transition()
+							.delay(1200)
+							.duration(400)
+							.style("opacity", 1);
+
+						// Legend
+						const legend = svg
+							.append("g")
+							.attr("class", "legend")
+							.attr(
+								"transform",
+								`translate(${width - margin.right - 150}, ${margin.top})`
+							);
+
+						legend
+							.append("rect")
+							.attr("x", 0)
+							.attr("y", 0)
+							.attr("width", 18)
+							.attr("height", 18)
+							.attr("fill", "#667eea")
+							.attr("rx", 3)
+							.style("opacity", 0)
+							.transition()
+							.delay(1500)
+							.duration(400)
+							.style("opacity", 0.7);
+
+						legend
+							.append("text")
+							.attr("x", 25)
+							.attr("y", 14)
+							.style("font-size", "12px")
+							.style("fill", "#ccc")
+							.style("opacity", 0)
+							.text("Organ Cases")
+							.transition()
+							.delay(1500)
+							.duration(400)
+							.style("opacity", 1);
+
+						legend
+							.append("line")
+							.attr("x1", 0)
+							.attr("x2", 18)
+							.attr("y1", 35)
+							.attr("y2", 35)
+							.attr("stroke", "#f59e0b")
+							.attr("stroke-width", 3)
+							.style("opacity", 0)
+							.transition()
+							.delay(1500)
+							.duration(400)
+							.style("opacity", 1);
+
+						legend
+							.append("circle")
+							.attr("cx", 9)
+							.attr("cy", 35)
+							.attr("r", 5)
+							.attr("fill", "#f59e0b")
+							.attr("stroke", "#fff")
+							.attr("stroke-width", 2)
+							.style("opacity", 0)
+							.transition()
+							.delay(1500)
+							.duration(400)
+							.style("opacity", 1);
+
+						legend
+							.append("text")
+							.attr("x", 25)
+							.attr("y", 40)
+							.style("font-size", "12px")
+							.style("fill", "#f59e0b")
+							.style("opacity", 0)
+							.text("Poverty %")
+							.transition()
+							.delay(1500)
+							.duration(400)
+							.style("opacity", 1);
+
+						// Fade in entire SVG
+						svg.transition().duration(300).style("opacity", 1);
+					} else {
+						// Scatter plot view (with optional log scale)
+						d3
+							.select("#correlationInfo")
+							.style("display", "block")
+							.style("opacity", 0)
+							.transition()
+							.delay(1000)
+							.duration(600)
+							.style("opacity", 1);
+
+						const isLog = viewType === "log";
+
+						// Prepare scales
+						const xDomain = isLog
+							? [
+									Math.max(
+										0.1,
+										d3.min(usData, (d) => d.headcount)
+									),
+									d3.max(usData, (d) => d.headcount) * 1.2,
+							  ]
+							: [0, d3.max(usData, (d) => d.headcount) * 1.1];
+						const yDomain = isLog
+							? [1, d3.max(usData, (d) => d.organCases) * 1.5]
+							: [0, d3.max(usData, (d) => d.organCases) * 1.1];
+
+						const xScale = isLog
+							? d3.scaleLog().domain(xDomain).range([0, chartWidth])
+							: d3.scaleLinear().domain(xDomain).range([0, chartWidth]);
+
+						const yScale = isLog
+							? d3.scaleLog().domain(yDomain).range([chartHeight, 0])
+							: d3.scaleLinear().domain(yDomain).range([chartHeight, 0]);
+
+						const sizeScale = d3
+							.scaleSqrt()
+							.domain([0, d3.max(usData, (d) => d.organCases)])
+							.range([8, 20]);
+
+						const colorScale = d3
+							.scaleSequential()
+							.domain([d3.min(usData, (d) => d.year), d3.max(usData, (d) => d.year)])
+							.interpolator(d3.interpolateViridis);
+
+						// Draw regression line if correlation is meaningful
+						if (Math.abs(stats.r) > 0.3 && !isLog) {
+							const xMean = d3.mean(usData, (d) => d.headcount);
+							const yMean = d3.mean(usData, (d) => d.organCases);
+							const slope =
+								stats.r *
+								(d3.deviation(usData, (d) => d.organCases) /
+									d3.deviation(usData, (d) => d.headcount));
+							const intercept = yMean - slope * xMean;
+
+							const lineData = [
+								{
+									x: d3.min(usData, (d) => d.headcount),
+									y: slope * d3.min(usData, (d) => d.headcount) + intercept,
+								},
+								{
+									x: d3.max(usData, (d) => d.headcount),
+									y: slope * d3.max(usData, (d) => d.headcount) + intercept,
+								},
+							];
+
+							g.append("line")
+								.attr("class", "regression-line")
+								.attr("x1", xScale(lineData[0].x))
+								.attr("y1", yScale(Math.max(0, lineData[0].y)))
+								.attr("x2", xScale(lineData[0].x))
+								.attr("y2", yScale(Math.max(0, lineData[0].y)))
+								.attr("stroke", "#f59e0b")
+								.attr("stroke-width", 3)
+								.attr("stroke-dasharray", "8,4")
+								.attr("opacity", 0)
+								.transition()
+								.delay(800)
+								.duration(800)
+								.attr("x2", xScale(lineData[1].x))
+								.attr("y2", yScale(lineData[1].y))
+								.attr("opacity", 0.7);
+
+							// Add regression label
+							g.append("text")
+								.attr("x", xScale(lineData[1].x) - 10)
+								.attr("y", yScale(lineData[1].y) - 10)
+								.attr("text-anchor", "end")
+								.style("font-size", "12px")
+								.style("font-weight", "600")
+								.style("fill", "#f59e0b")
+								.style("opacity", 0)
+								.text(`y = ${slope.toFixed(2)}x + ${intercept.toFixed(1)}`)
+								.transition()
+								.delay(1400)
+								.duration(400)
+								.style("opacity", 1);
+						}
+
+						// Draw dots with staged animation
+						const dots = g
+							.selectAll(".dot")
+							.data(usData)
+							.enter()
+							.append("circle")
+							.attr("class", "dot")
+							.attr("cx", (d) =>
+								xScale(isLog ? Math.max(0.1, d.headcount) : d.headcount)
+							)
+							.attr("cy", (d) =>
+								yScale(isLog ? Math.max(1, d.organCases) : d.organCases)
+							)
+							.attr("r", 0)
+							.attr("fill", (d) => colorScale(d.year))
+							.attr("stroke", "#fff")
+							.attr("stroke-width", 2)
+							.attr("opacity", 0)
+							.style("cursor", "pointer");
+
+						// Staged entrance: dots grow and appear one by one
+						dots
+							.transition()
+							.delay((d, i) => 400 + i * 80)
+							.duration(500)
+							.ease(d3.easeElastic.period(0.4))
+							.attr("r", (d) => sizeScale(d.organCases))
+							.attr("opacity", 0.85);
+
+						// Add year labels to dots
+						g.selectAll(".dot-label")
+							.data(usData)
+							.enter()
+							.append("text")
+							.attr("class", "dot-label")
+							.attr("x", (d) =>
+								xScale(isLog ? Math.max(0.1, d.headcount) : d.headcount)
+							)
+							.attr(
+								"y",
+								(d) =>
+									yScale(isLog ? Math.max(1, d.organCases) : d.organCases) -
+									sizeScale(d.organCases) -
+									5
+							)
+							.attr("text-anchor", "middle")
+							.style("font-size", "10px")
+							.style("font-weight", "600")
+							.style("fill", "#fff")
+							.style("pointer-events", "none")
+							.style("opacity", 0)
+							.text((d) => d.year)
+							.transition()
+							.delay((d, i) => 900 + i * 80)
+							.duration(400)
+							.style("opacity", 0.8);
+
+						dots
+							.on("mouseover", function (event, d) {
+								d3
+									.select(this)
+									.transition()
+									.duration(200)
+									.attr("r", sizeScale(d.organCases) * 1.4)
+									.attr("opacity", 1)
+									.attr("stroke-width", 3);
+
+								// Highlight corresponding label
+								g.selectAll(".dot-label")
+									.filter((labelData) => labelData.year === d.year)
+									.transition()
+									.duration(200)
+									.style("opacity", 1)
+									.style("font-size", "12px");
+
+								tooltip
+									.classed("show", true)
+									.html(
+										`<div class="tooltip-title">United States (${d.year})</div>
+									<div class="tooltip-row"><span class="tooltip-label">Poverty Headcount:</span><span class="tooltip-value">${d.headcount.toFixed(
+										2
+									)}%</span></div>
+									<div class="tooltip-row"><span class="tooltip-label">Organ Cases:</span><span class="tooltip-value">${
+										d.organCases
+									}</span></div>`
+									)
+									.style("left", event.pageX + 15 + "px")
+									.style("top", event.pageY - 28 + "px");
+							})
+							.on("mouseout", function (event, d) {
+								d3
+									.select(this)
+									.transition()
+									.duration(200)
+									.attr("r", sizeScale(d.organCases))
+									.attr("opacity", 0.85)
+									.attr("stroke-width", 2);
+
+								g.selectAll(".dot-label")
+									.filter((labelData) => labelData.year === d.year)
+									.transition()
+									.duration(200)
+									.style("opacity", 0.8)
+									.style("font-size", "10px");
+
+								tooltip.classed("show", false);
+							});
+
+						const xTicks = isLog ? [0.1, 1, 10, 100] : null;
+						const yTicks = isLog ? [1, 10, 100, 1000] : null;
+
+						// Axes with fade-in
+						const xAxis = g
+							.append("g")
+							.attr("class", "x-axis")
+							.attr("transform", `translate(0,${chartHeight})`)
+							.style("opacity", 0)
+							.call(
+								isLog
+									? d3
+											.axisBottom(xScale)
+											.tickValues(xTicks)
+											.tickFormat((d) => d + "%")
+									: d3
+											.axisBottom(xScale)
+											.ticks(8)
+											.tickFormat((d) => d.toFixed(1) + "%")
+							);
+
+						xAxis.transition().delay(200).duration(600).style("opacity", 1);
+						xAxis.selectAll("text").style("fill", "#ccc").style("font-size", "12px");
+
+						const yAxis = g
+							.append("g")
+							.attr("class", "y-axis")
+							.style("opacity", 0)
+							.call(
+								isLog
+									? d3.axisLeft(yScale).tickValues(yTicks)
+									: d3.axisLeft(yScale).ticks(8)
+							);
+
+						yAxis.transition().delay(200).duration(600).style("opacity", 1);
+						yAxis.selectAll("text").style("fill", "#ccc").style("font-size", "12px");
+
+						g.selectAll(
+							".x-axis path, .x-axis line, .y-axis path, .y-axis line"
+						).style("stroke", "#666");
+
+						// Axis labels
+						svg
+							.append("text")
+							.attr("x", width / 2)
+							.attr("y", height - 20)
+							.attr("text-anchor", "middle")
+							.style("font-size", "14px")
+							.style("font-weight", "600")
+							.style("fill", "#fff")
+							.style("opacity", 0)
+							.text(
+								isLog
+									? "Poverty Headcount (% of population, log scale)"
+									: "Poverty Headcount (% of population)"
+							)
+							.transition()
+							.delay(600)
+							.duration(400)
+							.style("opacity", 1);
+
+						svg
+							.append("text")
+							.attr("transform", "rotate(-90)")
+							.attr("x", -height / 2)
+							.attr("y", 20)
+							.attr("text-anchor", "middle")
+							.style("font-size", "14px")
+							.style("font-weight", "600")
+							.style("fill", "#fff")
+							.style("opacity", 0)
+							.text(
+								isLog
+									? "Organ Trafficking Cases (log scale)"
+									: "Organ Trafficking Cases"
+							)
+							.transition()
+							.delay(600)
+							.duration(400)
+							.style("opacity", 1);
+
+						// Fade in entire SVG
+						svg.transition().duration(300).style("opacity", 1);
+					}
+
+					currentScatterView = viewType;
+				}
+			}
+
+			function setupScatterControls() {
+				const barBtn = document.getElementById("barViewBtn");
+				const scatterBtn = document.getElementById("scatterViewBtn");
+				const logBtn = document.getElementById("logViewBtn");
+
+				barBtn.addEventListener("click", () => {
+					if (currentScatterView === "bar") return; // Already in this view
+					barBtn.classList.add("active");
+					scatterBtn.classList.remove("active");
+					logBtn.classList.remove("active");
+					updateScatterChart("bar");
+				});
+
+				scatterBtn.addEventListener("click", () => {
+					if (currentScatterView === "scatter") return; // Already in this view
+					barBtn.classList.remove("active");
+					scatterBtn.classList.add("active");
+					logBtn.classList.remove("active");
+					updateScatterChart("scatter");
+				});
+
+				logBtn.addEventListener("click", () => {
+					if (currentScatterView === "log") return; // Already in this view
+					barBtn.classList.remove("active");
+					scatterBtn.classList.remove("active");
+					logBtn.classList.add("active");
+					updateScatterChart("log");
+				});
+			}
+
+			// ============================================
+			// CHART 8: PARETO CHART - US INCOME DISTRIBUTION BY DECILE
+			// ============================================
+
+			function initParetoChart() {
+				// US Income distribution by decile (2023 data - realistic estimates)
+				// Source: Based on US Census Bureau and Federal Reserve data
+				const incomeData = [
+					{ decile: "Top 10%", incomeShare: 31.5, population: 10 },
+					{ decile: "90-80%", incomeShare: 14.8, population: 10 },
+					{ decile: "80-70%", incomeShare: 12.5, population: 10 },
+					{ decile: "70-60%", incomeShare: 10.8, population: 10 },
+					{ decile: "60-50%", incomeShare: 9.2, population: 10 },
+					{ decile: "50-40%", incomeShare: 7.8, population: 10 },
+					{ decile: "40-30%", incomeShare: 6.2, population: 10 },
+					{ decile: "30-20%", incomeShare: 4.5, population: 10 },
+					{ decile: "20-10%", incomeShare: 2.3, population: 10 },
+					{ decile: "Bottom 10%", incomeShare: 0.4, population: 10 },
+				];
+
+				// Calculate cumulative percentages
+				let cumulative = 0;
+				incomeData.forEach((d) => {
+					cumulative += d.incomeShare;
+					d.cumulative = cumulative;
+				});
+
+				// Calculate metrics for info panel
+				const top10 = incomeData[0].incomeShare;
+				const bottom50 = incomeData
+					.slice(5)
+					.reduce((sum, d) => sum + d.incomeShare, 0);
+
+				document.getElementById("top10Share").textContent = `${top10.toFixed(
+					1
+				)}% of total income`;
+				document.getElementById("bottom50Share").textContent = `${bottom50.toFixed(
+					1
+				)}% of total income`;
+
+				const ratio = (top10 / bottom50).toFixed(1);
+				document.getElementById(
+					"inequalityLevel"
+				).textContent = `Top 10% earns ${ratio}× more than bottom 50% combined`;
+
+				const container = d3.select("#paretoChart");
+				container.html("");
+
+				const containerWidth = container.node().getBoundingClientRect().width;
+				const margin = { top: 60, right: 100, bottom: 80, left: 100 };
+				const width = containerWidth - margin.left - margin.right;
+				const height = 600 - margin.top - margin.bottom;
+
+				const svg = container
+					.append("svg")
+					.attr("width", containerWidth)
+					.attr("height", 600)
+					.style("opacity", 0);
+
+				const g = svg
+					.append("g")
+					.attr("transform", `translate(${margin.left},${margin.top})`);
+
+				// Scales
+				const xScale = d3
+					.scaleBand()
+					.domain(incomeData.map((d) => d.decile))
+					.range([0, width])
+					.padding(0.2);
+
+				const yScaleLeft = d3
+					.scaleLinear()
+					.domain([0, d3.max(incomeData, (d) => d.incomeShare) * 1.1])
+					.range([height, 0]);
+
+				const yScaleRight = d3.scaleLinear().domain([0, 100]).range([height, 0]);
+
+				// Color scale for bars (gradient from light to dark based on income share)
+				const colorScale = d3
+					.scaleSequential()
+					.domain([0, d3.max(incomeData, (d) => d.incomeShare)])
+					.interpolator(d3.interpolateRgb("#10b981", "#667eea"));
+
+				// Add X axis
+				g.append("g")
+					.attr("transform", `translate(0,${height})`)
+					.call(d3.axisBottom(xScale))
+					.selectAll("text")
+					.attr("transform", "rotate(-45)")
+					.style("text-anchor", "end")
+					.style("font-size", "12px")
+					.style("font-weight", "600")
+					.style("fill", "#333");
+
+				// Add left Y axis (Income Share %)
+				g.append("g")
+					.call(
+						d3
+							.axisLeft(yScaleLeft)
+							.ticks(10)
+							.tickFormat((d) => d + "%")
+					)
+					.style("font-size", "12px")
+					.style("color", "#667eea");
+
+				// Add right Y axis (Cumulative %)
+				g.append("g")
+					.attr("transform", `translate(${width},0)`)
+					.call(
+						d3
+							.axisRight(yScaleRight)
+							.ticks(10)
+							.tickFormat((d) => d + "%")
+					)
+					.style("font-size", "12px")
+					.style("color", "#f59e0b");
+
+				// Y axis labels
+				g.append("text")
+					.attr("transform", "rotate(-90)")
+					.attr("y", -70)
+					.attr("x", -height / 2)
+					.attr("text-anchor", "middle")
+					.style("font-size", "14px")
+					.style("font-weight", "700")
+					.style("fill", "#667eea")
+					.text("Income Share (%)");
+
+				g.append("text")
+					.attr("transform", "rotate(-90)")
+					.attr("y", width + 70)
+					.attr("x", -height / 2)
+					.attr("text-anchor", "middle")
+					.style("font-size", "14px")
+					.style("font-weight", "700")
+					.style("fill", "#f59e0b")
+					.text("Cumulative Share (%)");
+
+				// X axis label
+				g.append("text")
+					.attr("x", width / 2)
+					.attr("y", height + 60)
+					.attr("text-anchor", "middle")
+					.style("font-size", "14px")
+					.style("font-weight", "700")
+					.style("fill", "#333")
+					.text("Income Decile (Population Groups)");
+
+				// Title
+				g.append("text")
+					.attr("x", width / 2)
+					.attr("y", -30)
+					.attr("text-anchor", "middle")
+					.style("font-size", "18px")
+					.style("font-weight", "700")
+					.style("fill", "#667eea")
+					.text("US Income Distribution: Pareto Analysis");
+
+				// Draw bars with staged animation
+				const bars = g
+					.selectAll(".pareto-bar")
+					.data(incomeData)
+					.enter()
+					.append("rect")
+					.attr("class", "pareto-bar")
+					.attr("x", (d) => xScale(d.decile))
+					.attr("width", xScale.bandwidth())
+					.attr("y", height)
+					.attr("height", 0)
+					.attr("fill", (d) => colorScale(d.incomeShare))
+					.attr("stroke", "#fff")
+					.attr("stroke-width", 2)
+					.style("cursor", "pointer");
+
+				// Animate bars growing from bottom
+				bars
+					.transition()
+					.delay((d, i) => i * 100)
+					.duration(600)
+					.ease(d3.easeCubicOut)
+					.attr("y", (d) => yScaleLeft(d.incomeShare))
+					.attr("height", (d) => height - yScaleLeft(d.incomeShare));
+
+				// Add value labels on bars
+				g.selectAll(".bar-label")
+					.data(incomeData)
+					.enter()
+					.append("text")
+					.attr("class", "bar-label")
+					.attr("x", (d) => xScale(d.decile) + xScale.bandwidth() / 2)
+					.attr("y", (d) => yScaleLeft(d.incomeShare) - 5)
+					.attr("text-anchor", "middle")
+					.style("font-size", "12px")
+					.style("font-weight", "700")
+					.style("fill", "#333")
+					.style("opacity", 0)
+					.text((d) => d.incomeShare.toFixed(1) + "%")
+					.transition()
+					.delay((d, i) => i * 100 + 400)
+					.duration(400)
+					.style("opacity", 1);
+
+				// Draw cumulative line
+				const lineGenerator = d3
+					.line()
+					.x((d) => xScale(d.decile) + xScale.bandwidth() / 2)
+					.y((d) => yScaleRight(d.cumulative))
+					.curve(d3.curveMonotoneX);
+
+				const linePath = g
+					.append("path")
+					.datum(incomeData)
+					.attr("class", "cumulative-line")
+					.attr("fill", "none")
+					.attr("stroke", "#f59e0b")
+					.attr("stroke-width", 3)
+					.attr("d", lineGenerator);
+
+				// Animate line drawing with stroke-dasharray
+				const lineLength = linePath.node().getTotalLength();
+				linePath
+					.attr("stroke-dasharray", lineLength + " " + lineLength)
+					.attr("stroke-dashoffset", lineLength)
+					.transition()
+					.delay(1000)
+					.duration(1500)
+					.ease(d3.easeLinear)
+					.attr("stroke-dashoffset", 0);
+
+				// Add dots on cumulative line
+				g.selectAll(".cumulative-dot")
+					.data(incomeData)
+					.enter()
+					.append("circle")
+					.attr("class", "cumulative-dot")
+					.attr("cx", (d) => xScale(d.decile) + xScale.bandwidth() / 2)
+					.attr("cy", (d) => yScaleRight(d.cumulative))
+					.attr("r", 0)
+					.attr("fill", "#f59e0b")
+					.attr("stroke", "#fff")
+					.attr("stroke-width", 2)
+					.style("cursor", "pointer")
+					.transition()
+					.delay((d, i) => 2500 + i * 60)
+					.duration(300)
+					.ease(d3.easeBackOut.overshoot(2))
+					.attr("r", 5);
+
+				// Add legend
+				const legend = g
+					.append("g")
+					.attr("transform", `translate(${width - 220}, 10)`);
+
+				legend
+					.append("rect")
+					.attr("x", 0)
+					.attr("y", 0)
+					.attr("width", 20)
+					.attr("height", 20)
+					.attr("fill", "#667eea")
+					.attr("stroke", "#fff")
+					.attr("stroke-width", 2);
+
+				legend
+					.append("text")
+					.attr("x", 30)
+					.attr("y", 15)
+					.style("font-size", "13px")
+					.style("font-weight", "600")
+					.style("fill", "#333")
+					.text("Income Share (bars)");
+
+				legend
+					.append("line")
+					.attr("x1", 0)
+					.attr("y1", 35)
+					.attr("x2", 20)
+					.attr("y2", 35)
+					.attr("stroke", "#f59e0b")
+					.attr("stroke-width", 3);
+
+				legend
+					.append("circle")
+					.attr("cx", 10)
+					.attr("cy", 35)
+					.attr("r", 5)
+					.attr("fill", "#f59e0b")
+					.attr("stroke", "#fff")
+					.attr("stroke-width", 2);
+
+				legend
+					.append("text")
+					.attr("x", 30)
+					.attr("y", 40)
+					.style("font-size", "13px")
+					.style("font-weight", "600")
+					.style("fill", "#333")
+					.text("Cumulative % (line)");
+
+				// Hover interactions for bars
+				bars
+					.on("mouseover", function (event, d) {
+						d3
+							.select(this)
+							.transition()
+							.duration(200)
+							.attr("opacity", 0.7)
+							.attr("stroke-width", 4);
+
+						tooltip
+							.classed("show", true)
+							.html(
+								`
+							<div class="tooltip-title">${d.decile}</div>
+							<div class="tooltip-row">
+								<span class="tooltip-label">Income Share:</span>
+								<span class="tooltip-value">${d.incomeShare.toFixed(1)}%</span>
+							</div>
+							<div class="tooltip-row">
+								<span class="tooltip-label">Cumulative:</span>
+								<span class="tooltip-value">${d.cumulative.toFixed(1)}%</span>
+							</div>
+							<div class="tooltip-row">
+								<span class="tooltip-label">Population:</span>
+								<span class="tooltip-value">${d.population}%</span>
+							</div>
+						`
+							)
+							.style("left", event.pageX + 15 + "px")
+							.style("top", event.pageY - 28 + "px");
+					})
+					.on("mouseout", function () {
+						d3
+							.select(this)
+							.transition()
+							.duration(200)
+							.attr("opacity", 1)
+							.attr("stroke-width", 2);
+
+						tooltip.classed("show", false);
+					});
+
+				// Hover interactions for cumulative dots
+				d3
+					.selectAll(".cumulative-dot")
+					.on("mouseover", function (event, d) {
+						d3
+							.select(this)
+							.transition()
+							.duration(200)
+							.attr("r", 8)
+							.attr("stroke-width", 3);
+
+						tooltip
+							.classed("show", true)
+							.html(
+								`
+								<div class="tooltip-title">${d.decile}</div>
+								<div class="tooltip-row">
+									<span class="tooltip-label">Cumulative Share:</span>
+									<span class="tooltip-value">${d.cumulative.toFixed(1)}%</span>
+								</div>
+								<div class="tooltip-row">
+									<span class="tooltip-label">This Decile:</span>
+									<span class="tooltip-value">${d.incomeShare.toFixed(1)}%</span>
+								</div>
+							`
+							)
+							.style("left", event.pageX + 15 + "px")
+							.style("top", event.pageY - 28 + "px");
+					})
+					.on("mouseout", function () {
+						d3
+							.select(this)
+							.transition()
+							.duration(200)
+							.attr("r", 5)
+							.attr("stroke-width", 2);
+
+						tooltip.classed("show", false);
+					});
+
+				// Fade in SVG
+				svg.transition().duration(500).style("opacity", 1);
+			}
+
+			// ============================================
+			// UTILITY FUNCTIONS
+			// ============================================
+
+			function getCountryCode(feature) {
+				// Comprehensive map of GeoJSON numeric IDs to ISO3 codes
+				const idToCode = {
+					"004": "AFG",
+					"008": "ALB",
+					"012": "DZA",
+					"016": "ASM",
+					"020": "AND",
+					"024": "AGO",
+					"028": "ATG",
+					"031": "AZE",
+					"032": "ARG",
+					"036": "AUS",
+					"040": "AUT",
+					"044": "BHS",
+					"048": "BHR",
+					"050": "BGD",
+					"051": "ARM",
+					"052": "BRB",
+					"056": "BEL",
+					"060": "BMU",
+					"064": "BTN",
+					"068": "BOL",
+					"070": "BIH",
+					"072": "BWA",
+					"076": "BRA",
+					"084": "BLZ",
+					"090": "SLB",
+					"096": "BRN",
+					100: "BGR",
+					104: "MMR",
+					108: "BDI",
+					112: "BLR",
+					116: "KHM",
+					120: "CMR",
+					124: "CAN",
+					132: "CPV",
+					136: "CYM",
+					140: "CAF",
+					144: "LKA",
+					148: "TCD",
+					152: "CHL",
+					156: "CHN",
+					170: "COL",
+					174: "COM",
+					178: "COG",
+					180: "COD",
+					188: "CRI",
+					191: "HRV",
+					192: "CUB",
+					196: "CYP",
+					203: "CZE",
+					204: "BEN",
+					208: "DNK",
+					212: "DMA",
+					214: "DOM",
+					218: "ECU",
+					222: "SLV",
+					226: "GNQ",
+					231: "ETH",
+					232: "ERI",
+					233: "EST",
+					242: "FJI",
+					246: "FIN",
+					250: "FRA",
+					258: "PYF",
+					262: "DJI",
+					266: "GAB",
+					268: "GEO",
+					270: "GMB",
+					275: "PSE",
+					276: "DEU",
+					288: "GHA",
+					296: "KIR",
+					300: "GRC",
+					308: "GRD",
+					320: "GTM",
+					324: "GIN",
+					328: "GUY",
+					332: "HTI",
+					336: "VAT",
+					340: "HND",
+					348: "HUN",
+					352: "ISL",
+					356: "IND",
+					360: "IDN",
+					364: "IRN",
+					368: "IRQ",
+					372: "IRL",
+					376: "ISR",
+					380: "ITA",
+					384: "CIV",
+					388: "JAM",
+					392: "JPN",
+					398: "KAZ",
+					400: "JOR",
+					404: "KEN",
+					408: "PRK",
+					410: "KOR",
+					414: "KWT",
+					417: "KGZ",
+					418: "LAO",
+					422: "LBN",
+					426: "LSO",
+					428: "LVA",
+					430: "LBR",
+					434: "LBY",
+					438: "LIE",
+					440: "LTU",
+					442: "LUX",
+					450: "MDG",
+					454: "MWI",
+					458: "MYS",
+					462: "MDV",
+					466: "MLI",
+					470: "MLT",
+					478: "MRT",
+					480: "MUS",
+					484: "MEX",
+					492: "MCO",
+					496: "MNG",
+					498: "MDA",
+					499: "MNE",
+					504: "MAR",
+					508: "MOZ",
+					512: "OMN",
+					516: "NAM",
+					520: "NRU",
+					524: "NPL",
+					528: "NLD",
+					554: "NZL",
+					558: "NIC",
+					562: "NER",
+					566: "NGA",
+					578: "NOR",
+					583: "FSM",
+					586: "PAK",
+					591: "PAN",
+					598: "PNG",
+					600: "PRY",
+					604: "PER",
+					608: "PHL",
+					616: "POL",
+					620: "PRT",
+					624: "GNB",
+					626: "TLS",
+					634: "QAT",
+					642: "ROU",
+					643: "RUS",
+					646: "RWA",
+					662: "LCA",
+					670: "VCT",
+					674: "SMR",
+					678: "STP",
+					682: "SAU",
+					686: "SEN",
+					688: "SRB",
+					690: "SYC",
+					694: "SLE",
+					702: "SGP",
+					703: "SVK",
+					704: "VNM",
+					705: "SVN",
+					706: "SOM",
+					710: "ZAF",
+					716: "ZWE",
+					724: "ESP",
+					728: "SSD",
+					729: "SDN",
+					740: "SUR",
+					748: "SWZ",
+					752: "SWE",
+					756: "CHE",
+					760: "SYR",
+					762: "TJK",
+					764: "THA",
+					768: "TGO",
+					776: "TON",
+					780: "TTO",
+					784: "ARE",
+					788: "TUN",
+					792: "TUR",
+					795: "TKM",
+					798: "TUV",
+					800: "UGA",
+					804: "UKR",
+					807: "MKD",
+					818: "EGY",
+					826: "GBR",
+					834: "TZA",
+					840: "USA",
+					854: "BFA",
+					858: "URY",
+					860: "UZB",
+					862: "VEN",
+					876: "WLF",
+					882: "WSM",
+					887: "YEM",
+					894: "ZMB",
+				};
+
+				return idToCode[feature.id] || feature.id;
+			}
+
+			// Clean up intervals on page unload
+			window.addEventListener("beforeunload", () => {
+				if (globalPlayInterval) clearInterval(globalPlayInterval);
+				if (top5PlayInterval) clearInterval(top5PlayInterval);
+				if (giniGlobalPlayInterval) clearInterval(giniGlobalPlayInterval);
+				if (giniTop5PlayInterval) clearInterval(giniTop5PlayInterval);
+				if (headcountGlobalPlayInterval) clearInterval(headcountGlobalPlayInterval);
+				if (headcountTop5PlayInterval) clearInterval(headcountTop5PlayInterval);
+				if (scatterPlayInterval) clearInterval(scatterPlayInterval);
+			});
+		</script>
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+		<script>
+			// Enable multi-level dropdown on hover for desktop
+			document.addEventListener("DOMContentLoaded", function () {
+				const dropdownSubmenus = document.querySelectorAll(".dropdown-submenu");
+
+				dropdownSubmenus.forEach(function (submenu) {
+					submenu.addEventListener("mouseenter", function () {
+						// Check if submenu would go off-screen
+						const dropdownMenu = this.querySelector(".dropdown-menu");
+						if (dropdownMenu) {
+							dropdownMenu.classList.add("show");
+
+							// Check if it extends beyond viewport
+							const rect = dropdownMenu.getBoundingClientRect();
+							const viewportWidth = window.innerWidth;
+
+							if (rect.right > viewportWidth) {
+								// Flip to left side
+								this.classList.add("dropstart");
+							} else {
+								this.classList.remove("dropstart");
+							}
+						}
+					});
+
+					submenu.addEventListener("mouseleave", function () {
+						const dropdownMenu = this.querySelector(".dropdown-menu");
+						if (dropdownMenu) {
+							dropdownMenu.classList.remove("show");
+						}
+					});
+				});
+			});
+		</script>
+	</body>
+</html>
