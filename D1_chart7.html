@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Trafficking Victims Analysis Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body { 
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin: 0;
+    }
+    
+    .navbar {
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+    
+    .navbar.sticky-top {
+      background-color: #f8f9fa !important;
+    }
+    
+    /* Highlight active topic in dropdown */
+    .dropdown-item.active-topic {
+      background-color: #f0f0ff;
+      color: #667eea;
+      font-weight: 600;
+    }
+    
+    .dropdown-item.active-topic:hover {
+      background-color: #e5e5ff;
+    }
+    
+    /* Multi-level dropdown styling */
+    .dropdown-submenu {
+      position: relative;
+    }
+    
+    .dropdown-submenu .dropdown-menu {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      margin-top: -1px;
+      margin-left: -1px;
+      max-height: 80vh;
+      overflow-y: auto;
+      min-width: 200px;
+      width: max-content;
+      max-width: 300px;
+    }
+    
+    /* Flip submenu to left if it would go off-screen */
+    .dropdown-submenu.dropstart .dropdown-menu {
+      left: auto;
+      right: 100%;
+      margin-left: 0;
+      margin-right: -1px;
+    }
+    
+    .dropdown-submenu:hover > .dropdown-menu {
+      display: block;
+    }
+    
+    .dropdown-item.has-submenu {
+      position: relative;
+      padding-right: 2rem;
+    }
+    
+    .dropdown-item.has-submenu::after {
+      content: "›";
+      position: absolute;
+      right: 1rem;
+      font-weight: bold;
+    }
+    
+    .dropdown-submenu.dropstart .dropdown-item.has-submenu::after {
+      content: "‹";
+    }
+    
+    /* Prevent horizontal scroll on body */
+    body {
+      overflow-x: hidden;
+    }
+    
+    .content-wrapper {
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .breadcrumb-nav {
+      background: #f8f9fa;
+      padding: 12px 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    
+    .breadcrumb {
+      margin: 0;
+    }
+    
+    h1 { 
+      font-size: 1.75rem; 
+      margin: 0 0 10px;
+      color: #333;
+    }
+    
+    .sub { 
+      color: #666; 
+      margin: 0 0 20px;
+      font-size: 1rem;
+    }
+    
+    .viz-box { 
+      border: 1px solid #e5e5e5; 
+      border-radius: 8px; 
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .d3-box { 
+      border: 1px solid #e5e5e5; 
+      border-radius: 8px; 
+      margin-top: 16px; 
+      padding: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .note { 
+      font-size: 0.9rem; 
+      color: #666; 
+      margin-top: 6px;
+    }
+    
+    #d3chart { 
+      width: 100%; 
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">
+        <span style="color: #667eea;">Data</span> Insights
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" id="dashboardDropdown" role="button" data-bs-toggle="dropdown">
+              Dashboards
+            </a>
+            <ul class="dropdown-menu">
+              <!-- Human Trafficking Topic -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu" href="#">Human Trafficking</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="D1_chart1.html">Types of Trafficking</a></li>
+                  <li><a class="dropdown-item" href="D1_chart5.html">Flow of Trafficking</a></li>
+                  <li><a class="dropdown-item" href="D1_chart2.html">Victims trafficked to other countries</a></li>
+                  <li><a class="dropdown-item" href="D1_chart3.html">Trend of Victims being trafficked</a></li>
+                  <li><a class="dropdown-item" href="D1_chart4.html">Organ Removal Cases</a></li>
+                </ul>
+              </li>
+              
+              <!-- Global Economics Topic -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu" href="#">Global Economics</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="economics-gdp.html">GDP Analysis</a></li>
+                  <li><a class="dropdown-item" href="economics-trade.html">Trade Patterns</a></li>
+                  <li><a class="dropdown-item" href="economics-employment.html">Employment Rates</a></li>
+                  <li><a class="dropdown-item" href="economics-inflation.html">Inflation Metrics</a></li>
+                  <li><a class="dropdown-item" href="economics-investment.html">Investment Flows</a></li>
+                </ul>
+              </li>
+              
+              <!-- Climate Change Topic -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu" href="#">Climate Change</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="climate-temperature.html">Temperature Trends</a></li>
+                  <li><a class="dropdown-item" href="climate-emissions.html">Carbon Emissions</a></li>
+                  <li><a class="dropdown-item" href="climate-energy.html">Renewable Energy</a></li>
+                  <li><a class="dropdown-item" href="climate-disasters.html">Natural Disasters</a></li>
+                  <li><a class="dropdown-item" href="climate-impact.html">Regional Impact</a></li>
+                  <li><a class="dropdown-item" href="climate-policy.html">Policy Effectiveness</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html#contact">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumb Navigation -->
+  <div class="breadcrumb-nav">
+    <div class="container-fluid">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="index.html#trafficking">Human Trafficking</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Trafficking Victims Analysis</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content-wrapper">
+    <h1>Trafficking Victims Analysis Dashboard</h1>
+    <p class="sub">Trafficking Flow Map - Interactive visualization</p>
+
+    <!-- TABLEAU EMBED -->
+    <div class="viz-box">
+		<div class='tableauPlaceholder' id='viz1762505396560' style='position: relative'><noscript><a href='#'><img alt='Headcount by Country ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Da&#47;Dashboard1_17621519036940&#47;HeadcountbyCountry&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='Dashboard1_17621519036940&#47;HeadcountbyCountry' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Da&#47;Dashboard1_17621519036940&#47;HeadcountbyCountry&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1762505396560');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+  <!-- Tableau v1 embed script -->
+  <script src="https://public.tableau.com/javascripts/api/viz_v1.js"></script>
+  <!-- D3 -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <script>
+    // Tableau viz sizing
+    (function setupVizSizing() {
+        var divElement = document.getElementById('viz1762412122839');    
+        var vizElement = divElement.getElementsByTagName('object')[0];         
+    function sizeIt() {
+        vizElement.style.width='100%';
+        vizElement.style.height=(divElement.offsetWidth*0.50)+'px'; 
+      }
+      sizeIt();
+
+      let raf;
+      window.addEventListener("resize", () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(sizeIt);
+      });
+    })();
+
+    // Enable multi-level dropdown on hover for desktop
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdownSubmenus = document.querySelectorAll('.dropdown-submenu');
+      
+      dropdownSubmenus.forEach(function(submenu) {
+        submenu.addEventListener('mouseenter', function() {
+          const dropdownMenu = this.querySelector('.dropdown-menu');
+          if (dropdownMenu) {
+            // Remove any previous positioning class
+            this.classList.remove('dropstart');
+            
+            // Show the menu first to get accurate measurements
+            dropdownMenu.classList.add('show');
+            
+            // Small delay to ensure rendering
+            setTimeout(() => {
+              const rect = dropdownMenu.getBoundingClientRect();
+              const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+              
+              // Check if menu extends beyond right edge of viewport
+              if (rect.right > viewportWidth - 10) {
+                this.classList.add('dropstart');
+              }
+            }, 10);
+          }
+        });
+        
+        submenu.addEventListener('mouseleave', function() {
+          const dropdownMenu = this.querySelector('.dropdown-menu');
+          if (dropdownMenu) {
+            dropdownMenu.classList.remove('show');
+          }
+        });
+      });
+    });
+
+    // D3 + Tableau Integration
+    (function main() {
+      const WORKSHEET_NAME = null;
+      const DIM_FIELD = null;
+      const MEASURE_FIELD = null;
+
+      function onTableauReady(cb) {
+        const check = () => {
+          if (window.tableau && tableau.VizManager && tableau.VizManager.getVizs().length) {
+            const viz = tableau.VizManager.getVizs()[0];
+            try {
+              viz.addEventListener(tableau.TableauEventName.FIRST_INTERACTIVE, () => cb(viz));
+            } catch (e) {
+              cb(viz);
+            }
+          } else {
+            setTimeout(check, 100);
+          }
+        };
+        check();
+      }
+
+      const svg = d3.select("#d3chart");
+      if (svg.empty()) return;
+
+      const vb = svg.attr("viewBox").split(" ").map(Number);
+      const W = vb[2], H = vb[3];
+      const M = { top: 16, right: 24, bottom: 48, left: 64 };
+      const innerW = W - M.left - M.right;
+      const innerH = H - M.top - M.bottom;
+
+      const g = svg.append("g").attr("transform", `translate(${M.left},${M.top})`);
+      const x = d3.scaleBand().padding(0.2).range([0, innerW]);
+      const y = d3.scaleLinear().range([innerH, 0]);
+      const xAxisG = g.append("g").attr("transform", `translate(0,${innerH})`);
+      const yAxisG = g.append("g");
+
+      const tooltip = d3.select("body").append("div")
+        .style("position", "fixed")
+        .style("pointer-events", "none")
+        .style("background", "rgba(0,0,0,0.75)")
+        .style("color", "#fff")
+        .style("padding", "6px 8px")
+        .style("border-radius", "6px")
+        .style("font-size", "12px")
+        .style("opacity", 0);
+
+      function showTip(html, x, y) {
+        tooltip.html(html).style("left", (x + 12) + "px").style("top", (y + 12) + "px")
+          .transition().duration(150).style("opacity", 1);
+      }
+      function hideTip() { tooltip.transition().duration(150).style("opacity", 0); }
+
+      function render(data, dim, measure) {
+        const clean = data
+          .map(d => ({ label: String(d[dim]), value: +d[measure] }))
+          .filter(d => d.label && !isNaN(d.value));
+
+        x.domain(clean.map(d => d.label));
+        y.domain([0, d3.max(clean, d => d.value) || 0]).nice();
+
+        xAxisG.transition().duration(500).call(d3.axisBottom(x))
+          .selectAll("text").style("font-size", "11px").attr("dy", "0.75em");
+        yAxisG.transition().duration(500).call(d3.axisLeft(y).ticks(6))
+          .selectAll("text").style("font-size", "11px");
+
+        const bars = g.selectAll("rect").data(clean, d => d.label);
+
+        bars.exit()
+          .transition().duration(400)
+          .attr("y", y(0)).attr("height", 0)
+          .remove();
+
+        bars.transition().duration(600)
+          .attr("x", d => x(d.label))
+          .attr("y", d => y(d.value))
+          .attr("width", x.bandwidth())
+          .attr("height", d => y(0) - y(d.value));
+
+        bars.enter().append("rect")
+          .attr("x", d => x(d.label))
+          .attr("width", x.bandwidth())
+          .attr("y", y(0))
+          .attr("height", 0)
+          .on("mousemove", (ev,d) => showTip(`<strong>${d.label}</strong><br>${measure}: ${d.value}`, ev.clientX, ev.clientY))
+          .on("mouseleave", hideTip)
+          .transition().duration(600)
+          .attr("y", d => y(d.value))
+          .attr("height", d => y(0) - y(d.value));
+      }
+
+      function summaryTableToRows(table) {
+        const cols = table.getColumns().map(c => c.getFieldName());
+        return table.getData().map(row => {
+          const obj = {};
+          row.forEach((cell, i) => (obj[cols[i]] = cell.formattedValue ?? cell.value));
+          return obj;
+        });
+      }
+      function marksToRows(marks) {
+        return marks.map(m => {
+          const obj = {};
+          m.getPairs().forEach(p => (obj[p.fieldName] = p.value));
+          return obj;
+        });
+      }
+      function pickFields(rows) {
+        if (!rows.length) return { dim: null, measure: null };
+        if (DIM_FIELD && MEASURE_FIELD) return { dim: DIM_FIELD, measure: MEASURE_FIELD };
+        const sample = rows[0];
+        let dim = null, measure = null;
+        for (const k of Object.keys(sample)) {
+          const v = sample[k];
+          const isNum = (typeof v === "number") || (!isNaN(+v) && v !== "");
+          if (!isNum && !dim) dim = k;
+          if (isNum && !measure) measure = k;
+          if (dim && measure) break;
+        }
+        return { dim, measure };
+      }
+
+      async function fetchData(ws, preferSelection = true) {
+        try {
+          if (preferSelection) {
+            const sel = await ws.getSelectedMarksAsync();
+            const marks = sel.getMarks();
+            if (marks && marks.length) return marksToRows(marks);
+          }
+          const table = await ws.getSummaryDataAsync({ ignoreSelection: false });
+          return summaryTableToRows(table);
+        } catch (e) {
+          console.warn("Data fetch failed:", e);
+          return [];
+        }
+      }
+
+      onTableauReady(async (viz) => {
+        const wb = viz.getWorkbook();
+        let sheet = wb.getActiveSheet();
+        let ws;
+
+        if (sheet.getSheetType && sheet.getSheetType() === "dashboard") {
+          const wss = sheet.getWorksheets();
+          ws = WORKSHEET_NAME
+            ? wss.find(w => w.getName() === WORKSHEET_NAME)
+            : wss[0];
+        } else {
+          ws = sheet;
+        }
+
+        async function refresh(preferSelection = true) {
+          const rows = await fetchData(ws, preferSelection);
+          const { dim, measure } = pickFields(rows);
+          if (!dim || !measure) {
+            console.warn("Could not infer fields. Set DIM_FIELD/MEASURE_FIELD.");
+            return;
+          }
+          render(rows, dim, measure);
+        }
+
+        await refresh(false);
+
+        viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, async () => {
+          await refresh(true);
+        });
+        viz.addEventListener(tableau.TableauEventName.FILTER_CHANGE, async () => {
+          await refresh(false);
+        });
+      });
+    })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
