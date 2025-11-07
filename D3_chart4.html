@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Long Term Total Cost Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body { 
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin: 0;
+    }
+    
+    .navbar {
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+    
+    .navbar.sticky-top {
+      background-color: #f8f9fa !important;
+    }
+    
+    /* Highlight active topic in dropdown */
+    .dropdown-item.active-topic {
+      background-color: #f0f0ff;
+      color: #667eea;
+      font-weight: 600;
+    }
+    
+    .dropdown-item.active-topic:hover {
+      background-color: #e5e5ff;
+    }
+    
+    /* Multi-level dropdown styling */
+    .dropdown-submenu {
+      position: relative;
+    }
+    
+    .dropdown-submenu .dropdown-menu {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      margin-top: -1px;
+      margin-left: -1px;
+      max-height: 80vh;
+      overflow-y: auto;
+      min-width: 200px;
+      width: max-content;
+      max-width: 300px;
+    }
+    
+    /* Flip submenu to left if it would go off-screen */
+    .dropdown-submenu.dropstart .dropdown-menu {
+      left: auto;
+      right: 100%;
+      margin-left: 0;
+      margin-right: -1px;
+    }
+    
+    .dropdown-submenu:hover > .dropdown-menu {
+      display: block;
+    }
+    
+    .dropdown-item.has-submenu {
+      position: relative;
+      padding-right: 2rem;
+    }
+    
+    .dropdown-item.has-submenu::after {
+      content: "›";
+      position: absolute;
+      right: 1rem;
+      font-weight: bold;
+    }
+    
+    .dropdown-submenu.dropstart .dropdown-item.has-submenu::after {
+      content: "‹";
+    }
+    
+    /* Prevent horizontal scroll on body */
+    body {
+      overflow-x: hidden;
+    }
+    
+    .content-wrapper {
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .breadcrumb-nav {
+      background: #f8f9fa;
+      padding: 12px 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    
+    .breadcrumb {
+      margin: 0;
+    }
+    
+    h1 { 
+      font-size: 1.75rem; 
+      margin: 0 0 10px;
+      color: #333;
+    }
+    
+    .sub { 
+      color: #666; 
+      margin: 0 0 20px;
+      font-size: 1rem;
+    }
+    
+    .viz-box { 
+      border: 1px solid #e5e5e5; 
+      border-radius: 8px; 
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .d3-box { 
+      border: 1px solid #e5e5e5; 
+      border-radius: 8px; 
+      margin-top: 16px; 
+      padding: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .note { 
+      font-size: 0.9rem; 
+      color: #666; 
+      margin-top: 6px;
+    }
+    
+    #d3chart, #costProjection { 
+      width: 100%; 
+      height: auto;
+    }
+
+    /* Cost Header Styles */
+    .cost-header {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .cost-summary {
+      text-align: center;
+      padding: 1.5rem;
+      border-radius: 12px;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .cost-summary:hover {
+      transform: translateY(-5px);
+    }
+
+    .legal-summary {
+      border-left: 5px solid #28a745;
+    }
+
+    .illegal-summary {
+      border-left: 5px solid #dc3545;
+    }
+
+    .cost-summary h5 {
+      color: #333;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .total-cost {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .legal-summary .total-cost {
+      color: #28a745;
+    }
+
+    .illegal-summary .total-cost {
+      color: #dc3545;
+    }
+
+    .cost-description {
+      color: #666;
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    /* Calculator Controls */
+    .calculator-controls {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .calculator-controls label {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .range-value {
+      display: block;
+      text-align: center;
+      font-weight: 600;
+      color: #667eea;
+      margin-top: 0.5rem;
+    }
+
+
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">
+        <span style="color: #667eea;">VABI</span> Project
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" id="dashboardDropdown" role="button" data-bs-toggle="dropdown">
+              Dashboards
+            </a>
+            <ul class="dropdown-menu">
+              <!-- Human Trafficking Topic -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu" href="#">Human Trafficking</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="D1_chart1.html">Types of Trafficking</a></li>
+                  <li><a class="dropdown-item" href="D1_chart5.html">Flow of Trafficking</a></li>
+                  <li><a class="dropdown-item" href="D1_chart2.html">Victims trafficked to other countries</a></li>
+                  <li><a class="dropdown-item" href="D1_chart3.html">Trend of Victims being trafficked</a></li>
+                  <li><a class="dropdown-item" href="D1_chart4.html">Organ Removal Cases</a></li>
+                  <li><a class="dropdown-item" href="D1_chart6.html">GDP Map</a></li>
+                </ul>
+              </li>
+              
+              <!-- Organ Demand and Supply Topic -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu" href="#">Organ Supply and Demand</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="D2_chart1.html">Organ Supply By Country</a></li>
+                  <li><a class="dropdown-item" href="D2_chart2.html">Usable Organ Percentage</a></li>
+                  <li><a class="dropdown-item" href="D2_chart3.html">Demand and Supply of Organs</a></li>
+                  <li><a class="dropdown-item" href="D2_chart4.html">Transplant done vs Waiting list</a></li>
+                  <li><a class="dropdown-item" href="D2_chart5.html">Mortality Rate</a></li>
+                </ul>
+              </li>
+              
+              <!-- Health Outcomes Topic -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu active-topic" href="#">Health Outcomes</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="D3_chart1.html">Surgery Cost Comparison</a></li>
+                  <li><a class="dropdown-item" href="D3_chart2.html">Hidden Costs After Surgery</a></li>
+                  <li><a class="dropdown-item" href="D3_chart3.html">Health Outcomes Analysis</a></li>
+                  <li><a class="dropdown-item active-topic" href="D3_chart4.html">Long Term Total Cost</a></li>
+                </ul>
+              </li>
+              
+              <!-- Solution -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu" href="#">Solution</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="D4_chart1.html">Pathways to More Organs</a></li>
+                  <li><a class="dropdown-item" href="D4_chart2.html">US vs Iran: Spotlight Metrics</a></li>
+                  <li><a class="dropdown-item" href="D4_chart3.html">What if we do nothing?</a></li>
+                  <li><a class="dropdown-item" href="D4_chart4.html">Iran's Policy Reforms</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html#contact">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumb Navigation -->
+  <div class="breadcrumb-nav">
+    <div class="container-fluid">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="index.html#health">Health Outcomes</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Long Term Total Cost</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content-wrapper">
+    <h1>Long Term Total Cost Dashboard</h1>
+    <p class="sub">Long-term financial implications of legal vs illegal organ transplants - Interactive visualization</p>
+
+    <!-- TABLEAU EMBED -->
+    <div class="viz-box">
+        <div class='tableauPlaceholder' id='viz1730995200003' style='position: relative'>
+          <noscript>
+            <a href='#'>
+              <img 
+                alt='Long Term Total Cost' 
+                src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Lo&#47;LongTermTotalCost&#47;chart4&#47;1_rss.png' 
+                style='border: none' />
+            </a>
+          </noscript>
+          <object class='tableauViz'  style='display:none;'>
+            <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> 
+            <param name='embed_code_version' value='3' /> 
+            <param name='site_root' value='' />
+            <param name='name' value='LongTermTotalCost&#47;chart4' />
+            <param name='tabs' value='no' />
+            <param name='toolbar' value='yes' />
+            <param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Lo&#47;LongTermTotalCost&#47;chart4&#47;1.png' /> 
+            <param name='animate_transition' value='yes' />
+            <param name='display_static_image' value='yes' />
+            <param name='display_spinner' value='yes' />
+            <param name='display_overlay' value='yes' />
+            <param name='display_count' value='yes' />
+            <param name='language' value='en-US' />
+            <param name='filter' value='publish=yes' />
+          </object>
+        </div>                         
+    </div>
+
+  <!-- Tableau v1 embed script -->
+  <script src="https://public.tableau.com/javascripts/api/viz_v1.js"></script>
+
+  <script>
+    // Tableau viz sizing
+    (function setupVizSizing() {
+        var divElement = document.getElementById('viz1730995200003');   
+        var vizElement = divElement.getElementsByTagName('object')[0];        
+    function sizeIt() {
+        vizElement.style.width='100%';
+        vizElement.style.height=(divElement.offsetWidth*0.75)+'px'; 
+      }
+      sizeIt();
+
+      let raf;
+      window.addEventListener("resize", () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(sizeIt);
+      });
+    })();
+
+    // Enable multi-level dropdown on hover for desktop
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdownSubmenus = document.querySelectorAll('.dropdown-submenu');
+      
+      dropdownSubmenus.forEach(function(submenu) {
+        submenu.addEventListener('mouseenter', function() {
+          const dropdownMenu = this.querySelector('.dropdown-menu');
+          if (dropdownMenu) {
+            // Remove any previous positioning class
+            this.classList.remove('dropstart');
+            
+            // Show the menu first to get accurate measurements
+            dropdownMenu.classList.add('show');
+            
+            // Small delay to ensure rendering
+            setTimeout(() => {
+              const rect = dropdownMenu.getBoundingClientRect();
+              const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+              
+              // Check if menu extends beyond right edge of viewport
+              if (rect.right > viewportWidth - 10) {
+                this.classList.add('dropstart');
+              }
+            }, 10);
+          }
+        });
+        
+        submenu.addEventListener('mouseleave', function() {
+          const dropdownMenu = this.querySelector('.dropdown-menu');
+          if (dropdownMenu) {
+            dropdownMenu.classList.remove('show');
+          }
+        });
+      });
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
