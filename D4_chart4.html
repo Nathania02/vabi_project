@@ -1,42 +1,169 @@
-<div
-  class="tableauPlaceholder"
-  id="viz1762222689089"
-  style="position: relative"
->
-  <noscript
-    ><a href="#"
-      ><img
-        alt="Iran’s Policy Reforms in Action (1998–2024)Compensated LURD (1998) bootstrapped access; brain-death law + OPO build-out (2000–02) expanded deceased donors - demonstrating a scalable, hospital-tech led route to meet need legally.  "
-        src="https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ch&#47;Chart4_17622224011270&#47;Chart4&#47;1_rss.png"
-        style="border: none" /></a></noscript
-  ><object class="tableauViz" style="display: none">
-    <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />
-    <param name="embed_code_version" value="3" />
-    <param name="site_root" value="" />
-    <param name="name" value="Chart4_17622224011270&#47;Chart4" />
-    <param name="tabs" value="no" />
-    <param name="toolbar" value="yes" />
-    <param
-      name="static_image"
-      value="https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ch&#47;Chart4_17622224011270&#47;Chart4&#47;1.png"
-    />
-    <param name="animate_transition" value="yes" />
-    <param name="display_static_image" value="yes" />
-    <param name="display_spinner" value="yes" />
-    <param name="display_overlay" value="yes" />
-    <param name="display_count" value="yes" />
-    <param name="language" value="en-GB" />
-    <param name="filter" value="publish=yes" />
-  </object>
-</div>
-<script type="text/javascript">
-  var divElement = document.getElementById("viz1762222689089");
-  var vizElement = divElement.getElementsByTagName("object")[0];
-  vizElement.style.width = "100%";
-  vizElement.style.height = divElement.offsetWidth * 0.75 + "px";
-  var scriptElement = document.createElement("script");
-  scriptElement.src = "https://public.tableau.com/javascripts/api/viz_v1.js";
-  vizElement.parentNode.insertBefore(scriptElement, vizElement);
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Iran’s Policy Reforms in Action | Data Insights</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0}
+    .navbar{box-shadow:0 2px 4px rgba(0,0,0,.1);z-index:1000}
+    .navbar.sticky-top{background-color:#f8f9fa!important}
+    /* multi-level dropdown */
+    .dropdown-submenu{position:relative}
+    .dropdown-submenu .dropdown-menu{position:absolute;top:0;left:100%;margin-top:-1px;margin-left:-1px;max-height:80vh;overflow-y:auto;min-width:200px}
+    .dropdown-submenu.dropstart .dropdown-menu{left:auto;right:100%;margin-left:0;margin-right:-1px}
+    .dropdown-submenu:hover>.dropdown-menu{display:block}
+    .dropdown-item.has-submenu{position:relative;padding-right:2rem}
+    .dropdown-item.has-submenu::after{content:"›";position:absolute;right:1rem;font-weight:700}
+    .dropdown-submenu.dropstart .dropdown-item.has-submenu::after{content:"‹"}
+    body{overflow-x:hidden}
+    .content-wrapper{padding:20px;max-width:1200px;margin:0 auto}
+    .breadcrumb-nav{background:#f8f9fa;padding:12px 20px;margin-bottom:20px;border-radius:8px}
+    h1{font-size:1.5rem;margin:0 0 10px;color:#333}
+    .sub{color:#666;margin:0 0 16px}
+    .viz-box{border:1px solid #e5e5e5;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+  </style>
+</head>
+<body>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html"><span style="color:#667eea">Data</span> Insights</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" id="dashboardDropdown" role="button" data-bs-toggle="dropdown">Dashboards</a>
+            <ul class="dropdown-menu">
+              <!-- Human Trafficking -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu" href="#">Human Trafficking</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="D1_chart1.html">Types of Trafficking</a></li>
+                  <li><a class="dropdown-item" href="D1_chart5.html">Flow of Trafficking</a></li>
+                  <li><a class="dropdown-item" href="D1_chart2.html">Victims trafficked to other countries</a></li>
+                  <li><a class="dropdown-item" href="D1_chart3.html">Trend of Victims</a></li>
+                  <li><a class="dropdown-item" href="D1_chart4.html">Organ Removal Cases</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="Chart1.html">Solutions — Pathways (US vs Iran)</a></li>
+                  <li><a class="dropdown-item" href="Chart2.html">US vs Iran — Spotlight Metrics</a></li>
+                  <li><a class="dropdown-item" href="Chart3.html">If We Do Nothing — Cost & Deaths</a></li>
+                  <li><a class="dropdown-item active" href="Chart4.html">Iran Reforms Timeline</a></li>
+                </ul>
+              </li>
+
+              <!-- Optional other topics -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu" href="#">Global Economics</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="economics-gdp.html">GDP Analysis</a></li>
+                </ul>
+              </li>
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu" href="#">Climate Change</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="climate-temperature.html">Temperature Trends</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb-nav">
+    <div class="container-fluid">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="index.html#trafficking">Human Trafficking</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Iran’s Policy Reforms in Action</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="content-wrapper">
+    <h1>Iran’s Policy Reforms in Action (1998–2024)</h1>
+    <p class="sub">Compensated LURD (1998) bootstrapped access; brain-death law + OPO build-out (2000–02) expanded deceased donors — demonstrating a scalable, hospital-tech route to meet need legally.</p>
+
+    <div class="viz-box">
+      <!-- Your Tableau embed -->
+      <div class="tableauPlaceholder" id="viz1762222689089" style="position:relative">
+        <noscript>
+          <a href="#"><img alt="Iran’s Policy Reforms in Action (1998–2024)" src="https://public.tableau.com/static/images/Ch/Chart4_17622224011270/Chart4/1_rss.png" style="border:none"/></a>
+        </noscript>
+        <object class="tableauViz" style="display:none">
+          <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />
+          <param name="embed_code_version" value="3" />
+          <param name="site_root" value="" />
+          <param name="name" value="Chart4_17622224011270&#47;Chart4" />
+          <param name="tabs" value="no" />
+          <param name="toolbar" value="yes" />
+          <param name="static_image" value="https://public.tableau.com/static/images/Ch/Chart4_17622224011270/Chart4/1.png" />
+          <param name="animate_transition" value="yes" />
+          <param name="display_static_image" value="yes" />
+          <param name="display_spinner" value="yes" />
+          <param name="display_overlay" value="yes" />
+          <param name="display_count" value="yes" />
+          <param name="language" value="en-GB" />
+          <param name="filter" value="publish=yes" />
+        </object>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://public.tableau.com/javascripts/api/viz_v1.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Responsive sizing for this viz
+    (function(){
+      const divEl = document.getElementById("viz1762222689089");
+      const vizEl = divEl.getElementsByTagName("object")[0];
+      function sizeIt(){
+        vizEl.style.width = "100%";
+        vizEl.style.height = Math.max(360, divEl.offsetWidth * 0.62) + "px"; // similar ratio as other pages
+      }
+      sizeIt();
+      let raf;
+      window.addEventListener("resize", () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(sizeIt);
+      });
+    })();
+
+    // Flip submenus if they overflow the viewport
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.dropdown-submenu').forEach(sm => {
+        sm.addEventListener('mouseenter', function () {
+          const menu = this.querySelector('.dropdown-menu'); if (!menu) return;
+          this.classList.remove('dropstart'); menu.classList.add('show');
+          setTimeout(() => {
+            const r = menu.getBoundingClientRect();
+            const vw = innerWidth || document.documentElement.clientWidth;
+            if (r.right > vw - 10) this.classList.add('dropstart');
+          }, 10);
+        });
+        sm.addEventListener('mouseleave', function () {
+          const menu = this.querySelector('.dropdown-menu'); if (menu) menu.classList.remove('show');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>If We Do Nothing — Cost & Deaths | Data Insights</title>
+  <title>US vs Iran — Spotlight Metrics | Data Insights</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <style>
@@ -53,13 +53,13 @@
                   <li><a class="dropdown-item" href="D1_chart4.html">Organ Removal Cases</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="Chart1.html">Solutions — Pathways (US vs Iran)</a></li>
-                  <li><a class="dropdown-item" href="Chart2.html">US vs Iran — Spotlight Metrics</a></li>
-                  <li><a class="dropdown-item active" href="Chart3.html">If We Do Nothing — Cost & Deaths</a></li>
+                  <li><a class="dropdown-item active" href="Chart2.html">US vs Iran — Spotlight Metrics</a></li>
+                  <li><a class="dropdown-item" href="Chart3.html">If We Do Nothing — Cost & Deaths</a></li>
                   <li><a class="dropdown-item" href="Chart4.html">Iran Reforms Timeline</a></li>
                 </ul>
               </li>
 
-              <!-- Optional other topics -->
+              <!-- Other topics (optional placeholders) -->
               <li class="dropdown-submenu">
                 <a class="dropdown-item has-submenu" href="#">Global Economics</a>
                 <ul class="dropdown-menu">
@@ -89,7 +89,7 @@
         <ol class="breadcrumb mb-0">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
           <li class="breadcrumb-item"><a href="index.html#trafficking">Human Trafficking</a></li>
-          <li class="breadcrumb-item active" aria-current="page">If We Do Nothing — Cost & Deaths</li>
+          <li class="breadcrumb-item active" aria-current="page">US vs Iran — Spotlight Metrics</li>
         </ol>
       </nav>
     </div>
@@ -97,23 +97,22 @@
 
   <!-- MAIN -->
   <div class="content-wrapper">
-    <h1>If We Do Nothing: Avoidable Cost & Deaths</h1>
-    <p class="sub">Size = deaths from unmet need; Color = dialysis cost. If supply doesn’t expand, the health system pays and people die on the waitlist (assumptions: Waitlist Mortality Rate and Estimated Need pmp).</p>
-
+    <h1>US vs Iran — Spotlight Metrics (Latest Year)</h1>
+    <p class="sub">Bars show Access (pmp), Deceased share, and Wait-list deaths pmp. Target line for deceased vs living share: <strong>50%</strong>.</p>
     <div class="viz-box">
       <!-- Your existing Tableau embed -->
-      <div class="tableauPlaceholder" id="viz1762222275339" style="position:relative">
+      <div class="tableauPlaceholder" id="viz1762479667774" style="position:relative">
         <noscript>
-          <a href="#"><img alt="If We Do Nothing — Cost & Deaths" src="https://public.tableau.com/static/images/Ch/Chart123_17621523095430/Chart3/1_rss.png" style="border:none"/></a>
+          <a href="#"><img alt="US vs Iran — Spotlight Metrics" src="https://public.tableau.com/static/images/Ch/Chart123_17621523095430/Chart2/1_rss.png" style="border:none"/></a>
         </noscript>
         <object class="tableauViz" style="display:none">
           <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F"/>
           <param name="embed_code_version" value="3"/>
           <param name="site_root" value=""/>
-          <param name="name" value="Chart123_17621523095430&#47;Chart3"/>
+          <param name="name" value="Chart123_17621523095430&#47;Chart2"/>
           <param name="tabs" value="no"/>
           <param name="toolbar" value="yes"/>
-          <param name="static_image" value="https://public.tableau.com/static/images/Ch/Chart123_17621523095430/Chart3/1.png"/>
+          <param name="static_image" value="https://public.tableau.com/static/images/Ch/Chart123_17621523095430/Chart2/1.png"/>
           <param name="animate_transition" value="yes"/>
           <param name="display_static_image" value="yes"/>
           <param name="display_spinner" value="yes"/>
@@ -132,14 +131,14 @@
   <script>
     // Responsive sizing for this viz
     (function(){
-      const divEl=document.getElementById("viz1762222275339");
+      const divEl=document.getElementById("viz1762479667774");
       const vizEl=divEl.getElementsByTagName("object")[0];
       function sizeIt(){ vizEl.style.width="100%"; vizEl.style.height=Math.max(360, divEl.offsetWidth*0.62)+"px"; }
       sizeIt();
       let raf; window.addEventListener("resize",()=>{ cancelAnimationFrame(raf); raf=requestAnimationFrame(sizeIt); });
     })();
 
-    // Flip submenus if they overflow the viewport
+    // Flip submenus if they overflow the viewport (same UX as the other page)
     document.addEventListener('DOMContentLoaded',function(){
       document.querySelectorAll('.dropdown-submenu').forEach(sm=>{
         sm.addEventListener('mouseenter',function(){
