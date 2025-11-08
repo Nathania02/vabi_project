@@ -143,10 +143,10 @@
 </head>
 <body>
   <!-- Navigation Bar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-    <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <div class="container">
       <a class="navbar-brand fw-bold" href="index.html">
-        <span style="color: #667eea;">Data</span> Insights
+        <span style="color: #667eea;">VABI</span> Project
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
@@ -154,10 +154,10 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">Home</a>
+            <a class="nav-link active" href="index.html">Home</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle active" href="#" id="dashboardDropdown" role="button" data-bs-toggle="dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dashboardDropdown" role="button" data-bs-toggle="dropdown">
               Dashboards
             </a>
             <ul class="dropdown-menu">
@@ -168,11 +168,11 @@
                   <li><a class="dropdown-item" href="D1_chart1.html">Types of Trafficking</a></li>
                   <li><a class="dropdown-item" href="D1_chart5.html">Flow of Trafficking</a></li>
                   <li><a class="dropdown-item" href="D1_chart2.html">Victims trafficked to other countries</a></li>
-                  <li><a class="dropdown-item" href="D1_chart3.html">Trend of Victims being trafficked</a></li>
-                  <li><a class="dropdown-item" href="D1_chart4.html">Organ Removal Cases</a></li>
+                  <li><a class="dropdown-item" href="D1_chart3.html">Trend of Victims being trafficked & Organ Removal</a></li>
+                  <li><a class="dropdown-item" href="D1_GDP_Analysis.html">GDP Analysis</a></li>
                 </ul>
               </li>
-              
+
               <!-- Organ Demand and Supply Topic -->
               <li class="dropdown-submenu">
                 <a class="dropdown-item has-submenu" href="#">Organ Supply and Demand</a>
@@ -182,6 +182,17 @@
                   <li><a class="dropdown-item" href="D2_chart3.html">Demand and Supply of Organs</a></li>
                   <li><a class="dropdown-item" href="D2_chart4.html">Transplant done vs Waiting list</a></li>
                   <li><a class="dropdown-item" href="D2_chart5.html">Mortality Rate</a></li>
+                </ul>
+              </li>
+              
+              <!-- Health Outcomes Topic -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item has-submenu" href="#">Health Outcomes</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="D3_chart1.html">Surgery Cost Comparison</a></li>
+                  <li><a class="dropdown-item" href="D3_chart2.html">Hidden Costs After Surgery</a></li>
+                  <li><a class="dropdown-item" href="D3_chart3.html">Health Outcomes Analysis</a></li>
+                  <li><a class="dropdown-item" href="D3_chart4.html">Long Term Total Cost</a></li>
                 </ul>
               </li>
 
@@ -195,31 +206,19 @@
                   <li><a class="dropdown-item" href="D4_chart4.html">Iran's Policy Reforms</a></li>
                 </ul>
               </li>
-              
-              <!-- Climate Change Topic -->
-              <li class="dropdown-submenu">
-                <a class="dropdown-item has-submenu" href="#">Climate Change</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="climate-temperature.html">Temperature Trends</a></li>
-                  <li><a class="dropdown-item" href="climate-emissions.html">Carbon Emissions</a></li>
-                  <li><a class="dropdown-item" href="climate-energy.html">Renewable Energy</a></li>
-                  <li><a class="dropdown-item" href="climate-disasters.html">Natural Disasters</a></li>
-                  <li><a class="dropdown-item" href="climate-impact.html">Regional Impact</a></li>
-                  <li><a class="dropdown-item" href="climate-policy.html">Policy Effectiveness</a></li>
-                </ul>
-              </li>
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="index.html#about">About</a>
+            <a class="nav-link" href="#about">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="index.html#contact">Contact</a>
+            <a class="nav-link" href="#contact">Contact</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
+
 
   <!-- Breadcrumb Navigation -->
   <div class="breadcrumb-nav">
@@ -237,37 +236,37 @@
   <!-- Main Content -->
   <div class="content-wrapper">
     <h1>Trafficking Victims Analysis Dashboard</h1>
-    <p class="sub">Trend of Victims being trafficked to countries (Top 5 countries) - Interactive visualization</p>
+    <p class="sub">Trend of Victims being trafficked & Organ Removal - Interactive visualization</p>
 
     <!-- TABLEAU EMBED -->
     <div class="viz-box">
-        <div class='tableauPlaceholder' id='viz1762348048004' style='position: relative'>\
-            <noscript>
-                <a href='#'>
-                    <img 
-                        alt='Trend of victims being trafficked to countries (Top 5 countries) ' 
-                        src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Gr&#47;GroupProject_17621829458510&#47;Sheet23&#47;1_rss.png' 
-                        style='border: none' />
-                    </a>
-                </noscript>
-                <object class='tableauViz'  style='display:none;'>
-                    <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> 
-                    <param name='embed_code_version' value='3' /> 
-                    <param name='site_root' value='' />
-                    <param name='name' value='GroupProject_17621829458510&#47;Sheet23' />
-                    <param name='tabs' value='no' />
-                    <param name='toolbar' value='yes' />
-                    <param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Gr&#47;GroupProject_17621829458510&#47;Sheet23&#47;1.png' /> 
-                    <param name='animate_transition' value='yes' />
-                    <param name='display_static_image' value='yes' />
-                    <param name='display_spinner' value='yes' />
-                    <param name='display_overlay' value='yes' />
-                    <param name='display_count' value='yes' />
-                    <param name='language' value='en-US' />
-                    <param name='filter' value='publish=yes' />
-                </object>
-            </div>                             
+      <div class='tableauPlaceholder' id='viz1762571759184' style='position: relative'>
+        <noscript>
+          <a href='#'>
+            <img 
+              alt='Dashboard 1 ' 
+              src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Gr&#47;GroupProject_17621829458510&#47;Dashboard1&#47;1_rss.png' 
+              style='border: none' />
+            </a>
+          </noscript>
+          <object class='tableauViz'  style='display:none;'>
+            <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> 
+            <param name='embed_code_version' value='3' /> 
+            <param name='site_root' value='' />
+            <param name='name' value='GroupProject_17621829458510&#47;Dashboard1' />
+            <param name='tabs' value='no' />
+            <param name='toolbar' value='yes' />
+            <param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Gr&#47;GroupProject_17621829458510&#47;Dashboard1&#47;1.png' /> 
+            <param name='animate_transition' value='yes' />
+            <param name='display_static_image' value='yes' />
+            <param name='display_spinner' value='yes' />
+            <param name='display_overlay' value='yes' />
+            <param name='display_count' value='yes' />
+            <param name='language' value='en-US' />
+            <param name='filter' value='publish=yes' />
+          </object>
         </div>
+      </div>             
   <!-- Tableau v1 embed script -->
   <script src="https://public.tableau.com/javascripts/api/viz_v1.js"></script>
   <!-- D3 -->
@@ -276,11 +275,11 @@
   <script>
     // Tableau viz sizing
     (function setupVizSizing() {
-        var divElement = document.getElementById('viz1762348048004');    
+        var divElement = document.getElementById('viz1762571759184');    
         var vizElement = divElement.getElementsByTagName('object')[0];       
     function sizeIt() {
         vizElement.style.width='100%';
-        vizElement.style.height=(divElement.offsetWidth*0.50)+'px'; 
+        vizElement.style.height=(divElement.offsetWidth*0.75)+'px'; 
       }
       sizeIt();
 
