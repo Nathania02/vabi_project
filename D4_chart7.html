@@ -585,183 +585,10 @@
 				</div>
 			</div>
 
-			<!-- Map 5: Global Headcount Poverty -->
-			<div class="card">
-				<div class="card-header">
-					💰 Map 5: Global Poverty Headcount Ratio at $3/day (Diverging from Global
-					Average)
-				</div>
-				<div class="card-body">
-					<div class="controls">
-						<div class="year-control">
-							<label>Year:</label>
-							<input
-								type="range"
-								id="headcountGlobalYearSlider"
-								class="year-slider"
-								min="1963"
-								max="2024"
-								value="2018"
-								step="1"
-							/>
-							<span id="headcountGlobalYearDisplay" class="year-display">2018</span>
-						</div>
-						<button id="headcountGlobalPlayBtn" class="play-btn">
-							<span>▶</span> Play
-						</button>
-					</div>
-					<div id="headcountGlobalMap" class="map-container loading">
-						Loading global poverty headcount map...
-					</div>
-					<div class="legend">
-						<span class="legend-title">Poverty Headcount (% at $3/day):</span>
-						<div class="legend-gradient">
-							<div
-								class="gradient-bar"
-								style="background: linear-gradient(to right, #28a745, #ffc107, #dc3545)"
-							></div>
-						</div>
-						<div style="width: 100%; margin-top: 5px">
-							<div class="gradient-labels" style="width: 200px">
-								<span>Below Average</span><span>Average</span><span>Above Average</span>
-							</div>
-						</div>
-					</div>
-					<div id="headcountGlobalStats" class="stats-box">
-						<div class="stats-row">
-							<span class="stats-label">Global Average Headcount:</span
-							><span id="headcountGlobalAvgValue" class="stats-value">0%</span>
-						</div>
-						<div class="stats-row">
-							<span class="stats-label">Countries with data:</span
-							><span id="headcountGlobalCountCount" class="stats-value">0</span>
-						</div>
-						<div class="stats-row">
-							<span class="stats-label">Highest Poverty:</span
-							><span id="headcountGlobalMaxValue" class="stats-value">-</span>
-						</div>
-						<div class="stats-row">
-							<span class="stats-label">Lowest Poverty:</span
-							><span id="headcountGlobalMinValue" class="stats-value">-</span>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Chart 6: Top 5 Headcount Racing Bar Chart -->
-			<div class="card">
-				<div class="card-header">
-					🏆 Chart 6: Top 5 Economies Poverty Headcount Racing Bar Chart (1963-2024)
-				</div>
-				<div class="card-body">
-					<div class="controls">
-						<div class="year-control">
-							<label>Year:</label>
-							<input
-								type="range"
-								id="headcountTop5YearSlider"
-								class="year-slider"
-								min="1963"
-								max="2024"
-								value="2011"
-								step="1"
-							/>
-							<span id="headcountTop5YearDisplay" class="year-display">2011</span>
-						</div>
-						<button id="headcountTop5PlayBtn" class="play-btn">
-							<span>▶</span> Play
-						</button>
-					</div>
-					<div id="headcountTop5Chart" style="width: 100%; height: 500px"></div>
-				</div>
-			</div>
-
-			<!-- Chart 7: Scatter Plot - Headcount vs Organ Trafficking -->
-			<div class="card">
-				<div class="card-header">
-					📊 Chart 7: USA - Poverty Headcount vs Organ Trafficking Time Series
-					(2003-2023)
-				</div>
-				<div class="card-body">
-					<div class="controls">
-						<div style="margin-left: 20px">
-							<label style="margin-right: 10px; font-weight: 600; color: #667eea"
-								>View:</label
-							>
-							<button id="barViewBtn" class="view-toggle-btn active">
-								Time Series Bars
-							</button>
-							<button id="scatterViewBtn" class="view-toggle-btn">Scatter Plot</button>
-							<button id="logViewBtn" class="view-toggle-btn">Log Transform</button>
-						</div>
-					</div>
-					<div
-						id="scatterChart"
-						style="width: 100%; height: 600px; position: relative"
-					>
-						<div
-							id="correlationInfo"
-							style="
-								position: absolute;
-								top: 10px;
-								right: 10px;
-								background: rgba(0, 0, 0, 0.9);
-								padding: 20px;
-								border-radius: 12px;
-								font-size: 14px;
-								color: #fff;
-								display: none;
-								border: 2px solid rgba(102, 126, 234, 0.5);
-								box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-							"
-						>
-							<div
-								style="
-									font-weight: 700;
-									margin-bottom: 10px;
-									color: #667eea;
-									font-size: 16px;
-								"
-							>
-								📈 Statistical Analysis
-							</div>
-							<div style="margin: 5px 0">
-								<strong>R²:</strong> <span id="rSquared">-</span>
-							</div>
-							<div style="margin: 5px 0">
-								<strong>Correlation:</strong> <span id="correlation">-</span>
-							</div>
-							<div
-								style="
-									margin-top: 10px;
-									font-size: 13px;
-									color: #f59e0b;
-									font-weight: 600;
-								"
-							>
-								<span id="correlationType">-</span>
-							</div>
-							<div
-								style="margin-top: 10px; font-size: 12px; color: #aaa; line-height: 1.5"
-							>
-								US data: <span id="dataPoints">-</span> years analyzed
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<footer class="text-muted small">
-				Data source: World Bank GDP, GINI Coefficient & Poverty Headcount Ratio |
-				Counter-Trafficking Data Collaborative (CTDC) | 217 countries | GDP:
-				1960-2024, GINI: 1963-2024, Headcount: 1963-2024 |
-				<strong>Chart 7 focuses on USA data: 2003-2023</strong>
-			</footer>
-
-			<!-- Chart 8: Pareto Chart - US Income Distribution by Decile -->
+			<!-- Chart 5: Pareto Chart - US Income Distribution by Decile -->
 			<div class="card mt-4">
 				<div class="card-header">
-					📊 Chart 8: USA Income Distribution by Decile (Pareto Chart)
+					📊 Chart 5: USA Income Distribution by Decile (Pareto Chart)
 				</div>
 				<div class="card-body">
 					<div class="alert alert-info" role="alert">
@@ -773,21 +600,23 @@
 					</div>
 					<div
 						id="paretoChart"
-						style="width: 100%; height: 600px; position: relative"
+						style="width: 100%; height: 750px; position: relative; padding: 20px 0"
 					>
 						<div
 							id="paretoInfo"
 							style="
 								position: absolute;
-								top: 10px;
-								right: 10px;
+								top: 30px;
+								right: 30px;
 								background: rgba(0, 0, 0, 0.9);
-								padding: 20px;
+								padding: 18px;
 								border-radius: 12px;
-								font-size: 14px;
+								font-size: 13px;
 								color: #fff;
 								border: 2px solid rgba(102, 126, 234, 0.5);
 								box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+								max-width: 250px;
+								z-index: 10;
 							"
 						>
 							<div
@@ -795,29 +624,30 @@
 									font-weight: 700;
 									margin-bottom: 10px;
 									color: #667eea;
-									font-size: 16px;
+									font-size: 15px;
 								"
 							>
 								📊 Income Inequality Metrics
 							</div>
-							<div style="margin: 5px 0">
+							<div style="margin: 5px 0; font-size: 12px">
 								<strong>Top 10%:</strong> <span id="top10Share">-</span>
 							</div>
-							<div style="margin: 5px 0">
+							<div style="margin: 5px 0; font-size: 12px">
 								<strong>Bottom 50%:</strong> <span id="bottom50Share">-</span>
 							</div>
 							<div
 								style="
 									margin-top: 10px;
-									font-size: 13px;
+									font-size: 12px;
 									color: #f59e0b;
 									font-weight: 600;
+									line-height: 1.4;
 								"
 							>
 								<span id="inequalityLevel">-</span>
 							</div>
 							<div
-								style="margin-top: 10px; font-size: 12px; color: #aaa; line-height: 1.5"
+								style="margin-top: 10px; font-size: 11px; color: #aaa; line-height: 1.5"
 							>
 								Based on 2023 US Census data
 							</div>
@@ -848,8 +678,6 @@
 			let top5PlayInterval = null;
 			let giniGlobalPlayInterval = null;
 			let giniTop5PlayInterval = null;
-			let headcountGlobalPlayInterval = null;
-			let headcountTop5PlayInterval = null;
 			let scatterPlayInterval = null;
 			let currentScatterView = "bar"; // 'bar', 'scatter', 'log'
 			const top5Countries = {
@@ -951,20 +779,12 @@
 					initTop5Map();
 					initGiniGlobalMap();
 					initGiniTop5Map();
-					initHeadcountGlobalMap();
-					initHeadcountTop5Map();
 
 					// Set up controls
 					setupGlobalControls();
 					setupTop5Controls();
 					setupGiniGlobalControls();
 					setupGiniTop5Controls();
-					setupHeadcountGlobalControls();
-					setupHeadcountTop5Controls();
-
-					// Initialize scatter chart
-					initScatterChart();
-					setupScatterControls();
 
 					// Initialize Pareto chart
 					initParetoChart();
@@ -1292,7 +1112,7 @@
 					.selectAll("text")
 					.style("font-size", "14px")
 					.style("font-weight", "600")
-					.style("fill", "#fff");
+					.style("fill", "#333");
 
 				// Style axes
 				g.selectAll(".x-axis path, .x-axis line, .y-axis path, .y-axis line").style(
@@ -1736,7 +1556,7 @@
 					.selectAll("text")
 					.style("font-size", "14px")
 					.style("font-weight", "600")
-					.style("fill", "#fff");
+					.style("fill", "#333");
 
 				// Style axes
 				g.selectAll(".x-axis path, .x-axis line, .y-axis path, .y-axis line").style(
@@ -1842,1088 +1662,48 @@
 			}
 
 			// ============================================
-			// MAP 5: GLOBAL HEADCOUNT
-			// ============================================
-
-			function initHeadcountGlobalMap() {
-				const container = d3.select("#headcountGlobalMap");
-				container.html("");
-				const containerWidth = container.node().getBoundingClientRect().width;
-				const width = containerWidth;
-				const height = 600;
-				const svg = container
-					.append("svg")
-					.attr("width", width)
-					.attr("height", height);
-				const projection = d3
-					.geoMercator()
-					.scale(width / 6.5)
-					.translate([width / 2, height / 1.5]);
-				const path = d3.geoPath().projection(projection);
-				const g = svg.append("g");
-				g.selectAll("path")
-					.data(worldGeoJSON.features)
-					.enter()
-					.append("path")
-					.attr("class", "country")
-					.attr("d", path)
-					.attr("id", (d) => "headcount-global-" + d.id)
-					.on("mouseover", handleHeadcountGlobalMouseover)
-					.on("mouseout", () => tooltip.classed("show", false));
-				updateHeadcountGlobalMap(2018);
-			}
-
-			function updateHeadcountGlobalMap(year) {
-				const yearData = headcountData.filter((d) => d.year === year);
-				if (yearData.length === 0) {
-					console.warn("No headcount data for year:", year);
-					return;
-				}
-				const globalAverage = d3.mean(yearData, (d) => d.headcount);
-				const headcountMap = new Map(yearData.map((d) => [d.code, d.headcount]));
-				const maxHeadcount = d3.max(yearData, (d) => d.headcount);
-				const minHeadcount = d3.min(yearData, (d) => d.headcount);
-				const colorScale = d3
-					.scaleLinear()
-					.domain([minHeadcount, globalAverage, maxHeadcount])
-					.range(["#28a745", "#ffc107", "#dc3545"]);
-				worldGeoJSON.features.forEach((feature) => {
-					const code = getCountryCode(feature);
-					const headcount = headcountMap.get(code);
-					const color = headcount !== undefined ? colorScale(headcount) : "#333";
-					d3
-						.select("#headcount-global-" + feature.id)
-						.transition()
-						.duration(500)
-						.attr("fill", color);
-				});
-				const maxCountry = yearData.reduce((max, d) =>
-					d.headcount > max.headcount ? d : max
-				);
-				const minCountry = yearData.reduce((min, d) =>
-					d.headcount < min.headcount ? d : min
-				);
-				d3.select("#headcountGlobalAvgValue").text(globalAverage.toFixed(1) + "%");
-				d3.select("#headcountGlobalCountCount").text(yearData.length);
-				d3
-					.select("#headcountGlobalMaxValue")
-					.text(`${maxCountry.country} (${maxCountry.headcount.toFixed(1)}%)`);
-				d3
-					.select("#headcountGlobalMinValue")
-					.text(`${minCountry.country} (${minCountry.headcount.toFixed(1)}%)`);
-			}
-
-			function handleHeadcountGlobalMouseover(event, d) {
-				const code = getCountryCode(d);
-				const year = +document.getElementById("headcountGlobalYearSlider").value;
-				const yearData = headcountData.filter((data) => data.year === year);
-				const countryData = yearData.find((data) => data.code === code);
-				const globalAverage = d3.mean(yearData, (data) => data.headcount);
-				if (countryData) {
-					const diff = countryData.headcount - globalAverage;
-					const diffPercent = ((diff / globalAverage) * 100).toFixed(1);
-					const indicator = diff > 0 ? "▲" : "▼";
-					const color = diff > 0 ? "#dc3545" : "#28a745";
-					tooltip
-						.classed("show", true)
-						.html(
-							`<div class="tooltip-title">${
-								countryData.country
-							}</div><div class="tooltip-row"><span class="tooltip-label">Year:</span><span class="tooltip-value">${year}</span></div><div class="tooltip-row"><span class="tooltip-label">Poverty Headcount:</span><span class="tooltip-value">${countryData.headcount.toFixed(
-								1
-							)}%</span></div><div class="tooltip-row"><span class="tooltip-label">Global average:</span><span class="tooltip-value">${globalAverage.toFixed(
-								1
-							)}%</span></div><div class="tooltip-row"><span class="tooltip-label">Difference:</span><span class="tooltip-value" style="color: ${color};">${indicator} ${Math.abs(
-								diffPercent
-							)}%</span></div>`
-						)
-						.style("left", event.pageX + 15 + "px")
-						.style("top", event.pageY - 28 + "px");
-				}
-			}
-
-			// ============================================
-			// CHART 6: TOP 5 HEADCOUNT BAR CHART
-			// ============================================
-
-			function hasEnoughHeadcountData(year) {
-				const top5Codes = Object.keys(top5Countries);
-				return (
-					headcountData.filter((d) => d.year === year && top5Codes.includes(d.code))
-						.length >= 3
-				);
-			}
-
-			function initHeadcountTop5Map() {
-				const container = d3.select("#headcountTop5Chart");
-				container.html("");
-				const containerWidth = container.node().getBoundingClientRect().width;
-				const margin = { top: 20, right: 150, bottom: 40, left: 200 };
-				const svg = container
-					.append("svg")
-					.attr("width", containerWidth)
-					.attr("height", 500);
-				svg
-					.append("g")
-					.attr("transform", `translate(${margin.left},${margin.top})`)
-					.append("g")
-					.attr("class", "x-axis");
-				svg.select("g").append("g").attr("class", "y-axis");
-				updateHeadcountTop5Map(2011);
-			}
-
-			function updateHeadcountTop5Map(year) {
-				const container = d3.select("#headcountTop5Chart");
-				const containerWidth = container.node().getBoundingClientRect().width;
-				const margin = { top: 20, right: 150, bottom: 40, left: 200 };
-				const chartWidth = containerWidth - margin.left - margin.right;
-				const chartHeight = 500 - margin.top - margin.bottom;
-				const top5Codes = Object.keys(top5Countries);
-				let yearData = headcountData.filter(
-					(d) => d.year === year && top5Codes.includes(d.code)
-				);
-				if (yearData.length === 0) return;
-				yearData.sort((a, b) => b.headcount - a.headcount);
-				const svg = container.select("svg");
-				const g = svg.select("g");
-				const xScale = d3
-					.scaleLinear()
-					.domain([0, d3.max(yearData, (d) => d.headcount) * 1.1])
-					.range([0, chartWidth]);
-				const yScale = d3
-					.scaleBand()
-					.domain(yearData.map((d) => d.country))
-					.range([0, chartHeight])
-					.padding(0.2);
-				const colorScale = d3
-					.scaleOrdinal()
-					.domain(top5Codes)
-					.range(["#3b82f6", "#ef4444", "#f59e0b", "#8b5cf6", "#10b981"]);
-				const bars = g.selectAll(".bar").data(yearData, (d) => d.code);
-				bars.exit().transition().duration(400).attr("width", 0).remove();
-				bars
-					.enter()
-					.append("rect")
-					.attr("class", "bar")
-					.attr("x", 0)
-					.attr("y", (d) => yScale(d.country))
-					.attr("width", 0)
-					.attr("height", yScale.bandwidth())
-					.attr("fill", (d) => colorScale(d.code))
-					.attr("rx", 4)
-					.merge(bars)
-					.transition()
-					.duration(600)
-					.attr("y", (d) => yScale(d.country))
-					.attr("width", (d) => xScale(d.headcount))
-					.attr("height", yScale.bandwidth());
-				const labels = g.selectAll(".bar-label").data(yearData, (d) => d.code);
-				labels.exit().remove();
-				labels
-					.enter()
-					.append("text")
-					.attr("class", "bar-label")
-					.attr("dy", "0.35em")
-					.style("font-size", "14px")
-					.style("font-weight", "600")
-					.merge(labels)
-					.transition()
-					.duration(600)
-					.attr("x", (d) => {
-						const barEnd = xScale(d.headcount);
-						return barEnd + 80 > chartWidth ? barEnd - 5 : barEnd + 10;
-					})
-					.attr("y", (d) => yScale(d.country) + yScale.bandwidth() / 2)
-					.attr("text-anchor", (d) =>
-						xScale(d.headcount) + 80 > chartWidth ? "end" : "start"
-					)
-					.style("fill", (d) =>
-						xScale(d.headcount) + 80 > chartWidth ? "#ffffff" : "#667eea"
-					)
-					.text((d) => d.headcount.toFixed(1) + "%");
-				g.select(".x-axis")
-					.attr("transform", `translate(0,${chartHeight})`)
-					.transition()
-					.duration(600)
-					.call(
-						d3
-							.axisBottom(xScale)
-							.ticks(5)
-							.tickFormat((d) => d.toFixed(1) + "%")
-					)
-					.selectAll("text")
-					.style("fill", "#ccc");
-				g.select(".y-axis")
-					.transition()
-					.duration(600)
-					.call(d3.axisLeft(yScale))
-					.selectAll("text")
-					.style("font-size", "14px")
-					.style("font-weight", "600")
-					.style("fill", "#fff");
-				g.selectAll(".x-axis path, .x-axis line, .y-axis path, .y-axis line").style(
-					"stroke",
-					"#666"
-				);
-			}
-
-			function setupHeadcountGlobalControls() {
-				const slider = document.getElementById("headcountGlobalYearSlider");
-				const display = document.getElementById("headcountGlobalYearDisplay");
-				const playBtn = document.getElementById("headcountGlobalPlayBtn");
-				slider.addEventListener("input", (e) => {
-					const year = +e.target.value;
-					display.textContent = year;
-					updateHeadcountGlobalMap(year);
-				});
-				playBtn.addEventListener("click", () => {
-					if (headcountGlobalPlayInterval) {
-						clearInterval(headcountGlobalPlayInterval);
-						headcountGlobalPlayInterval = null;
-						playBtn.innerHTML = "<span>▶</span> Play";
-						playBtn.classList.remove("playing");
-					} else {
-						playBtn.innerHTML = "<span>⏸</span> Pause";
-						playBtn.classList.add("playing");
-						headcountGlobalPlayInterval = setInterval(() => {
-							let currentYear = +slider.value;
-							currentYear++;
-							if (currentYear > 2024) currentYear = 1963;
-							slider.value = currentYear;
-							display.textContent = currentYear;
-							updateHeadcountGlobalMap(currentYear);
-						}, 800);
-					}
-				});
-			}
-
-			function setupHeadcountTop5Controls() {
-				const slider = document.getElementById("headcountTop5YearSlider");
-				const display = document.getElementById("headcountTop5YearDisplay");
-				const playBtn = document.getElementById("headcountTop5PlayBtn");
-				slider.addEventListener("input", (e) => {
-					const year = +e.target.value;
-					display.textContent = year;
-					updateHeadcountTop5Map(year);
-				});
-				playBtn.addEventListener("click", () => {
-					if (headcountTop5PlayInterval) {
-						clearInterval(headcountTop5PlayInterval);
-						headcountTop5PlayInterval = null;
-						playBtn.innerHTML = "<span>▶</span> Play";
-						playBtn.classList.remove("playing");
-					} else {
-						playBtn.innerHTML = "<span>⏸</span> Pause";
-						playBtn.classList.add("playing");
-						headcountTop5PlayInterval = setInterval(() => {
-							let currentYear = +slider.value;
-							let attempts = 0;
-							do {
-								currentYear++;
-								if (currentYear > 2024) currentYear = 1963;
-								attempts++;
-								if (attempts > 100) {
-									clearInterval(headcountTop5PlayInterval);
-									headcountTop5PlayInterval = null;
-									playBtn.innerHTML = "<span>▶</span> Play";
-									playBtn.classList.remove("playing");
-									return;
-								}
-							} while (!hasEnoughHeadcountData(currentYear));
-							slider.value = currentYear;
-							display.textContent = currentYear;
-							updateHeadcountTop5Map(currentYear);
-						}, 800);
-					}
-				});
-			}
-
-			// ============================================
-			// CHART 7: SCATTER PLOT - HEADCOUNT VS TRAFFICKING (US ONLY)
-			// ============================================
-
-			function initScatterChart() {
-				updateScatterChart("bar");
-			}
-
-			function calculateCorrelation(data) {
-				const n = data.length;
-				if (n < 2) return { r: 0, rSquared: 0 };
-				const sumX = d3.sum(data, (d) => d.headcount);
-				const sumY = d3.sum(data, (d) => d.organCases);
-				const sumXY = d3.sum(data, (d) => d.headcount * d.organCases);
-				const sumX2 = d3.sum(data, (d) => d.headcount * d.headcount);
-				const sumY2 = d3.sum(data, (d) => d.organCases * d.organCases);
-				const r =
-					(n * sumXY - sumX * sumY) /
-					Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
-				return { r: r, rSquared: r * r };
-			}
-
-			function updateScatterChart(viewType) {
-				const container = d3.select("#scatterChart");
-				const containerWidth = container.node().getBoundingClientRect().width;
-				const width = containerWidth;
-				const height = 600;
-				const margin = { top: 60, right: 80, bottom: 80, left: 100 };
-				const chartWidth = width - margin.left - margin.right;
-				const chartHeight = height - margin.top - margin.bottom;
-
-				// Filter for US data only
-				const usData = scatterData
-					.filter((d) => d.code === "USA")
-					.sort((a, b) => a.year - b.year);
-				if (usData.length === 0) {
-					console.error("No US data found in scatter data");
-					return;
-				}
-
-				const stats = calculateCorrelation(usData);
-				d3.select("#rSquared").text(stats.rSquared.toFixed(3));
-				d3.select("#correlation").text(stats.r.toFixed(3));
-				d3.select("#dataPoints").text(usData.length);
-				const corrType =
-					Math.abs(stats.r) > 0.7
-						? "Strong"
-						: Math.abs(stats.r) > 0.4
-						? "Moderate"
-						: "Weak";
-				const corrDir = stats.r >= 0 ? "Positive" : "Negative";
-				d3.select("#correlationType").text(`${corrType} ${corrDir} Correlation`);
-
-				// Fade out existing content, then transition
-				const existingSvg = container.select("svg");
-				if (!existingSvg.empty()) {
-					existingSvg
-						.transition()
-						.duration(300)
-						.style("opacity", 0)
-						.on("end", function () {
-							d3.select(this).remove();
-							renderChart();
-						});
-				} else {
-					renderChart();
-				}
-
-				function renderChart() {
-					const svg = container
-						.append("svg")
-						.attr("width", width)
-						.attr("height", height)
-						.style("opacity", 0);
-
-					const g = svg
-						.append("g")
-						.attr("transform", `translate(${margin.left},${margin.top})`);
-
-					if (viewType === "bar") {
-						// Time series bar + line chart view
-						d3
-							.select("#correlationInfo")
-							.transition()
-							.duration(300)
-							.style("opacity", 0)
-							.on("end", function () {
-								d3.select(this).style("display", "none");
-							});
-
-						const xScale = d3
-							.scaleBand()
-							.domain(usData.map((d) => d.year))
-							.range([0, chartWidth])
-							.padding(0.2);
-
-						const yScaleLeft = d3
-							.scaleLinear()
-							.domain([0, d3.max(usData, (d) => d.organCases) * 1.1])
-							.range([chartHeight, 0]);
-
-						// Right Y-axis for poverty headcount percentage
-						const yScaleRight = d3
-							.scaleLinear()
-							.domain([0, d3.max(usData, (d) => d.headcount) * 1.2])
-							.range([chartHeight, 0]);
-
-						const colorScale = d3
-							.scaleLinear()
-							.domain([
-								d3.min(usData, (d) => d.headcount),
-								d3.max(usData, (d) => d.headcount),
-							])
-							.range(["#10b981", "#ef4444"]);
-
-						// Create bars (staged entrance)
-						const bars = g
-							.selectAll(".bar")
-							.data(usData)
-							.enter()
-							.append("rect")
-							.attr("class", "bar")
-							.attr("x", (d) => xScale(d.year))
-							.attr("y", chartHeight)
-							.attr("width", xScale.bandwidth())
-							.attr("height", 0)
-							.attr("fill", (d) => colorScale(d.headcount))
-							.attr("rx", 4)
-							.style("cursor", "pointer")
-							.style("opacity", 0);
-
-						// Staged entrance: bars appear one by one
-						bars
-							.transition()
-							.delay((d, i) => i * 50)
-							.duration(600)
-							.ease(d3.easeCubicOut)
-							.style("opacity", 0.7)
-							.attr("y", (d) => yScaleLeft(d.organCases))
-							.attr("height", (d) => chartHeight - yScaleLeft(d.organCases));
-
-						bars
-							.on("mouseover", function (event, d) {
-								d3.select(this).transition().duration(200).style("opacity", 1);
-								tooltip
-									.classed("show", true)
-									.html(
-										`<div class="tooltip-title">United States (${d.year})</div>
-								<div class="tooltip-row"><span class="tooltip-label">Poverty Headcount:</span><span class="tooltip-value">${d.headcount.toFixed(
-									2
-								)}%</span></div>
-								<div class="tooltip-row"><span class="tooltip-label">Organ Cases:</span><span class="tooltip-value">${
-									d.organCases
-								}</span></div>`
-									)
-									.style("left", event.pageX + 15 + "px")
-									.style("top", event.pageY - 28 + "px");
-							})
-							.on("mouseout", function () {
-								d3.select(this).transition().duration(200).style("opacity", 0.7);
-								tooltip.classed("show", false);
-							});
-
-						// Create line path for poverty headcount
-						const line = d3
-							.line()
-							.x((d) => xScale(d.year) + xScale.bandwidth() / 2)
-							.y((d) => yScaleRight(d.headcount))
-							.curve(d3.curveMonotoneX);
-
-						const linePath = g
-							.append("path")
-							.datum(usData)
-							.attr("class", "poverty-line")
-							.attr("fill", "none")
-							.attr("stroke", "#f59e0b")
-							.attr("stroke-width", 3)
-							.attr("d", line)
-							.style("opacity", 0);
-
-						// Animate line drawing
-						const totalLength = linePath.node().getTotalLength();
-						linePath
-							.attr("stroke-dasharray", totalLength + " " + totalLength)
-							.attr("stroke-dashoffset", totalLength)
-							.transition()
-							.delay(700)
-							.duration(1200)
-							.ease(d3.easeLinear)
-							.style("opacity", 1)
-							.attr("stroke-dashoffset", 0);
-
-						// Add dots on line
-						const lineDots = g
-							.selectAll(".line-dot")
-							.data(usData)
-							.enter()
-							.append("circle")
-							.attr("class", "line-dot")
-							.attr("cx", (d) => xScale(d.year) + xScale.bandwidth() / 2)
-							.attr("cy", (d) => yScaleRight(d.headcount))
-							.attr("r", 0)
-							.attr("fill", "#f59e0b")
-							.attr("stroke", "#fff")
-							.attr("stroke-width", 2)
-							.style("cursor", "pointer")
-							.style("opacity", 0);
-
-						lineDots
-							.transition()
-							.delay((d, i) => 1900 + i * 40)
-							.duration(300)
-							.ease(d3.easeBackOut)
-							.attr("r", 5)
-							.style("opacity", 1);
-
-						lineDots
-							.on("mouseover", function (event, d) {
-								d3.select(this).transition().duration(200).attr("r", 8);
-								tooltip
-									.classed("show", true)
-									.html(
-										`<div class="tooltip-title">United States (${d.year})</div>
-								<div class="tooltip-row"><span class="tooltip-label">Poverty Headcount:</span><span class="tooltip-value">${d.headcount.toFixed(
-									2
-								)}%</span></div>
-								<div class="tooltip-row"><span class="tooltip-label">Organ Cases:</span><span class="tooltip-value">${
-									d.organCases
-								}</span></div>`
-									)
-									.style("left", event.pageX + 15 + "px")
-									.style("top", event.pageY - 28 + "px");
-							})
-							.on("mouseout", function () {
-								d3.select(this).transition().duration(200).attr("r", 5);
-								tooltip.classed("show", false);
-							});
-
-						// Left Y-axis (Organ Cases)
-						g.append("g")
-							.attr("class", "y-axis-left")
-							.style("opacity", 0)
-							.call(d3.axisLeft(yScaleLeft).ticks(8))
-							.transition()
-							.delay(400)
-							.duration(600)
-							.style("opacity", 1);
-
-						g.selectAll(".y-axis-left text")
-							.style("font-size", "12px")
-							.style("fill", "#ccc");
-
-						// Right Y-axis (Poverty %)
-						g.append("g")
-							.attr("class", "y-axis-right")
-							.attr("transform", `translate(${chartWidth}, 0)`)
-							.style("opacity", 0)
-							.call(
-								d3
-									.axisRight(yScaleRight)
-									.ticks(8)
-									.tickFormat((d) => d.toFixed(1) + "%")
-							)
-							.transition()
-							.delay(400)
-							.duration(600)
-							.style("opacity", 1);
-
-						g.selectAll(".y-axis-right text")
-							.style("font-size", "12px")
-							.style("fill", "#f59e0b");
-
-						// X-axis
-						g.append("g")
-							.attr("class", "x-axis")
-							.attr("transform", `translate(0,${chartHeight})`)
-							.style("opacity", 0)
-							.call(d3.axisBottom(xScale).tickFormat(d3.format("d")))
-							.transition()
-							.delay(400)
-							.duration(600)
-							.style("opacity", 1);
-
-						g.selectAll(".x-axis text")
-							.style("fill", "#ccc")
-							.style("font-size", "11px")
-							.attr("transform", "rotate(-45)")
-							.style("text-anchor", "end");
-
-						g.selectAll(
-							".x-axis path, .x-axis line, .y-axis-left path, .y-axis-left line, .y-axis-right path, .y-axis-right line"
-						).style("stroke", "#666");
-
-						// Axis labels
-						svg
-							.append("text")
-							.attr("x", width / 2)
-							.attr("y", height - 20)
-							.attr("text-anchor", "middle")
-							.style("font-size", "14px")
-							.style("font-weight", "600")
-							.style("fill", "#fff")
-							.style("opacity", 0)
-							.text("Year")
-							.transition()
-							.delay(800)
-							.duration(400)
-							.style("opacity", 1);
-
-						svg
-							.append("text")
-							.attr("transform", "rotate(-90)")
-							.attr("x", -height / 2)
-							.attr("y", 20)
-							.attr("text-anchor", "middle")
-							.style("font-size", "14px")
-							.style("font-weight", "600")
-							.style("fill", "#ccc")
-							.style("opacity", 0)
-							.text("Organ Trafficking Cases")
-							.transition()
-							.delay(800)
-							.duration(400)
-							.style("opacity", 1);
-
-						svg
-							.append("text")
-							.attr("transform", "rotate(90)")
-							.attr("x", height / 2)
-							.attr("y", -width + 60)
-							.attr("text-anchor", "middle")
-							.style("font-size", "14px")
-							.style("font-weight", "600")
-							.style("fill", "#f59e0b")
-							.style("opacity", 0)
-							.text("Poverty Headcount (%)")
-							.transition()
-							.delay(1200)
-							.duration(400)
-							.style("opacity", 1);
-
-						// Legend
-						const legend = svg
-							.append("g")
-							.attr("class", "legend")
-							.attr(
-								"transform",
-								`translate(${width - margin.right - 150}, ${margin.top})`
-							);
-
-						legend
-							.append("rect")
-							.attr("x", 0)
-							.attr("y", 0)
-							.attr("width", 18)
-							.attr("height", 18)
-							.attr("fill", "#667eea")
-							.attr("rx", 3)
-							.style("opacity", 0)
-							.transition()
-							.delay(1500)
-							.duration(400)
-							.style("opacity", 0.7);
-
-						legend
-							.append("text")
-							.attr("x", 25)
-							.attr("y", 14)
-							.style("font-size", "12px")
-							.style("fill", "#ccc")
-							.style("opacity", 0)
-							.text("Organ Cases")
-							.transition()
-							.delay(1500)
-							.duration(400)
-							.style("opacity", 1);
-
-						legend
-							.append("line")
-							.attr("x1", 0)
-							.attr("x2", 18)
-							.attr("y1", 35)
-							.attr("y2", 35)
-							.attr("stroke", "#f59e0b")
-							.attr("stroke-width", 3)
-							.style("opacity", 0)
-							.transition()
-							.delay(1500)
-							.duration(400)
-							.style("opacity", 1);
-
-						legend
-							.append("circle")
-							.attr("cx", 9)
-							.attr("cy", 35)
-							.attr("r", 5)
-							.attr("fill", "#f59e0b")
-							.attr("stroke", "#fff")
-							.attr("stroke-width", 2)
-							.style("opacity", 0)
-							.transition()
-							.delay(1500)
-							.duration(400)
-							.style("opacity", 1);
-
-						legend
-							.append("text")
-							.attr("x", 25)
-							.attr("y", 40)
-							.style("font-size", "12px")
-							.style("fill", "#f59e0b")
-							.style("opacity", 0)
-							.text("Poverty %")
-							.transition()
-							.delay(1500)
-							.duration(400)
-							.style("opacity", 1);
-
-						// Fade in entire SVG
-						svg.transition().duration(300).style("opacity", 1);
-					} else {
-						// Scatter plot view (with optional log scale)
-						d3
-							.select("#correlationInfo")
-							.style("display", "block")
-							.style("opacity", 0)
-							.transition()
-							.delay(1000)
-							.duration(600)
-							.style("opacity", 1);
-
-						const isLog = viewType === "log";
-
-						// Prepare scales
-						const xDomain = isLog
-							? [
-									Math.max(
-										0.1,
-										d3.min(usData, (d) => d.headcount)
-									),
-									d3.max(usData, (d) => d.headcount) * 1.2,
-							  ]
-							: [0, d3.max(usData, (d) => d.headcount) * 1.1];
-						const yDomain = isLog
-							? [1, d3.max(usData, (d) => d.organCases) * 1.5]
-							: [0, d3.max(usData, (d) => d.organCases) * 1.1];
-
-						const xScale = isLog
-							? d3.scaleLog().domain(xDomain).range([0, chartWidth])
-							: d3.scaleLinear().domain(xDomain).range([0, chartWidth]);
-
-						const yScale = isLog
-							? d3.scaleLog().domain(yDomain).range([chartHeight, 0])
-							: d3.scaleLinear().domain(yDomain).range([chartHeight, 0]);
-
-						const sizeScale = d3
-							.scaleSqrt()
-							.domain([0, d3.max(usData, (d) => d.organCases)])
-							.range([8, 20]);
-
-						const colorScale = d3
-							.scaleSequential()
-							.domain([d3.min(usData, (d) => d.year), d3.max(usData, (d) => d.year)])
-							.interpolator(d3.interpolateViridis);
-
-						// Draw regression line if correlation is meaningful
-						if (Math.abs(stats.r) > 0.3 && !isLog) {
-							const xMean = d3.mean(usData, (d) => d.headcount);
-							const yMean = d3.mean(usData, (d) => d.organCases);
-							const slope =
-								stats.r *
-								(d3.deviation(usData, (d) => d.organCases) /
-									d3.deviation(usData, (d) => d.headcount));
-							const intercept = yMean - slope * xMean;
-
-							const lineData = [
-								{
-									x: d3.min(usData, (d) => d.headcount),
-									y: slope * d3.min(usData, (d) => d.headcount) + intercept,
-								},
-								{
-									x: d3.max(usData, (d) => d.headcount),
-									y: slope * d3.max(usData, (d) => d.headcount) + intercept,
-								},
-							];
-
-							g.append("line")
-								.attr("class", "regression-line")
-								.attr("x1", xScale(lineData[0].x))
-								.attr("y1", yScale(Math.max(0, lineData[0].y)))
-								.attr("x2", xScale(lineData[0].x))
-								.attr("y2", yScale(Math.max(0, lineData[0].y)))
-								.attr("stroke", "#f59e0b")
-								.attr("stroke-width", 3)
-								.attr("stroke-dasharray", "8,4")
-								.attr("opacity", 0)
-								.transition()
-								.delay(800)
-								.duration(800)
-								.attr("x2", xScale(lineData[1].x))
-								.attr("y2", yScale(lineData[1].y))
-								.attr("opacity", 0.7);
-
-							// Add regression label
-							g.append("text")
-								.attr("x", xScale(lineData[1].x) - 10)
-								.attr("y", yScale(lineData[1].y) - 10)
-								.attr("text-anchor", "end")
-								.style("font-size", "12px")
-								.style("font-weight", "600")
-								.style("fill", "#f59e0b")
-								.style("opacity", 0)
-								.text(`y = ${slope.toFixed(2)}x + ${intercept.toFixed(1)}`)
-								.transition()
-								.delay(1400)
-								.duration(400)
-								.style("opacity", 1);
-						}
-
-						// Draw dots with staged animation
-						const dots = g
-							.selectAll(".dot")
-							.data(usData)
-							.enter()
-							.append("circle")
-							.attr("class", "dot")
-							.attr("cx", (d) =>
-								xScale(isLog ? Math.max(0.1, d.headcount) : d.headcount)
-							)
-							.attr("cy", (d) =>
-								yScale(isLog ? Math.max(1, d.organCases) : d.organCases)
-							)
-							.attr("r", 0)
-							.attr("fill", (d) => colorScale(d.year))
-							.attr("stroke", "#fff")
-							.attr("stroke-width", 2)
-							.attr("opacity", 0)
-							.style("cursor", "pointer");
-
-						// Staged entrance: dots grow and appear one by one
-						dots
-							.transition()
-							.delay((d, i) => 400 + i * 80)
-							.duration(500)
-							.ease(d3.easeElastic.period(0.4))
-							.attr("r", (d) => sizeScale(d.organCases))
-							.attr("opacity", 0.85);
-
-						// Add year labels to dots
-						g.selectAll(".dot-label")
-							.data(usData)
-							.enter()
-							.append("text")
-							.attr("class", "dot-label")
-							.attr("x", (d) =>
-								xScale(isLog ? Math.max(0.1, d.headcount) : d.headcount)
-							)
-							.attr(
-								"y",
-								(d) =>
-									yScale(isLog ? Math.max(1, d.organCases) : d.organCases) -
-									sizeScale(d.organCases) -
-									5
-							)
-							.attr("text-anchor", "middle")
-							.style("font-size", "10px")
-							.style("font-weight", "600")
-							.style("fill", "#fff")
-							.style("pointer-events", "none")
-							.style("opacity", 0)
-							.text((d) => d.year)
-							.transition()
-							.delay((d, i) => 900 + i * 80)
-							.duration(400)
-							.style("opacity", 0.8);
-
-						dots
-							.on("mouseover", function (event, d) {
-								d3
-									.select(this)
-									.transition()
-									.duration(200)
-									.attr("r", sizeScale(d.organCases) * 1.4)
-									.attr("opacity", 1)
-									.attr("stroke-width", 3);
-
-								// Highlight corresponding label
-								g.selectAll(".dot-label")
-									.filter((labelData) => labelData.year === d.year)
-									.transition()
-									.duration(200)
-									.style("opacity", 1)
-									.style("font-size", "12px");
-
-								tooltip
-									.classed("show", true)
-									.html(
-										`<div class="tooltip-title">United States (${d.year})</div>
-									<div class="tooltip-row"><span class="tooltip-label">Poverty Headcount:</span><span class="tooltip-value">${d.headcount.toFixed(
-										2
-									)}%</span></div>
-									<div class="tooltip-row"><span class="tooltip-label">Organ Cases:</span><span class="tooltip-value">${
-										d.organCases
-									}</span></div>`
-									)
-									.style("left", event.pageX + 15 + "px")
-									.style("top", event.pageY - 28 + "px");
-							})
-							.on("mouseout", function (event, d) {
-								d3
-									.select(this)
-									.transition()
-									.duration(200)
-									.attr("r", sizeScale(d.organCases))
-									.attr("opacity", 0.85)
-									.attr("stroke-width", 2);
-
-								g.selectAll(".dot-label")
-									.filter((labelData) => labelData.year === d.year)
-									.transition()
-									.duration(200)
-									.style("opacity", 0.8)
-									.style("font-size", "10px");
-
-								tooltip.classed("show", false);
-							});
-
-						const xTicks = isLog ? [0.1, 1, 10, 100] : null;
-						const yTicks = isLog ? [1, 10, 100, 1000] : null;
-
-						// Axes with fade-in
-						const xAxis = g
-							.append("g")
-							.attr("class", "x-axis")
-							.attr("transform", `translate(0,${chartHeight})`)
-							.style("opacity", 0)
-							.call(
-								isLog
-									? d3
-											.axisBottom(xScale)
-											.tickValues(xTicks)
-											.tickFormat((d) => d + "%")
-									: d3
-											.axisBottom(xScale)
-											.ticks(8)
-											.tickFormat((d) => d.toFixed(1) + "%")
-							);
-
-						xAxis.transition().delay(200).duration(600).style("opacity", 1);
-						xAxis.selectAll("text").style("fill", "#ccc").style("font-size", "12px");
-
-						const yAxis = g
-							.append("g")
-							.attr("class", "y-axis")
-							.style("opacity", 0)
-							.call(
-								isLog
-									? d3.axisLeft(yScale).tickValues(yTicks)
-									: d3.axisLeft(yScale).ticks(8)
-							);
-
-						yAxis.transition().delay(200).duration(600).style("opacity", 1);
-						yAxis.selectAll("text").style("fill", "#ccc").style("font-size", "12px");
-
-						g.selectAll(
-							".x-axis path, .x-axis line, .y-axis path, .y-axis line"
-						).style("stroke", "#666");
-
-						// Axis labels
-						svg
-							.append("text")
-							.attr("x", width / 2)
-							.attr("y", height - 20)
-							.attr("text-anchor", "middle")
-							.style("font-size", "14px")
-							.style("font-weight", "600")
-							.style("fill", "#fff")
-							.style("opacity", 0)
-							.text(
-								isLog
-									? "Poverty Headcount (% of population, log scale)"
-									: "Poverty Headcount (% of population)"
-							)
-							.transition()
-							.delay(600)
-							.duration(400)
-							.style("opacity", 1);
-
-						svg
-							.append("text")
-							.attr("transform", "rotate(-90)")
-							.attr("x", -height / 2)
-							.attr("y", 20)
-							.attr("text-anchor", "middle")
-							.style("font-size", "14px")
-							.style("font-weight", "600")
-							.style("fill", "#fff")
-							.style("opacity", 0)
-							.text(
-								isLog
-									? "Organ Trafficking Cases (log scale)"
-									: "Organ Trafficking Cases"
-							)
-							.transition()
-							.delay(600)
-							.duration(400)
-							.style("opacity", 1);
-
-						// Fade in entire SVG
-						svg.transition().duration(300).style("opacity", 1);
-					}
-
-					currentScatterView = viewType;
-				}
-			}
-
-			function setupScatterControls() {
-				const barBtn = document.getElementById("barViewBtn");
-				const scatterBtn = document.getElementById("scatterViewBtn");
-				const logBtn = document.getElementById("logViewBtn");
-
-				barBtn.addEventListener("click", () => {
-					if (currentScatterView === "bar") return; // Already in this view
-					barBtn.classList.add("active");
-					scatterBtn.classList.remove("active");
-					logBtn.classList.remove("active");
-					updateScatterChart("bar");
-				});
-
-				scatterBtn.addEventListener("click", () => {
-					if (currentScatterView === "scatter") return; // Already in this view
-					barBtn.classList.remove("active");
-					scatterBtn.classList.add("active");
-					logBtn.classList.remove("active");
-					updateScatterChart("scatter");
-				});
-
-				logBtn.addEventListener("click", () => {
-					if (currentScatterView === "log") return; // Already in this view
-					barBtn.classList.remove("active");
-					scatterBtn.classList.remove("active");
-					logBtn.classList.add("active");
-					updateScatterChart("log");
-				});
-			}
-
-			// ============================================
 			// CHART 8: PARETO CHART - US INCOME DISTRIBUTION BY DECILE
+			// Multi-Stage Animated Pareto Chart
 			// ============================================
+
+			let paretoStage = 0;
+			let paretoData = [];
+			let paretoSvg, paretoG, paretoWidth, paretoHeight, paretoMargin;
+			let paretoXScale, paretoYScaleLeft, paretoYScaleRight;
 
 			function initParetoChart() {
-				// US Income distribution by decile (2023 data - realistic estimates)
-				// Source: Based on US Census Bureau and Federal Reserve data
+				// US Income distribution by decile (2023 data)
 				const incomeData = [
-					{ decile: "Top 10%", incomeShare: 31.5, population: 10 },
-					{ decile: "90-80%", incomeShare: 14.8, population: 10 },
-					{ decile: "80-70%", incomeShare: 12.5, population: 10 },
-					{ decile: "70-60%", incomeShare: 10.8, population: 10 },
-					{ decile: "60-50%", incomeShare: 9.2, population: 10 },
-					{ decile: "50-40%", incomeShare: 7.8, population: 10 },
-					{ decile: "40-30%", incomeShare: 6.2, population: 10 },
-					{ decile: "30-20%", incomeShare: 4.5, population: 10 },
-					{ decile: "20-10%", incomeShare: 2.3, population: 10 },
-					{ decile: "Bottom 10%", incomeShare: 0.4, population: 10 },
+					{ decile: "Top 10%", share: 31.5, order: 1 },
+					{ decile: "90-80%", share: 14.8, order: 2 },
+					{ decile: "80-70%", share: 12.5, order: 3 },
+					{ decile: "70-60%", share: 10.8, order: 4 },
+					{ decile: "60-50%", share: 9.2, order: 5 },
+					{ decile: "50-40%", share: 7.8, order: 6 },
+					{ decile: "40-30%", share: 6.2, order: 7 },
+					{ decile: "30-20%", share: 4.5, order: 8 },
+					{ decile: "20-10%", share: 2.3, order: 9 },
+					{ decile: "Bottom 10%", share: 0.4, order: 10 },
 				];
 
 				// Calculate cumulative percentages
 				let cumulative = 0;
 				incomeData.forEach((d) => {
-					cumulative += d.incomeShare;
+					cumulative += d.share;
 					d.cumulative = cumulative;
 				});
 
-				// Calculate metrics for info panel
-				const top10 = incomeData[0].incomeShare;
-				const bottom50 = incomeData
-					.slice(5)
-					.reduce((sum, d) => sum + d.incomeShare, 0);
+				paretoData = incomeData;
 
+				// Update info panel
+				const top10 = paretoData[0].share;
+				const bottom50 = paretoData.slice(5).reduce((sum, d) => sum + d.share, 0);
 				document.getElementById("top10Share").textContent = `${top10.toFixed(
 					1
 				)}% of total income`;
 				document.getElementById("bottom50Share").textContent = `${bottom50.toFixed(
 					1
 				)}% of total income`;
-
 				const ratio = (top10 / bottom50).toFixed(1);
 				document.getElementById(
 					"inequalityLevel"
@@ -2933,209 +1713,502 @@
 				container.html("");
 
 				const containerWidth = container.node().getBoundingClientRect().width;
-				const margin = { top: 60, right: 100, bottom: 80, left: 100 };
-				const width = containerWidth - margin.left - margin.right;
-				const height = 600 - margin.top - margin.bottom;
+				paretoMargin = { top: 90, right: 120, bottom: 120, left: 90 };
+				paretoWidth = containerWidth - paretoMargin.left - paretoMargin.right;
+				paretoHeight = 650 - paretoMargin.top - paretoMargin.bottom;
 
-				const svg = container
+				paretoSvg = container
 					.append("svg")
 					.attr("width", containerWidth)
-					.attr("height", 600)
-					.style("opacity", 0);
+					.attr("height", 650);
 
-				const g = svg
+				paretoG = paretoSvg
 					.append("g")
-					.attr("transform", `translate(${margin.left},${margin.top})`);
+					.attr("transform", `translate(${paretoMargin.left},${paretoMargin.top})`);
 
-				// Scales
-				const xScale = d3
-					.scaleBand()
-					.domain(incomeData.map((d) => d.decile))
-					.range([0, width])
-					.padding(0.2);
+				// Add control buttons
+				const buttonContainer = container
+					.insert("div", "svg")
+					.style("text-align", "center")
+					.style("margin-bottom", "20px")
+					.style("display", "flex")
+					.style("align-items", "center")
+					.style("justify-content", "center")
+					.style("gap", "15px")
+					.style("flex-wrap", "wrap");
 
-				const yScaleLeft = d3
-					.scaleLinear()
-					.domain([0, d3.max(incomeData, (d) => d.incomeShare) * 1.1])
-					.range([height, 0]);
+				buttonContainer
+					.append("button")
+					.attr("id", "paretoViewBtn")
+					.attr("class", "play-btn")
+					.style("margin", "0")
+					.style("padding", "12px 30px")
+					.style("font-size", "16px")
+					.style("font-weight", "700")
+					.html("📊 Show Pareto Chart")
+					.on("click", animateToParetoView);
 
-				const yScaleRight = d3.scaleLinear().domain([0, 100]).range([height, 0]);
+				buttonContainer
+					.append("button")
+					.attr("id", "stackedViewBtn")
+					.attr("class", "play-btn")
+					.style("margin", "0")
+					.style("padding", "12px 30px")
+					.style("font-size", "16px")
+					.style("font-weight", "700")
+					.html("📚 Show Stacked Bar")
+					.on("click", animateToStackedView);
 
-				// Color scale for bars (gradient from light to dark based on income share)
-				const colorScale = d3
-					.scaleSequential()
-					.domain([0, d3.max(incomeData, (d) => d.incomeShare)])
-					.interpolator(d3.interpolateRgb("#10b981", "#667eea"));
-
-				// Add X axis
-				g.append("g")
-					.attr("transform", `translate(0,${height})`)
-					.call(d3.axisBottom(xScale))
-					.selectAll("text")
-					.attr("transform", "rotate(-45)")
-					.style("text-anchor", "end")
-					.style("font-size", "12px")
+				buttonContainer
+					.append("div")
+					.attr("id", "paretoStageLabel")
 					.style("font-weight", "600")
-					.style("fill", "#333");
-
-				// Add left Y axis (Income Share %)
-				g.append("g")
-					.call(
-						d3
-							.axisLeft(yScaleLeft)
-							.ticks(10)
-							.tickFormat((d) => d + "%")
-					)
-					.style("font-size", "12px")
-					.style("color", "#667eea");
-
-				// Add right Y axis (Cumulative %)
-				g.append("g")
-					.attr("transform", `translate(${width},0)`)
-					.call(
-						d3
-							.axisRight(yScaleRight)
-							.ticks(10)
-							.tickFormat((d) => d + "%")
-					)
-					.style("font-size", "12px")
-					.style("color", "#f59e0b");
-
-				// Y axis labels
-				g.append("text")
-					.attr("transform", "rotate(-90)")
-					.attr("y", -70)
-					.attr("x", -height / 2)
-					.attr("text-anchor", "middle")
 					.style("font-size", "14px")
+					.style("color", "#667eea")
+					.style("margin", "0 10px")
+					.text("Current View: Stacked Bar");
+
+				// Initialize Stage 1
+				renderStage1();
+			}
+
+			function animateToParetoView() {
+				if (paretoStage !== 0) return; // Already in Pareto view or animating
+
+				d3.select("#paretoStageLabel").text("Animating to Pareto Chart...");
+
+				// Disable buttons during animation
+				d3.select("#paretoViewBtn").attr("disabled", true).style("opacity", 0.5);
+				d3.select("#stackedViewBtn").attr("disabled", true).style("opacity", 0.5);
+
+				// Chain animations with delays
+				setTimeout(() => {
+					paretoStage = 1;
+					renderStage2(); // Split into bars
+				}, 800);
+
+				setTimeout(() => {
+					paretoStage = 2;
+					renderStage3(); // Sort descending
+				}, 3000);
+
+				setTimeout(() => {
+					paretoStage = 3;
+					renderStage4(); // Add Pareto line
+				}, 5500);
+
+				setTimeout(() => {
+					paretoStage = 4;
+					renderStage5(); // Final styling
+					d3.select("#paretoStageLabel").text("Current View: Pareto Chart");
+
+					// Re-enable buttons
+					d3.select("#paretoViewBtn").attr("disabled", null).style("opacity", 1);
+					d3.select("#stackedViewBtn").attr("disabled", null).style("opacity", 1);
+				}, 9500);
+			}
+
+			function animateToStackedView() {
+				if (paretoStage !== 4) return; // Not in Pareto view
+
+				d3.select("#paretoStageLabel").text("Returning to Stacked Bar...");
+
+				// Disable buttons during animation
+				d3.select("#paretoViewBtn").attr("disabled", true).style("opacity", 0.5);
+				d3.select("#stackedViewBtn").attr("disabled", true).style("opacity", 0.5);
+
+				// Reverse animation sequence
+				setTimeout(() => {
+					paretoStage = 3;
+					renderStage6(); // Remove styling, prepare for reverse
+				}, 800);
+
+				setTimeout(() => {
+					paretoStage = 2;
+					renderStage7(); // Unsort bars
+				}, 3000);
+
+				setTimeout(() => {
+					paretoStage = 1;
+					renderStage8(); // Merge to stacked
+				}, 5500);
+
+				setTimeout(() => {
+					paretoStage = 0;
+					d3.select("#paretoStageLabel").text("Current View: Stacked Bar");
+
+					// Re-enable buttons
+					d3.select("#paretoViewBtn").attr("disabled", null).style("opacity", 1);
+					d3.select("#stackedViewBtn").attr("disabled", null).style("opacity", 1);
+				}, 8500);
+			}
+
+			// ============================================
+			// STAGE 1: Stacked Bar
+			// ============================================
+			function renderStage1() {
+				paretoG.selectAll("*").remove();
+
+				// Single stacked bar position
+				const stackX = paretoWidth / 2 - 40;
+				const stackWidth = 80;
+
+				// Y scale for income share
+				paretoYScaleLeft = d3
+					.scaleLinear()
+					.domain([0, 100])
+					.range([paretoHeight, 0]);
+
+				// Add left Y axis
+				paretoG
+					.append("g")
+					.attr("class", "y-axis-left")
+					.call(d3.axisLeft(paretoYScaleLeft).tickFormat((d) => d + "%"))
+					.selectAll("text")
+					.style("font-size", "12px")
+					.style("fill", "#667eea");
+
+				// Y axis label
+				paretoG
+					.append("text")
+					.attr("class", "y-label")
+					.attr("transform", "rotate(-90)")
+					.attr("y", -60)
+					.attr("x", -paretoHeight / 2)
+					.attr("text-anchor", "middle")
+					.style("font-size", "13px")
 					.style("font-weight", "700")
 					.style("fill", "#667eea")
 					.text("Income Share (%)");
 
-				g.append("text")
-					.attr("transform", "rotate(-90)")
-					.attr("y", width + 70)
-					.attr("x", -height / 2)
-					.attr("text-anchor", "middle")
-					.style("font-size", "14px")
-					.style("font-weight", "700")
-					.style("fill", "#f59e0b")
-					.text("Cumulative Share (%)");
+				// Add X axis (single category for stacked bar)
+				paretoG
+					.append("g")
+					.attr("class", "x-axis-stacked")
+					.attr("transform", `translate(0,${paretoHeight})`)
+					.append("line")
+					.attr("x1", 0)
+					.attr("x2", paretoWidth)
+					.attr("stroke", "#ccc")
+					.attr("stroke-width", 1);
 
-				// X axis label
-				g.append("text")
-					.attr("x", width / 2)
-					.attr("y", height + 60)
+				// X axis label for stacked view
+				paretoG
+					.append("text")
+					.attr("class", "x-label-stacked")
+					.attr("x", paretoWidth / 2)
+					.attr("y", paretoHeight + 50)
 					.attr("text-anchor", "middle")
-					.style("font-size", "14px")
+					.style("font-size", "13px")
 					.style("font-weight", "700")
 					.style("fill", "#333")
-					.text("Income Decile (Population Groups)");
+					.text("All Income Deciles (Bottom 10% → Top 10%)");
 
 				// Title
-				g.append("text")
-					.attr("x", width / 2)
-					.attr("y", -30)
+				paretoG
+					.append("text")
+					.attr("class", "chart-title")
+					.attr("x", paretoWidth / 2)
+					.attr("y", -50)
 					.attr("text-anchor", "middle")
 					.style("font-size", "18px")
 					.style("font-weight", "700")
-					.style("fill", "#667eea")
-					.text("US Income Distribution: Pareto Analysis");
+					.style("fill", "#6A5ACD")
+					.text("US Income Distribution (Stacked Decile Share)");
 
-				// Draw bars with staged animation
-				const bars = g
-					.selectAll(".pareto-bar")
-					.data(incomeData)
+				// Color scale
+				const colorScale = d3
+					.scaleSequential()
+					.domain([0, paretoData.length - 1])
+					.interpolator(d3.interpolateRgb("#10b981", "#6FA8DC"));
+
+				// Calculate cumulative positions for stacking
+				let yOffset = 0;
+				const stackedData = paretoData.map((d, i) => {
+					const y = yOffset;
+					yOffset += d.share;
+					return { ...d, stackY: y };
+				});
+
+				// Draw stacked segments
+				paretoG
+					.selectAll(".stack-segment")
+					.data(stackedData)
 					.enter()
 					.append("rect")
-					.attr("class", "pareto-bar")
-					.attr("x", (d) => xScale(d.decile))
-					.attr("width", xScale.bandwidth())
-					.attr("y", height)
+					.attr("class", "stack-segment")
+					.attr("x", stackX)
+					.attr("width", stackWidth)
+					.attr("y", paretoHeight)
 					.attr("height", 0)
-					.attr("fill", (d) => colorScale(d.incomeShare))
+					.attr("fill", (d, i) => colorScale(i))
 					.attr("stroke", "#fff")
 					.attr("stroke-width", 2)
-					.style("cursor", "pointer");
-
-				// Animate bars growing from bottom
-				bars
 					.transition()
-					.delay((d, i) => i * 100)
-					.duration(600)
+					.delay((d, i) => i * 120)
+					.duration(900)
 					.ease(d3.easeCubicOut)
-					.attr("y", (d) => yScaleLeft(d.incomeShare))
-					.attr("height", (d) => height - yScaleLeft(d.incomeShare));
+					.attr("y", (d) => paretoYScaleLeft(d.stackY + d.share))
+					.attr(
+						"height",
+						(d) => paretoYScaleLeft(d.stackY) - paretoYScaleLeft(d.stackY + d.share)
+					);
+			}
 
-				// Add value labels on bars
-				g.selectAll(".bar-label")
-					.data(incomeData)
-					.enter()
-					.append("text")
-					.attr("class", "bar-label")
-					.attr("x", (d) => xScale(d.decile) + xScale.bandwidth() / 2)
-					.attr("y", (d) => yScaleLeft(d.incomeShare) - 5)
-					.attr("text-anchor", "middle")
-					.style("font-size", "12px")
-					.style("font-weight", "700")
-					.style("fill", "#333")
-					.style("opacity", 0)
-					.text((d) => d.incomeShare.toFixed(1) + "%")
+			// ============================================
+			// STAGE 2: Split Into Side-by-Side Bars
+			// ============================================
+			function renderStage2() {
+				paretoG
+					.selectAll(".chart-title")
 					.transition()
-					.delay((d, i) => i * 100 + 400)
-					.duration(400)
+					.duration(600)
+					.text("US Income Share by Decile");
+
+				// Remove stacked bar X-axis elements
+				paretoG
+					.selectAll(".x-axis-stacked")
+					.transition()
+					.duration(600)
+					.style("opacity", 0)
+					.remove();
+				paretoG
+					.selectAll(".x-label-stacked")
+					.transition()
+					.duration(600)
+					.style("opacity", 0)
+					.remove();
+
+				// Create band scale for side-by-side bars
+				paretoXScale = d3
+					.scaleBand()
+					.domain(paretoData.map((d) => d.decile))
+					.range([0, paretoWidth])
+					.padding(0.2);
+
+				paretoYScaleLeft = d3
+					.scaleLinear()
+					.domain([0, d3.max(paretoData, (d) => d.share) * 1.1])
+					.range([paretoHeight, 0]);
+
+				// Update Y axis
+				paretoG
+					.select(".y-axis-left")
+					.transition()
+					.duration(1200)
+					.ease(d3.easeCubicInOut)
+					.call(d3.axisLeft(paretoYScaleLeft).tickFormat((d) => d + "%"));
+
+				// Add X axis
+				paretoG
+					.append("g")
+					.attr("class", "x-axis")
+					.attr("transform", `translate(0,${paretoHeight})`)
+					.style("opacity", 0)
+					.call(d3.axisBottom(paretoXScale))
+					.selectAll("text")
+					.attr("transform", "rotate(-45)")
+					.attr("dy", "0.5em")
+					.attr("dx", "-0.8em")
+					.style("text-anchor", "end")
+					.style("font-size", "10px")
+					.style("font-weight", "600")
+					.style("fill", "#333");
+
+				paretoG
+					.select(".x-axis")
+					.transition()
+					.duration(1200)
+					.ease(d3.easeCubicInOut)
 					.style("opacity", 1);
 
-				// Draw cumulative line
+				// Transition segments to separate bars
+				paretoG
+					.selectAll(".stack-segment")
+					.data(paretoData, (d) => d.decile)
+					.transition()
+					.duration(1500)
+					.ease(d3.easeCubicInOut)
+					.attr("x", (d) => paretoXScale(d.decile))
+					.attr("width", paretoXScale.bandwidth())
+					.attr("y", (d) => paretoYScaleLeft(d.share))
+					.attr("height", (d) => paretoHeight - paretoYScaleLeft(d.share));
+			}
+
+			// ============================================
+			// STAGE 3: Sort Bars Descending
+			// ============================================
+			function renderStage3() {
+				paretoG
+					.select(".chart-title")
+					.transition()
+					.duration(600)
+					.text("US Income Share by Decile (Sorted)");
+
+				// Sort data by share descending
+				const sortedData = [...paretoData].sort((a, b) => b.share - a.share);
+
+				// Update X scale with sorted domain
+				paretoXScale.domain(sortedData.map((d) => d.decile));
+
+				// Update X axis
+				paretoG
+					.select(".x-axis")
+					.transition()
+					.duration(1200)
+					.ease(d3.easeCubicInOut)
+					.call(d3.axisBottom(paretoXScale))
+					.selectAll("text")
+					.attr("transform", "rotate(-45)")
+					.attr("dy", "0.5em")
+					.attr("dx", "-0.8em")
+					.style("text-anchor", "end");
+
+				// New color scale (gradient from green to blue)
+				const newColorScale = d3
+					.scaleLinear()
+					.domain([0, d3.max(sortedData, (d) => d.share)])
+					.range(["#4B8BBE", "#6FA8DC"])
+					.interpolate(d3.interpolateRgb);
+
+				// Transition bars to new positions and colors
+				paretoG
+					.selectAll(".stack-segment")
+					.data(sortedData, (d) => d.decile)
+					.transition()
+					.duration(1400)
+					.ease(d3.easeCubicInOut)
+					.attr("x", (d) => paretoXScale(d.decile))
+					.attr("fill", (d) => newColorScale(d.share));
+
+				// Add percentage labels
+				paretoG
+					.selectAll(".bar-label")
+					.data(sortedData, (d) => d.decile)
+					.join("text")
+					.attr("class", "bar-label")
+					.attr("x", (d) => paretoXScale(d.decile) + paretoXScale.bandwidth() / 2)
+					.attr("y", (d) => paretoYScaleLeft(d.share) + 20)
+					.attr("text-anchor", "middle")
+					.style("font-size", "11px")
+					.style("font-weight", "700")
+					.style("fill", "#fff")
+					.style("opacity", 0)
+					.text((d) => d.share.toFixed(1) + "%")
+					.transition()
+					.delay(800)
+					.duration(800)
+					.style("opacity", 1);
+			}
+
+			// ============================================
+			// STAGE 4: Overlay Pareto Line
+			// ============================================
+			function renderStage4() {
+				paretoG
+					.select(".chart-title")
+					.transition()
+					.duration(600)
+					.text("US Income Distribution: Pareto Analysis");
+
+				const sortedData = [...paretoData].sort((a, b) => b.share - a.share);
+
+				// Add right Y axis for cumulative %
+				paretoYScaleRight = d3
+					.scaleLinear()
+					.domain([0, 100])
+					.range([paretoHeight, 0]);
+
+				paretoG
+					.append("g")
+					.attr("class", "y-axis-right")
+					.attr("transform", `translate(${paretoWidth},0)`)
+					.style("opacity", 0)
+					.call(d3.axisRight(paretoYScaleRight).tickFormat((d) => d + "%"))
+					.selectAll("text")
+					.style("font-size", "12px")
+					.style("fill", "#DAA520");
+
+				paretoG
+					.select(".y-axis-right")
+					.transition()
+					.duration(1000)
+					.ease(d3.easeCubicInOut)
+					.style("opacity", 1);
+
+				// Right Y axis label
+				paretoG
+					.append("text")
+					.attr("class", "y-label-right")
+					.attr("transform", "rotate(-90)")
+					.attr("y", paretoWidth + 80)
+					.attr("x", -paretoHeight / 2)
+					.attr("text-anchor", "middle")
+					.style("font-size", "13px")
+					.style("font-weight", "700")
+					.style("fill", "#DAA520")
+					.style("opacity", 0)
+					.text("Cumulative %")
+					.transition()
+					.duration(1000)
+					.ease(d3.easeCubicInOut)
+					.style("opacity", 1);
+
+				// Draw Pareto line
 				const lineGenerator = d3
 					.line()
-					.x((d) => xScale(d.decile) + xScale.bandwidth() / 2)
-					.y((d) => yScaleRight(d.cumulative))
+					.x((d) => paretoXScale(d.decile) + paretoXScale.bandwidth() / 2)
+					.y((d) => paretoYScaleRight(d.cumulative))
 					.curve(d3.curveMonotoneX);
 
-				const linePath = g
+				const linePath = paretoG
 					.append("path")
-					.datum(incomeData)
-					.attr("class", "cumulative-line")
+					.datum(sortedData)
+					.attr("class", "pareto-line")
 					.attr("fill", "none")
-					.attr("stroke", "#f59e0b")
+					.attr("stroke", "#DAA520")
 					.attr("stroke-width", 3)
 					.attr("d", lineGenerator);
 
-				// Animate line drawing with stroke-dasharray
+				// Animate line with stroke-dasharray
 				const lineLength = linePath.node().getTotalLength();
 				linePath
 					.attr("stroke-dasharray", lineLength + " " + lineLength)
 					.attr("stroke-dashoffset", lineLength)
 					.transition()
-					.delay(1000)
-					.duration(1500)
+					.delay(1200)
+					.duration(2500)
 					.ease(d3.easeLinear)
 					.attr("stroke-dashoffset", 0);
 
-				// Add dots on cumulative line
-				g.selectAll(".cumulative-dot")
-					.data(incomeData)
-					.enter()
-					.append("circle")
-					.attr("class", "cumulative-dot")
-					.attr("cx", (d) => xScale(d.decile) + xScale.bandwidth() / 2)
-					.attr("cy", (d) => yScaleRight(d.cumulative))
+				// Add dots on line
+				paretoG
+					.selectAll(".pareto-dot")
+					.data(sortedData, (d) => d.decile)
+					.join("circle")
+					.attr("class", "pareto-dot")
+					.attr("cx", (d) => paretoXScale(d.decile) + paretoXScale.bandwidth() / 2)
+					.attr("cy", (d) => paretoYScaleRight(d.cumulative))
 					.attr("r", 0)
-					.attr("fill", "#f59e0b")
+					.attr("fill", "#DAA520")
 					.attr("stroke", "#fff")
 					.attr("stroke-width", 2)
-					.style("cursor", "pointer")
 					.transition()
-					.delay((d, i) => 2500 + i * 60)
-					.duration(300)
-					.ease(d3.easeBackOut.overshoot(2))
-					.attr("r", 5);
+					.delay((d, i) => 3700 + i * 100)
+					.duration(400)
+					.ease(d3.easeBackOut)
+					.attr("r", 6);
+			}
 
+			// ============================================
+			// STAGE 5: Final Styling
+			// ============================================
+			function renderStage5() {
 				// Add legend
-				const legend = g
+				const legend = paretoG
 					.append("g")
-					.attr("transform", `translate(${width - 220}, 10)`);
+					.attr("class", "legend")
+					.attr("transform", `translate(10, -60)`);
 
 				legend
 					.append("rect")
@@ -3143,48 +2216,74 @@
 					.attr("y", 0)
 					.attr("width", 20)
 					.attr("height", 20)
-					.attr("fill", "#667eea")
+					.attr("fill", "#6FA8DC")
 					.attr("stroke", "#fff")
-					.attr("stroke-width", 2);
+					.attr("stroke-width", 2)
+					.style("opacity", 0)
+					.transition()
+					.duration(800)
+					.style("opacity", 1);
 
 				legend
 					.append("text")
-					.attr("x", 30)
+					.attr("x", 28)
 					.attr("y", 15)
-					.style("font-size", "13px")
+					.style("font-size", "12px")
 					.style("font-weight", "600")
 					.style("fill", "#333")
-					.text("Income Share (bars)");
+					.style("opacity", 0)
+					.text("Income Share (bars)")
+					.transition()
+					.duration(800)
+					.style("opacity", 1);
 
 				legend
 					.append("line")
-					.attr("x1", 0)
-					.attr("y1", 35)
-					.attr("x2", 20)
-					.attr("y2", 35)
-					.attr("stroke", "#f59e0b")
-					.attr("stroke-width", 3);
+					.attr("x1", 200)
+					.attr("y1", 10)
+					.attr("x2", 220)
+					.attr("y2", 10)
+					.attr("stroke", "#DAA520")
+					.attr("stroke-width", 3)
+					.style("opacity", 0)
+					.transition()
+					.delay(400)
+					.duration(800)
+					.style("opacity", 1);
 
 				legend
 					.append("circle")
-					.attr("cx", 10)
-					.attr("cy", 35)
+					.attr("cx", 210)
+					.attr("cy", 10)
 					.attr("r", 5)
-					.attr("fill", "#f59e0b")
+					.attr("fill", "#DAA520")
 					.attr("stroke", "#fff")
-					.attr("stroke-width", 2);
+					.attr("stroke-width", 2)
+					.style("opacity", 0)
+					.transition()
+					.delay(400)
+					.duration(800)
+					.style("opacity", 1);
 
 				legend
 					.append("text")
-					.attr("x", 30)
-					.attr("y", 40)
-					.style("font-size", "13px")
+					.attr("x", 228)
+					.attr("y", 15)
+					.style("font-size", "12px")
 					.style("font-weight", "600")
 					.style("fill", "#333")
-					.text("Cumulative % (line)");
+					.style("opacity", 0)
+					.text("Cumulative % (line)")
+					.transition()
+					.delay(400)
+					.duration(800)
+					.style("opacity", 1);
 
-				// Hover interactions for bars
-				bars
+				// Add hover interactions
+				const sortedData = [...paretoData].sort((a, b) => b.share - a.share);
+
+				paretoG
+					.selectAll(".stack-segment")
 					.on("mouseover", function (event, d) {
 						d3
 							.select(this)
@@ -3192,25 +2291,16 @@
 							.duration(200)
 							.attr("opacity", 0.7)
 							.attr("stroke-width", 4);
-
 						tooltip
 							.classed("show", true)
 							.html(
-								`
-							<div class="tooltip-title">${d.decile}</div>
-							<div class="tooltip-row">
-								<span class="tooltip-label">Income Share:</span>
-								<span class="tooltip-value">${d.incomeShare.toFixed(1)}%</span>
-							</div>
-							<div class="tooltip-row">
-								<span class="tooltip-label">Cumulative:</span>
-								<span class="tooltip-value">${d.cumulative.toFixed(1)}%</span>
-							</div>
-							<div class="tooltip-row">
-								<span class="tooltip-label">Population:</span>
-								<span class="tooltip-value">${d.population}%</span>
-							</div>
-						`
+								`<div class="tooltip-title">${d.decile}</div>
+								<div class="tooltip-row"><span class="tooltip-label">Income Share:</span><span class="tooltip-value">${d.share.toFixed(
+									1
+								)}%</span></div>
+								<div class="tooltip-row"><span class="tooltip-label">Cumulative:</span><span class="tooltip-value">${d.cumulative.toFixed(
+									1
+								)}%</span></div>`
 							)
 							.style("left", event.pageX + 15 + "px")
 							.style("top", event.pageY - 28 + "px");
@@ -3222,35 +2312,28 @@
 							.duration(200)
 							.attr("opacity", 1)
 							.attr("stroke-width", 2);
-
 						tooltip.classed("show", false);
 					});
 
-				// Hover interactions for cumulative dots
-				d3
-					.selectAll(".cumulative-dot")
+				paretoG
+					.selectAll(".pareto-dot")
 					.on("mouseover", function (event, d) {
 						d3
 							.select(this)
 							.transition()
 							.duration(200)
-							.attr("r", 8)
+							.attr("r", 9)
 							.attr("stroke-width", 3);
-
 						tooltip
 							.classed("show", true)
 							.html(
-								`
-								<div class="tooltip-title">${d.decile}</div>
-								<div class="tooltip-row">
-									<span class="tooltip-label">Cumulative Share:</span>
-									<span class="tooltip-value">${d.cumulative.toFixed(1)}%</span>
-								</div>
-								<div class="tooltip-row">
-									<span class="tooltip-label">This Decile:</span>
-									<span class="tooltip-value">${d.incomeShare.toFixed(1)}%</span>
-								</div>
-							`
+								`<div class="tooltip-title">${d.decile}</div>
+							<div class="tooltip-row"><span class="tooltip-label">Cumulative Share:</span><span class="tooltip-value">${d.cumulative.toFixed(
+								1
+							)}%</span></div>
+							<div class="tooltip-row"><span class="tooltip-label">This Decile:</span><span class="tooltip-value">${d.share.toFixed(
+								1
+							)}%</span></div>`
 							)
 							.style("left", event.pageX + 15 + "px")
 							.style("top", event.pageY - 28 + "px");
@@ -3260,14 +2343,207 @@
 							.select(this)
 							.transition()
 							.duration(200)
-							.attr("r", 5)
+							.attr("r", 6)
 							.attr("stroke-width", 2);
-
 						tooltip.classed("show", false);
 					});
+			}
 
-				// Fade in SVG
-				svg.transition().duration(500).style("opacity", 1);
+			// ============================================
+			// STAGE 6: Reverse - Remove Pareto Elements
+			// ============================================
+			function renderStage6() {
+				paretoG
+					.select(".chart-title")
+					.transition()
+					.duration(600)
+					.text("Removing Pareto Elements...");
+
+				// Fade out and remove line and dots
+				paretoG
+					.select(".pareto-line")
+					.transition()
+					.duration(1000)
+					.ease(d3.easeCubicInOut)
+					.style("opacity", 0)
+					.remove();
+				paretoG
+					.selectAll(".pareto-dot")
+					.transition()
+					.duration(1000)
+					.ease(d3.easeCubicInOut)
+					.attr("r", 0)
+					.remove();
+				paretoG
+					.select(".y-axis-right")
+					.transition()
+					.duration(1000)
+					.ease(d3.easeCubicInOut)
+					.style("opacity", 0)
+					.remove();
+				paretoG
+					.select(".y-label-right")
+					.transition()
+					.duration(1000)
+					.ease(d3.easeCubicInOut)
+					.style("opacity", 0)
+					.remove();
+				paretoG
+					.select(".legend")
+					.transition()
+					.duration(1000)
+					.ease(d3.easeCubicInOut)
+					.style("opacity", 0)
+					.remove();
+				paretoG
+					.selectAll(".bar-label")
+					.transition()
+					.duration(1000)
+					.ease(d3.easeCubicInOut)
+					.style("opacity", 0)
+					.remove();
+
+				// Remove hover interactions
+				paretoG
+					.selectAll(".stack-segment")
+					.on("mouseover", null)
+					.on("mouseout", null);
+			}
+
+			// ============================================
+			// STAGE 7: Unsort Bars
+			// ============================================
+			function renderStage7() {
+				paretoG
+					.select(".chart-title")
+					.transition()
+					.duration(600)
+					.text("Returning to Original Order...");
+
+				// Revert to original order
+				const originalOrder = [...paretoData];
+				paretoXScale.domain(originalOrder.map((d) => d.decile));
+
+				// Update X axis
+				paretoG
+					.select(".x-axis")
+					.transition()
+					.duration(1200)
+					.ease(d3.easeCubicInOut)
+					.call(d3.axisBottom(paretoXScale))
+					.selectAll("text")
+					.attr("transform", "rotate(-45)")
+					.attr("dy", "0.5em")
+					.attr("dx", "-0.8em")
+					.style("text-anchor", "end");
+
+				// Original color scale
+				const originalColorScale = d3
+					.scaleSequential()
+					.domain([0, paretoData.length - 1])
+					.interpolator(d3.interpolateRgb("#10b981", "#6FA8DC"));
+
+				// Transition bars back to original positions and colors
+				paretoG
+					.selectAll(".stack-segment")
+					.data(originalOrder, (d) => d.decile)
+					.transition()
+					.duration(1400)
+					.ease(d3.easeCubicInOut)
+					.attr("x", (d) => paretoXScale(d.decile))
+					.attr("fill", (d, i) => originalColorScale(i));
+			}
+
+			// ============================================
+			// STAGE 8: Merge Back to Stacked
+			// ============================================
+			function renderStage8() {
+				paretoG
+					.select(".chart-title")
+					.transition()
+					.duration(600)
+					.text("US Income Distribution (Stacked Decile Share)");
+
+				// Fade out X axis
+				paretoG
+					.select(".x-axis")
+					.transition()
+					.duration(1000)
+					.ease(d3.easeCubicInOut)
+					.style("opacity", 0)
+					.remove();
+
+				// Merge bars back to stacked position
+				const stackX = paretoWidth / 2 - 40;
+				const stackWidth = 80;
+
+				let yOffset = 0;
+				const stackedData = paretoData.map((d, i) => {
+					const y = yOffset;
+					yOffset += d.share;
+					return { ...d, stackY: y };
+				});
+
+				paretoYScaleLeft.domain([0, 100]);
+				paretoG
+					.select(".y-axis-left")
+					.transition()
+					.duration(1200)
+					.ease(d3.easeCubicInOut)
+					.call(d3.axisLeft(paretoYScaleLeft).tickFormat((d) => d + "%"));
+
+				// Re-add X axis for stacked view
+				paretoG
+					.append("g")
+					.attr("class", "x-axis-stacked")
+					.attr("transform", `translate(0,${paretoHeight})`)
+					.style("opacity", 0)
+					.append("line")
+					.attr("x1", 0)
+					.attr("x2", paretoWidth)
+					.attr("stroke", "#ccc")
+					.attr("stroke-width", 1);
+
+				paretoG
+					.select(".x-axis-stacked")
+					.transition()
+					.delay(800)
+					.duration(800)
+					.style("opacity", 1);
+
+				// Re-add X axis label
+				paretoG
+					.append("text")
+					.attr("class", "x-label-stacked")
+					.attr("x", paretoWidth / 2)
+					.attr("y", paretoHeight + 50)
+					.attr("text-anchor", "middle")
+					.style("font-size", "13px")
+					.style("font-weight", "700")
+					.style("fill", "#333")
+					.style("opacity", 0)
+					.text("All Income Deciles (Bottom 10% → Top 10%)")
+					.transition()
+					.delay(800)
+					.duration(800)
+					.style("opacity", 1);
+
+				paretoG
+					.selectAll(".stack-segment")
+					.data(stackedData, (d) => d.decile)
+					.transition()
+					.duration(1600)
+					.ease(d3.easeCubicInOut)
+					.attr("x", stackX)
+					.attr("width", stackWidth)
+					.attr("y", (d) => paretoYScaleLeft(d.stackY + d.share))
+					.attr(
+						"height",
+						(d) => paretoYScaleLeft(d.stackY) - paretoYScaleLeft(d.stackY + d.share)
+					)
+					.attr("fill", (d, i) =>
+						d3.interpolateRgb("#10b981", "#6FA8DC")(i / (stackedData.length - 1))
+					);
 			}
 
 			// ============================================
