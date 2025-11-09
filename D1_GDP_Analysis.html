@@ -223,6 +223,63 @@
 				background: linear-gradient(135deg, #f06292 0%, #e91e63 100%);
 			}
 
+			.speed-btn {
+				background: white;
+				border: 2px solid #667eea;
+				color: #667eea;
+				padding: 10px 20px;
+				border-radius: 8px;
+				font-weight: 600;
+				cursor: pointer;
+				transition: all 0.3s;
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				font-size: 0.9rem;
+			}
+
+			.speed-btn:hover {
+				background: #667eea;
+				color: white;
+				transform: translateY(-2px);
+				box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+			}
+
+			.speed-btn:active {
+				transform: translateY(0);
+			}
+
+			.speed-btn.fast {
+				border-color: #10b981;
+				color: #10b981;
+			}
+
+			.speed-btn.fast:hover {
+				background: #10b981;
+				color: white;
+			}
+
+			.speed-btn.slow {
+				border-color: #f59e0b;
+				color: #f59e0b;
+			}
+
+			.speed-btn.slow:hover {
+				background: #f59e0b;
+				color: white;
+			}
+
+			/* Lightning speed style (very fast) */
+			.speed-btn.lightning {
+				border-color: #ff3b30;
+				color: #ff3b30;
+			}
+
+			.speed-btn.lightning:hover {
+				background: #ff3b30;
+				color: white;
+			}
+
 			.country {
 				stroke: #999;
 				stroke-width: 0.5px;
@@ -390,95 +447,177 @@
 	</head>
 	<body>
 		<!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">
-        <span style="color: #667eea;">VABI</span> Project
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link active" href="index.html">Home</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dashboardDropdown" role="button" data-bs-toggle="dropdown">
-              Dashboards
-            </a>
-            <ul class="dropdown-menu">
-              <!-- Human Trafficking Topic -->
-              <li class="dropdown-submenu">
-                <a class="dropdown-item has-submenu" href="#">Human Trafficking</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="D1_chart1.html">Types of Trafficking</a></li>
-                  <li><a class="dropdown-item" href="D1_chart5.html">Flow of Trafficking</a></li>
-                  <li><a class="dropdown-item" href="D1_chart2.html">Victims trafficked to other countries</a></li>
-                  <li><a class="dropdown-item" href="D1_chart3.html">Trend of Victims being trafficked & Organ Removal</a></li>
-                  <li><a class="dropdown-item" href="D1_GDP_Analysis.html">GDP Analysis</a></li>
-                </ul>
-              </li>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+			<div class="container">
+				<a class="navbar-brand fw-bold" href="index.html">
+					<span style="color: #667eea">VABI</span> Project
+				</a>
+				<button
+					class="navbar-toggler"
+					type="button"
+					data-bs-toggle="collapse"
+					data-bs-target="#navbarNav"
+				>
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav ms-auto">
+						<li class="nav-item">
+							<a class="nav-link active" href="index.html">Home</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a
+								class="nav-link dropdown-toggle"
+								href="#"
+								id="dashboardDropdown"
+								role="button"
+								data-bs-toggle="dropdown"
+							>
+								Dashboards
+							</a>
+							<ul class="dropdown-menu">
+								<!-- Human Trafficking Topic -->
+								<li class="dropdown-submenu">
+									<a class="dropdown-item has-submenu" href="#">Human Trafficking</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="dropdown-item" href="D1_chart1.html"
+												>Types of Trafficking</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="D1_chart5.html"
+												>Flow of Trafficking</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="D1_chart2.html"
+												>Victims trafficked to other countries</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="D1_chart3.html"
+												>Trend of Victims being trafficked & Organ Removal</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="D1_GDP_Analysis.html">GDP Analysis</a>
+										</li>
+									</ul>
+								</li>
 
-              <!-- Organ Demand and Supply Topic -->
-              <li class="dropdown-submenu">
-                <a class="dropdown-item has-submenu" href="#">Organ Supply and Demand</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="D2_chart1.html">Organ Supply By Country</a></li>
-                  <li><a class="dropdown-item" href="D2_chart2.html">Usable Organ Percentage</a></li>
-                  <li><a class="dropdown-item" href="D2_chart3.html">Demand and Supply of Organs</a></li>
-                  <li><a class="dropdown-item" href="D2_chart4.html">Transplant done vs Waiting list</a></li>
-                  <li><a class="dropdown-item" href="D2_chart5.html">Mortality Rate</a></li>
-                </ul>
-              </li>
-              
-              <!-- Health Outcomes Topic -->
-              <li class="dropdown-submenu">
-                <a class="dropdown-item has-submenu" href="#">Health Outcomes</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="D3_chart1.html">Surgery Cost Comparison</a></li>
-                  <li><a class="dropdown-item" href="D3_chart2.html">Hidden Costs After Surgery</a></li>
-                  <li><a class="dropdown-item" href="D3_chart3.html">Health Outcomes Analysis</a></li>
-                  <li><a class="dropdown-item" href="D3_chart4.html">Long Term Total Cost</a></li>
-                </ul>
-              </li>
+								<!-- Organ Demand and Supply Topic -->
+								<li class="dropdown-submenu">
+									<a class="dropdown-item has-submenu" href="#"
+										>Organ Supply and Demand</a
+									>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="dropdown-item" href="D2_chart1.html"
+												>Organ Supply By Country</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="D2_chart2.html"
+												>Usable Organ Percentage</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="D2_chart3.html"
+												>Demand and Supply of Organs</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="D2_chart4.html"
+												>Transplant done vs Waiting list</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="D2_chart5.html">Mortality Rate</a>
+										</li>
+									</ul>
+								</li>
 
-              <!-- Solution -->
-              <li class="dropdown-submenu">
-                <a class="dropdown-item has-submenu" href="#">Solution</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="D4_chart1.html">Pathways to More Organs</a></li>
-                  <li><a class="dropdown-item" href="D4_chart2.html">US vs Iran: Spotlight Metrics</a></li>
-                  <li><a class="dropdown-item" href="D4_chart3.html">What if we do nothing?</a></li>
-                  <li><a class="dropdown-item" href="D4_chart4.html">Iran's Policy Reforms</a></li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#contact">Contact</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+								<!-- Health Outcomes Topic -->
+								<li class="dropdown-submenu">
+									<a class="dropdown-item has-submenu" href="#">Health Outcomes</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="dropdown-item" href="D3_chart1.html"
+												>Surgery Cost Comparison</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="D3_chart2.html"
+												>Hidden Costs After Surgery</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="D3_chart3.html"
+												>Health Outcomes Analysis</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="D3_chart4.html"
+												>Long Term Total Cost</a
+											>
+										</li>
+									</ul>
+								</li>
 
+								<!-- Solution -->
+								<li class="dropdown-submenu">
+									<a class="dropdown-item has-submenu" href="#">Solution</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="dropdown-item" href="D4_chart1.html"
+												>Pathways to More Organs</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="D4_chart2.html"
+												>US vs Iran: Spotlight Metrics</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="D4_chart3.html"
+												>What if we do nothing?</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="D4_chart4.html"
+												>Iran's Policy Reforms</a
+											>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#about">About</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#contact">Contact</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
 
-  <!-- Breadcrumb Navigation -->
-  <div class="breadcrumb-nav">
-    <div class="container-fluid">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item"><a href="index.html#trafficking">Human Trafficking</a></li>
-          <li class="breadcrumb-item active" aria-current="page">GDP Analysis</li>
-        </ol>
-      </nav>
-    </div>
-  </div>
+		<!-- Breadcrumb Navigation -->
+		<div class="breadcrumb-nav">
+			<div class="container-fluid">
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+						<li class="breadcrumb-item">
+							<a href="index.html#trafficking">Human Trafficking</a>
+						</li>
+						<li class="breadcrumb-item active" aria-current="page">GDP Analysis</li>
+					</ol>
+				</nav>
+			</div>
+		</div>
 		<div class="container-fluid px-4">
 			<!-- Hero Section -->
 			<div class="hero-section">
@@ -510,6 +649,9 @@
 							<span id="globalYearDisplay" class="year-display">2024</span>
 						</div>
 						<button id="globalPlayBtn" class="play-btn"><span>▶</span> Play</button>
+						<button id="globalSpeedBtn" class="speed-btn">
+							<span>⏱️</span> Normal
+						</button>
 					</div>
 
 					<div id="globalMap" class="map-container loading">
@@ -575,6 +717,9 @@
 							<span id="top5YearDisplay" class="year-display">2024</span>
 						</div>
 						<button id="top5PlayBtn" class="play-btn"><span>▶</span> Play</button>
+						<button id="top5SpeedBtn" class="speed-btn">
+							<span>⏱️</span> Normal
+						</button>
 					</div>
 
 					<div id="top5Chart" style="width: 100%; height: 500px"></div>
@@ -603,6 +748,9 @@
 						</div>
 						<button id="giniGlobalPlayBtn" class="play-btn">
 							<span>▶</span> Play
+						</button>
+						<button id="giniGlobalSpeedBtn" class="speed-btn">
+							<span>⏱️</span> Normal
 						</button>
 					</div>
 
@@ -669,6 +817,9 @@
 							<span id="giniTop5YearDisplay" class="year-display">2020</span>
 						</div>
 						<button id="giniTop5PlayBtn" class="play-btn"><span>▶</span> Play</button>
+						<button id="giniTop5SpeedBtn" class="speed-btn">
+							<span>⏱️</span> Normal
+						</button>
 					</div>
 
 					<div id="giniTop5Chart" style="width: 100%; height: 500px"></div>
@@ -770,6 +921,32 @@
 			let giniTop5PlayInterval = null;
 			let scatterPlayInterval = null;
 			let currentScatterView = "bar"; // 'bar', 'scatter', 'log'
+
+			// Animation speed control (in milliseconds) - separate for each chart
+			let globalAnimationSpeed = 800; // Default: 800ms
+			let top5AnimationSpeed = 800;
+			let giniGlobalAnimationSpeed = 800;
+			let giniTop5AnimationSpeed = 800;
+
+			// Speed mode tracking for each chart
+			let globalSpeedMode = "normal"; // 'fast', 'normal', 'slow', 'lightning'
+			let top5SpeedMode = "normal";
+			let giniGlobalSpeedMode = "normal";
+			let giniTop5SpeedMode = "normal";
+
+			const speedSettings = {
+				fast: { speed: 300, icon: "⚡", label: "Fast", class: "fast" },
+				normal: { speed: 800, icon: "⏱️", label: "Normal", class: "" },
+				// New lightning speed (very fast)
+				lightning: {
+					speed: 100,
+					icon: "⚡⚡",
+					label: "Lightning",
+					class: "lightning",
+				},
+				slow: { speed: 1500, icon: "🐢", label: "Slow", class: "slow" },
+			};
+
 			const top5Countries = {
 				USA: "United States",
 				CHN: "China",
@@ -952,6 +1129,9 @@
 					.range(["#dc3545", "#ffc107", "#28a745"])
 					.interpolate(d3.interpolateRgb);
 
+				// Calculate transition duration based on animation speed (70% of interval)
+				const transitionDuration = Math.max(globalAnimationSpeed * 0.7, 50);
+
 				// Update country colors
 				worldGeoJSON.features.forEach((feature) => {
 					const code = getCountryCode(feature);
@@ -961,7 +1141,7 @@
 					d3
 						.select("#global-" + feature.id)
 						.transition()
-						.duration(500)
+						.duration(transitionDuration)
 						.attr("fill", color);
 				});
 
@@ -1104,11 +1284,19 @@
 					.domain(top5Codes)
 					.range(["#3b82f6", "#ef4444", "#f59e0b", "#8b5cf6", "#10b981"]);
 
+				// Calculate transition duration based on animation speed (70% of interval)
+				const transitionDuration = Math.max(top5AnimationSpeed * 0.7, 50);
+
 				// Update bars
 				const bars = g.selectAll(".bar").data(yearData, (d) => d.code);
 
 				// Exit
-				bars.exit().transition().duration(400).attr("width", 0).remove();
+				bars
+					.exit()
+					.transition()
+					.duration(transitionDuration * 0.6)
+					.attr("width", 0)
+					.remove();
 
 				// Enter + Update
 				bars
@@ -1123,7 +1311,7 @@
 					.attr("rx", 4)
 					.merge(bars)
 					.transition()
-					.duration(600)
+					.duration(transitionDuration)
 					.attr("y", (d) => yScale(d.country))
 					.attr("width", (d) => xScale(d.gdp))
 					.attr("height", yScale.bandwidth());
@@ -1162,7 +1350,7 @@
 					})
 					.merge(labels)
 					.transition()
-					.duration(600)
+					.duration(transitionDuration)
 					.attr("x", (d) => {
 						const barEnd = xScale(d.gdp);
 						const labelWidth = 80;
@@ -1190,14 +1378,14 @@
 				g.select(".x-axis")
 					.attr("transform", `translate(0,${chartHeight})`)
 					.transition()
-					.duration(600)
+					.duration(transitionDuration)
 					.call(xAxis)
 					.selectAll("text")
 					.style("fill", "#ccc");
 
 				g.select(".y-axis")
 					.transition()
-					.duration(600)
+					.duration(transitionDuration)
 					.call(yAxis)
 					.selectAll("text")
 					.style("font-size", "14px")
@@ -1215,15 +1403,95 @@
 			// CONTROLS
 			// ============================================
 
+			// Speed control functions for each chart
+			function cycleSpeed(chartType) {
+				// Cycle order: normal -> fast -> lightning -> slow
+				const speedOrder = ["normal", "fast", "lightning", "slow"];
+				let currentMode, speedVar, buttonId, playInterval, playBtnId;
+
+				// Determine which chart to control
+				switch (chartType) {
+					case "global":
+						currentMode = globalSpeedMode;
+						buttonId = "globalSpeedBtn";
+						playInterval = globalPlayInterval;
+						playBtnId = "globalPlayBtn";
+						break;
+					case "top5":
+						currentMode = top5SpeedMode;
+						buttonId = "top5SpeedBtn";
+						playInterval = top5PlayInterval;
+						playBtnId = "top5PlayBtn";
+						break;
+					case "giniGlobal":
+						currentMode = giniGlobalSpeedMode;
+						buttonId = "giniGlobalSpeedBtn";
+						playInterval = giniGlobalPlayInterval;
+						playBtnId = "giniGlobalPlayBtn";
+						break;
+					case "giniTop5":
+						currentMode = giniTop5SpeedMode;
+						buttonId = "giniTop5SpeedBtn";
+						playInterval = giniTop5PlayInterval;
+						playBtnId = "giniTop5PlayBtn";
+						break;
+					default:
+						return;
+				}
+
+				// Cycle to next speed
+				const currentIndex = speedOrder.indexOf(currentMode);
+				const nextIndex = (currentIndex + 1) % speedOrder.length;
+				const nextMode = speedOrder[nextIndex];
+				const nextSettings = speedSettings[nextMode];
+
+				// Update speed variable
+				switch (chartType) {
+					case "global":
+						globalSpeedMode = nextMode;
+						globalAnimationSpeed = nextSettings.speed;
+						break;
+					case "top5":
+						top5SpeedMode = nextMode;
+						top5AnimationSpeed = nextSettings.speed;
+						break;
+					case "giniGlobal":
+						giniGlobalSpeedMode = nextMode;
+						giniGlobalAnimationSpeed = nextSettings.speed;
+						break;
+					case "giniTop5":
+						giniTop5SpeedMode = nextMode;
+						giniTop5AnimationSpeed = nextSettings.speed;
+						break;
+				}
+
+				// Update button
+				const btn = document.getElementById(buttonId);
+				btn.innerHTML = `<span>${nextSettings.icon}</span> ${nextSettings.label}`;
+				btn.className = `speed-btn ${nextSettings.class}`;
+
+				// If animation is playing, restart it with new speed
+				if (playInterval) {
+					const playBtn = document.getElementById(playBtnId);
+					playBtn.click(); // Stop
+					setTimeout(() => playBtn.click(), 100); // Restart
+				}
+			}
+
 			function setupGlobalControls() {
 				const slider = document.getElementById("globalYearSlider");
 				const display = document.getElementById("globalYearDisplay");
 				const playBtn = document.getElementById("globalPlayBtn");
+				const speedBtn = document.getElementById("globalSpeedBtn");
 
 				slider.addEventListener("input", (e) => {
 					const year = +e.target.value;
 					display.textContent = year;
 					updateGlobalMap(year);
+				});
+
+				speedBtn.addEventListener("click", () => {
+					cycleSpeed("global");
 				});
 
 				playBtn.addEventListener("click", () => {
@@ -1249,7 +1517,7 @@
 							slider.value = currentYear;
 							display.textContent = currentYear;
 							updateGlobalMap(currentYear);
-						}, 800); // Change year every 800ms
+						}, globalAnimationSpeed); // Use global animation speed
 					}
 				});
 			}
@@ -1257,11 +1525,16 @@
 				const slider = document.getElementById("top5YearSlider");
 				const display = document.getElementById("top5YearDisplay");
 				const playBtn = document.getElementById("top5PlayBtn");
+				const speedBtn = document.getElementById("top5SpeedBtn");
 
 				slider.addEventListener("input", (e) => {
 					const year = +e.target.value;
 					display.textContent = year;
 					updateTop5Map(year);
+				});
+
+				speedBtn.addEventListener("click", () => {
+					cycleSpeed("top5");
 				});
 
 				playBtn.addEventListener("click", () => {
@@ -1287,7 +1560,7 @@
 							slider.value = currentYear;
 							display.textContent = currentYear;
 							updateTop5Map(currentYear);
-						}, 800); // Change year every 800ms
+						}, top5AnimationSpeed); // Use top5 animation speed
 					}
 				});
 			}
@@ -1374,6 +1647,9 @@
 					.range(["#28a745", "#ffc107", "#dc3545"])
 					.interpolate(d3.interpolateRgb);
 
+				// Calculate transition duration based on animation speed (70% of interval)
+				const transitionDuration = Math.max(giniGlobalAnimationSpeed * 0.7, 50);
+
 				// Update country colors
 				worldGeoJSON.features.forEach((feature) => {
 					const code = getCountryCode(feature);
@@ -1383,7 +1659,7 @@
 					d3
 						.select("#gini-global-" + feature.id)
 						.transition()
-						.duration(500)
+						.duration(transitionDuration)
 						.attr("fill", color);
 				});
 
@@ -1551,11 +1827,19 @@
 					.domain(top5Codes)
 					.range(["#3b82f6", "#ef4444", "#f59e0b", "#8b5cf6", "#10b981"]);
 
+				// Calculate transition duration based on animation speed (70% of interval)
+				const transitionDuration = Math.max(giniTop5AnimationSpeed * 0.7, 50);
+
 				// Update bars
 				const bars = g.selectAll(".bar").data(yearData, (d) => d.code);
 
 				// Exit
-				bars.exit().transition().duration(400).attr("width", 0).remove();
+				bars
+					.exit()
+					.transition()
+					.duration(transitionDuration * 0.6)
+					.attr("width", 0)
+					.remove();
 
 				// Enter + Update
 				bars
@@ -1570,7 +1854,7 @@
 					.attr("rx", 4)
 					.merge(bars)
 					.transition()
-					.duration(600)
+					.duration(transitionDuration)
 					.attr("y", (d) => yScale(d.country))
 					.attr("width", (d) => xScale(d.gini))
 					.attr("height", yScale.bandwidth());
@@ -1609,7 +1893,7 @@
 					})
 					.merge(labels)
 					.transition()
-					.duration(600)
+					.duration(transitionDuration)
 					.attr("x", (d) => {
 						const barEnd = xScale(d.gini);
 						const labelWidth = 60;
@@ -1634,14 +1918,14 @@
 				g.select(".x-axis")
 					.attr("transform", `translate(0,${chartHeight})`)
 					.transition()
-					.duration(600)
+					.duration(transitionDuration)
 					.call(xAxis)
 					.selectAll("text")
 					.style("fill", "#ccc");
 
 				g.select(".y-axis")
 					.transition()
-					.duration(600)
+					.duration(transitionDuration)
 					.call(yAxis)
 					.selectAll("text")
 					.style("font-size", "14px")
@@ -1663,11 +1947,16 @@
 				const slider = document.getElementById("giniGlobalYearSlider");
 				const display = document.getElementById("giniGlobalYearDisplay");
 				const playBtn = document.getElementById("giniGlobalPlayBtn");
+				const speedBtn = document.getElementById("giniGlobalSpeedBtn");
 
 				slider.addEventListener("input", (e) => {
 					const year = +e.target.value;
 					display.textContent = year;
 					updateGiniGlobalMap(year);
+				});
+
+				speedBtn.addEventListener("click", () => {
+					cycleSpeed("giniGlobal");
 				});
 
 				playBtn.addEventListener("click", () => {
@@ -1693,7 +1982,7 @@
 							slider.value = currentYear;
 							display.textContent = currentYear;
 							updateGiniGlobalMap(currentYear);
-						}, 800);
+						}, giniGlobalAnimationSpeed); // Use giniGlobal animation speed
 					}
 				});
 			}
@@ -1702,11 +1991,16 @@
 				const slider = document.getElementById("giniTop5YearSlider");
 				const display = document.getElementById("giniTop5YearDisplay");
 				const playBtn = document.getElementById("giniTop5PlayBtn");
+				const speedBtn = document.getElementById("giniTop5SpeedBtn");
 
 				slider.addEventListener("input", (e) => {
 					const year = +e.target.value;
 					display.textContent = year;
 					updateGiniTop5Map(year);
+				});
+
+				speedBtn.addEventListener("click", () => {
+					cycleSpeed("giniTop5");
 				});
 
 				playBtn.addEventListener("click", () => {
@@ -1746,7 +2040,7 @@
 							slider.value = currentYear;
 							display.textContent = currentYear;
 							updateGiniTop5Map(currentYear);
-						}, 800);
+						}, giniTop5AnimationSpeed); // Use giniTop5 animation speed
 					}
 				});
 			}
@@ -1874,32 +2168,37 @@
 				// Chain animations with delays
 				setTimeout(() => {
 					paretoStage = 1;
-					renderStage2(); // Split into bars
+					renderStage2(); // Push bars horizontally to correct X positions (still stacked vertically)
 				}, 800);
 
 				setTimeout(() => {
 					paretoStage = 2;
-					renderStage3(); // Sort descending
-				}, 3000);
+					renderStage3(); // Drop bars down to Y=0 baseline
+				}, 3200);
 
 				setTimeout(() => {
 					paretoStage = 3;
-					renderStage4(); // Add Pareto line
-				}, 5500);
+					renderStage4(); // Sort descending
+				}, 5400);
 
 				setTimeout(() => {
 					paretoStage = 4;
-					renderStage5(); // Final styling
+					renderStage5(); // Add Pareto line
+				}, 7900);
+
+				setTimeout(() => {
+					paretoStage = 5;
+					renderStage6(); // Final styling
 					d3.select("#paretoStageLabel").text("Current View: Pareto Chart");
 
 					// Re-enable buttons
 					d3.select("#paretoViewBtn").attr("disabled", null).style("opacity", 1);
 					d3.select("#stackedViewBtn").attr("disabled", null).style("opacity", 1);
-				}, 9500);
+				}, 11900);
 			}
 
 			function animateToStackedView() {
-				if (paretoStage !== 4) return; // Not in Pareto view
+				if (paretoStage !== 5) return; // Not in Pareto view
 
 				d3.select("#paretoStageLabel").text("Returning to Stacked Bar...");
 
@@ -1909,19 +2208,24 @@
 
 				// Reverse animation sequence
 				setTimeout(() => {
-					paretoStage = 3;
-					renderStage6(); // Remove styling, prepare for reverse
+					paretoStage = 4;
+					renderStage7(); // Remove styling, prepare for reverse
 				}, 800);
 
 				setTimeout(() => {
-					paretoStage = 2;
-					renderStage7(); // Unsort bars
+					paretoStage = 3;
+					renderStage8(); // Unsort bars
 				}, 3000);
 
 				setTimeout(() => {
-					paretoStage = 1;
-					renderStage8(); // Merge to stacked
+					paretoStage = 2;
+					renderStage9(); // Lift bars back to stacked Y positions
 				}, 5500);
+
+				setTimeout(() => {
+					paretoStage = 1;
+					renderStage10(); // Merge horizontally back to center
+				}, 7700);
 
 				setTimeout(() => {
 					paretoStage = 0;
@@ -1930,7 +2234,7 @@
 					// Re-enable buttons
 					d3.select("#paretoViewBtn").attr("disabled", null).style("opacity", 1);
 					d3.select("#stackedViewBtn").attr("disabled", null).style("opacity", 1);
-				}, 8500);
+				}, 10700);
 			}
 
 			// ============================================
@@ -2046,18 +2350,28 @@
 			}
 
 			// ============================================
-			// STAGE 2: Split Into Side-by-Side Bars
+			// STAGE 2: Push Bars Horizontally to Correct X Positions (Still Stacked)
 			// ============================================
 			function renderStage2() {
 				paretoG
 					.selectAll(".chart-title")
 					.transition()
 					.duration(600)
-					.text("US Income Share by Decile");
+					.text("Positioning Deciles...");
 
 				// Remove stacked bar X-axis elements
-				paretoG.selectAll(".x-axis-stacked").transition().duration(600).style("opacity", 0).remove();
-				paretoG.selectAll(".x-label-stacked").transition().duration(600).style("opacity", 0).remove();
+				paretoG
+					.selectAll(".x-axis-stacked")
+					.transition()
+					.duration(600)
+					.style("opacity", 0)
+					.remove();
+				paretoG
+					.selectAll(".x-label-stacked")
+					.transition()
+					.duration(600)
+					.style("opacity", 0)
+					.remove();
 
 				// Create band scale for side-by-side bars
 				paretoXScale = d3
@@ -2066,20 +2380,7 @@
 					.range([0, paretoWidth])
 					.padding(0.2);
 
-				paretoYScaleLeft = d3
-					.scaleLinear()
-					.domain([0, d3.max(paretoData, (d) => d.share) * 1.1])
-					.range([paretoHeight, 0]);
-
-				// Update Y axis
-				paretoG
-					.select(".y-axis-left")
-					.transition()
-					.duration(1200)
-					.ease(d3.easeCubicInOut)
-					.call(d3.axisLeft(paretoYScaleLeft).tickFormat((d) => d + "%"));
-
-				// Add X axis
+				// Add X axis (but keep it invisible for now)
 				paretoG
 					.append("g")
 					.attr("class", "x-axis")
@@ -2095,6 +2396,62 @@
 					.style("font-weight", "600")
 					.style("fill", "#333");
 
+				// Calculate cumulative positions for stacking (same as stage 1)
+				let yOffset = 0;
+				const stackedData = paretoData.map((d, i) => {
+					const y = yOffset;
+					yOffset += d.share;
+					return { ...d, stackY: y };
+				});
+
+				// Keep Y scale the same as stacked view
+				paretoYScaleLeft = d3
+					.scaleLinear()
+					.domain([0, 100])
+					.range([paretoHeight, 0]);
+
+				// Transition segments horizontally to their X positions, but keep stacked Y positions
+				paretoG
+					.selectAll(".stack-segment")
+					.data(stackedData, (d) => d.decile)
+					.transition()
+					.duration(1500)
+					.ease(d3.easeCubicInOut)
+					.attr("x", (d) => paretoXScale(d.decile))
+					.attr("width", paretoXScale.bandwidth())
+					// Keep stacked Y positions - don't change Y or height yet
+					.attr("y", (d) => paretoYScaleLeft(d.stackY + d.share))
+					.attr(
+						"height",
+						(d) => paretoYScaleLeft(d.stackY) - paretoYScaleLeft(d.stackY + d.share)
+					);
+			}
+
+			// ============================================
+			// STAGE 3: Drop Bars Down to Y=0 Baseline
+			// ============================================
+			function renderStage3() {
+				paretoG
+					.select(".chart-title")
+					.transition()
+					.duration(600)
+					.text("US Income Share by Decile");
+
+				// Update Y scale for individual bars (not stacked)
+				paretoYScaleLeft = d3
+					.scaleLinear()
+					.domain([0, d3.max(paretoData, (d) => d.share) * 1.1])
+					.range([paretoHeight, 0]);
+
+				// Update Y axis
+				paretoG
+					.select(".y-axis-left")
+					.transition()
+					.duration(1200)
+					.ease(d3.easeCubicInOut)
+					.call(d3.axisLeft(paretoYScaleLeft).tickFormat((d) => d + "%"));
+
+				// Show X axis now
 				paretoG
 					.select(".x-axis")
 					.transition()
@@ -2102,23 +2459,21 @@
 					.ease(d3.easeCubicInOut)
 					.style("opacity", 1);
 
-				// Transition segments to separate bars
+				// Drop bars down to baseline (Y=0), each bar shows only its own share
 				paretoG
 					.selectAll(".stack-segment")
 					.data(paretoData, (d) => d.decile)
 					.transition()
 					.duration(1500)
 					.ease(d3.easeCubicInOut)
-					.attr("x", (d) => paretoXScale(d.decile))
-					.attr("width", paretoXScale.bandwidth())
 					.attr("y", (d) => paretoYScaleLeft(d.share))
 					.attr("height", (d) => paretoHeight - paretoYScaleLeft(d.share));
 			}
 
 			// ============================================
-			// STAGE 3: Sort Bars Descending
+			// STAGE 4: Sort Bars Descending
 			// ============================================
-			function renderStage3() {
+			function renderStage4() {
 				paretoG
 					.select(".chart-title")
 					.transition()
@@ -2182,9 +2537,9 @@
 			}
 
 			// ============================================
-			// STAGE 4: Overlay Pareto Line
+			// STAGE 5: Overlay Pareto Line
 			// ============================================
-			function renderStage4() {
+			function renderStage5() {
 				paretoG
 					.select(".chart-title")
 					.transition()
@@ -2281,9 +2636,9 @@
 			}
 
 			// ============================================
-			// STAGE 5: Final Styling
+			// STAGE 6: Final Styling
 			// ============================================
-			function renderStage5() {
+			function renderStage6() {
 				// Add legend
 				const legend = paretoG
 					.append("g")
@@ -2430,9 +2785,9 @@
 			}
 
 			// ============================================
-			// STAGE 6: Reverse - Remove Pareto Elements
+			// STAGE 7: Reverse - Remove Pareto Elements
 			// ============================================
-			function renderStage6() {
+			function renderStage7() {
 				paretoG
 					.select(".chart-title")
 					.transition()
@@ -2491,9 +2846,9 @@
 			}
 
 			// ============================================
-			// STAGE 7: Unsort Bars
+			// STAGE 8: Unsort Bars
 			// ============================================
-			function renderStage7() {
+			function renderStage8() {
 				paretoG
 					.select(".chart-title")
 					.transition()
@@ -2535,25 +2890,74 @@
 			}
 
 			// ============================================
-			// STAGE 8: Merge Back to Stacked
+			// STAGE 9: Lift Bars Back to Stacked Y Positions
 			// ============================================
-			function renderStage8() {
+			function renderStage9() {
+				paretoG
+					.select(".chart-title")
+					.transition()
+					.duration(600)
+					.text("Lifting to Stacked Positions...");
+
+				// Fade out X axis (will be hidden but bars stay at their X positions)
+				paretoG
+					.select(".x-axis")
+					.transition()
+					.duration(1000)
+					.ease(d3.easeCubicInOut)
+					.style("opacity", 0);
+
+				// Calculate cumulative positions for stacking
+				let yOffset = 0;
+				const stackedData = paretoData.map((d, i) => {
+					const y = yOffset;
+					yOffset += d.share;
+					return { ...d, stackY: y };
+				});
+
+				// Update Y scale back to 100% stacked scale
+				paretoYScaleLeft.domain([0, 100]);
+				paretoG
+					.select(".y-axis-left")
+					.transition()
+					.duration(1200)
+					.ease(d3.easeCubicInOut)
+					.call(d3.axisLeft(paretoYScaleLeft).tickFormat((d) => d + "%"));
+
+				// Lift bars up to their stacked Y positions (but keep their current X positions)
+				paretoG
+					.selectAll(".stack-segment")
+					.data(stackedData, (d) => d.decile)
+					.transition()
+					.duration(1500)
+					.ease(d3.easeCubicInOut)
+					.attr("y", (d) => paretoYScaleLeft(d.stackY + d.share))
+					.attr(
+						"height",
+						(d) => paretoYScaleLeft(d.stackY) - paretoYScaleLeft(d.stackY + d.share)
+					);
+			}
+
+			// ============================================
+			// STAGE 10: Merge Horizontally Back to Center
+			// ============================================
+			function renderStage10() {
 				paretoG
 					.select(".chart-title")
 					.transition()
 					.duration(600)
 					.text("US Income Distribution (Stacked Decile Share)");
 
-				// Fade out X axis
+				// Remove the X axis completely
 				paretoG
 					.select(".x-axis")
 					.transition()
-					.duration(1000)
+					.duration(600)
 					.ease(d3.easeCubicInOut)
 					.style("opacity", 0)
 					.remove();
 
-				// Merge bars back to stacked position
+				// Merge bars back to center stacked position
 				const stackX = paretoWidth / 2 - 40;
 				const stackWidth = 80;
 
@@ -2563,14 +2967,6 @@
 					yOffset += d.share;
 					return { ...d, stackY: y };
 				});
-
-				paretoYScaleLeft.domain([0, 100]);
-				paretoG
-					.select(".y-axis-left")
-					.transition()
-					.duration(1200)
-					.ease(d3.easeCubicInOut)
-					.call(d3.axisLeft(paretoYScaleLeft).tickFormat((d) => d + "%"));
 
 				// Re-add X axis for stacked view
 				paretoG
@@ -2608,6 +3004,7 @@
 					.duration(800)
 					.style("opacity", 1);
 
+				// Move bars horizontally back to center
 				paretoG
 					.selectAll(".stack-segment")
 					.data(stackedData, (d) => d.decile)
@@ -2616,11 +3013,6 @@
 					.ease(d3.easeCubicInOut)
 					.attr("x", stackX)
 					.attr("width", stackWidth)
-					.attr("y", (d) => paretoYScaleLeft(d.stackY + d.share))
-					.attr(
-						"height",
-						(d) => paretoYScaleLeft(d.stackY) - paretoYScaleLeft(d.stackY + d.share)
-					)
 					.attr("fill", (d, i) =>
 						d3.interpolateRgb("#10b981", "#6FA8DC")(i / (stackedData.length - 1))
 					);
