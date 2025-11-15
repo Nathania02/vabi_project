@@ -2055,23 +2055,23 @@
 			let paretoSvg, paretoG, paretoWidth, paretoHeight, paretoMargin;
 			let paretoXScale, paretoYScaleLeft, paretoYScaleRight;
 
-		function initParetoChart() {
-			// US Income Distribution data from World Bank - Poverty & Inequality Platform
-			// Data source: Decile/povertyinequality.csv (United States, reporting_year=2023)
-			// Source: CPS-ASEC-LIS (Current Population Survey, income-based)
-			// Converted from decimal format to percentage
-			const incomeData = [
-				{ decile: "Top 10%", share: 30.433, order: 1 },      // decile10: 0.30432758214
-				{ decile: "90-80%", share: 16.382, order: 2 },       // decile9: 0.163821646934
-				{ decile: "80-70%", share: 12.527, order: 3 },       // decile8: 0.125267321952
-				{ decile: "70-60%", share: 10.164, order: 4 },       // decile7: 0.101643182452
-				{ decile: "60-50%", share: 8.340, order: 5 },        // decile6: 0.083402396464
-				{ decile: "50-40%", share: 6.867, order: 6 },        // decile5: 0.068667663116
-				{ decile: "40-30%", share: 5.641, order: 7 },        // decile4: 0.056409294851
-				{ decile: "30-20%", share: 4.504, order: 8 },        // decile3: 0.045035586189
-				{ decile: "20-10%", share: 3.376, order: 9 },        // decile2: 0.033761485481
-				{ decile: "Bottom 10%", share: 1.766, order: 10 }    // decile1: 0.017663840421
-			];				// Calculate cumulative percentages
+			function initParetoChart() {
+				// US Income Distribution data from World Bank - Poverty & Inequality Platform
+				// Data source: Decile/povertyinequality.csv (United States, reporting_year=2023)
+				// Source: CPS-ASEC-LIS (Current Population Survey, income-based)
+				// Converted from decimal format to percentage
+				const incomeData = [
+					{ decile: "Top 10%", share: 30.433, order: 1 }, // decile10: 0.30432758214
+					{ decile: "90-80%", share: 16.382, order: 2 }, // decile9: 0.163821646934
+					{ decile: "80-70%", share: 12.527, order: 3 }, // decile8: 0.125267321952
+					{ decile: "70-60%", share: 10.164, order: 4 }, // decile7: 0.101643182452
+					{ decile: "60-50%", share: 8.34, order: 5 }, // decile6: 0.083402396464
+					{ decile: "50-40%", share: 6.867, order: 6 }, // decile5: 0.068667663116
+					{ decile: "40-30%", share: 5.641, order: 7 }, // decile4: 0.056409294851
+					{ decile: "30-20%", share: 4.504, order: 8 }, // decile3: 0.045035586189
+					{ decile: "20-10%", share: 3.376, order: 9 }, // decile2: 0.033761485481
+					{ decile: "Bottom 10%", share: 1.766, order: 10 }, // decile1: 0.017663840421
+				]; // Calculate cumulative percentages
 				let cumulative = 0;
 				incomeData.forEach((d) => {
 					cumulative += d.share;
